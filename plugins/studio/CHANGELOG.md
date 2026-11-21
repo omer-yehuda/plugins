@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1 (2026-11-21)
+
+- OpenCode support: `opencode/commands/studio-produce.md` and `studio-trend.md` run Studio in OpenCode on a free model. The commands map the plugin path, play the crew roles in turn from `agents/`, and make `/studio-trend` ask for real screenshots when there is no browser tool (README, "Run it free with OpenCode"). No engine changes.
+
 ## 1.1.0 (2026-11-20)
 
 - Wide format: `"format": "wide"` renders 1920x1080 with its own safe area (bottom-right kept clear for a channel watermark). Compare cards sit side by side in wide; contact sheets, captions and metadata follow the format (`#Shorts` only on Shorts).

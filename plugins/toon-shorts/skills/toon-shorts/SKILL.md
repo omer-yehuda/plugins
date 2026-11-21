@@ -6,7 +6,7 @@ description: Makes an original animated cartoon YouTube Short / TikTok / Reel (1
 # toon-shorts
 
 Turn one conversation into a finished animated short:
-**questions → 10 ideas → script → voice → storyboard → preview (you check it) → MP4.**
+**questions → 10 ideas → script → voice → storyboard → preview (you check it) → draft → MP4.**
 
 `<skill>` below means this skill's base directory (shown when the skill loads). Run every command as
 `python "<skill>/scripts/toon.py" <command> ...` and quote paths.
@@ -14,7 +14,8 @@ Turn one conversation into a finished animated short:
 | File | Use |
 |---|---|
 | `references/story-craft.md` | picking ideas and writing the script. **Read before Step 2.** |
-| `references/storyboard.md` | storyboard format, every allowed value, visual rules. **Read before Step 5.** |
+| `references/storyboard.md` | storyboard format, every allowed value, visual rules, pacing. **Read before Step 5.** |
+| `references/checklist.md` | the 11-point still check. **Use in Step 6.** |
 | `examples/onoda.json`, `examples/onoda_he.json` | complete storyboards (English, Hebrew) to copy from |
 | `scripts/toon.py` | the engine CLI: `setup`, `check`, `voices`, `samples`, `voice`, `preview`, `render` |
 
@@ -81,25 +82,41 @@ their pauses automatically.
 
 Read `references/storyboard.md` and write `storyboard.json`: one scene per script line (`say` = that line exactly),
 a character sheet with distinct looks, visuals that *show* each line, big expressions, varied cameras (`punch_in`
-on the hook). Set `"lang": "he"` for Hebrew. Then run `toon.py check` and fix every ERROR; fix NOTEs unless you
-have a reason.
+on the hook). Set `"lang": "he"` for Hebrew.
+
+Pacing: one line is one scene, but a line longer than about 3.5 s gets `cuts` (a new camera on the same set).
+Aim for 4+ shots in the first 10 seconds and 20+ shots a minute overall. Scene 0 is the cold open: the first
+frame already shows the payoff (props `at: 0`, no `enter`), and its line is 9 words or fewer.
+
+Then run `toon.py check` and fix every ERROR; fix NOTEs unless you have a reason. The pacing NOTEs are estimates
+from word counts; `preview` prints the real ones once there is a voice.
 
 ## Step 6: Preview, review it yourself, then render
 
 1. `toon.py preview "<work>/storyboard.json" --audio "<work>/voice.wav" --out "<work>/preview.png"`
    (leave out `--audio` for captions only).
-2. **Open preview.png with Read and review every tile** before the user sees it: a face covered by a prop or
-   caption, a character cut off, a scene that doesn't match its line, two neighbouring scenes that look alike,
-   wrong era or setting. Fix the storyboard and re-preview until clean.
-3. `toon.py render "<work>/storyboard.json" --audio "<work>/voice.wav" --out "<work>/short.mp4"`
+2. **Open preview.png with Read and check every tile against `references/checklist.md`** (11 questions) before
+   the user sees it. Note each failing tile and the fix, change the storyboard and re-preview until clean. Fix
+   any `PACE:` warning the preview printed.
+3. **Draft:** `toon.py render "<work>/storyboard.json" --audio "<work>/voice.wav" --out "<work>/draft.mp4" --draft`
+   (540x960, 15 fps, about 40% faster). Use it to check timing and sound; show it to the user if they want to
+   see motion before the full render.
+4. **Full render:** `toon.py render "<work>/storyboard.json" --audio "<work>/voice.wav" --out "<work>/short.mp4"`
    (`--music <file>` adds a ducked music bed; if it is slow, `--workers 2` or `--fps 24`). Takes 1-4 minutes.
-4. Give the MP4's absolute path, plus a ready-to-paste **title** (<60 chars), **description** (tease + source line)
+   Every on-screen action gets its own sound automatically (see "Sound" in `references/storyboard.md`).
+5. Give the MP4's absolute path, plus a ready-to-paste **title** (<60 chars), **description** (tease + source line)
    and **3 hashtags**, in the video's language.
 
 ## Step 7: Changes
 
 Ask: Perfect · Change a scene · Change the voice · Other. Edit the storyboard (re-make the voice if any `say` or
 `voice` text changed), re-preview, re-render.
+
+## Running on a free model (OpenCode)
+
+This skill also runs in OpenCode (free, open source) with a free model: see the plugin README. Free models
+follow the steps well but are weaker at fact checking and at noticing existing videos on the same idea, so in
+Step 2 and Step 3 double-check every fact against a reliable source and say which source you used.
 
 ## Rules
 

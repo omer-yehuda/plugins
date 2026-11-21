@@ -36,7 +36,9 @@
       "props": [{"type": "money", "x": 0.75, "y": 0.3, "size": 240, "anim": "float", "at": 0.3,
                  "label": "", "behind": false}],
       "camera": "push_in",
-      "focus": 0.35
+      "focus": 0.35,
+      "cuts": [{"at": 0.5, "camera": "punch_in", "focus": 0.7}],
+      "sfx": [{"type": "ding", "at": 0.6}]
     }
   ]
 }
@@ -71,6 +73,9 @@
 | `props[].behind` | `true` draws it behind the characters |
 | `camera` | `push_in` `pull_out` `pan_left` `pan_right` `tilt_up` `drift` (sideways, shows depth) `punch_in` (hook/shock) `shake` (chaos) `static` |
 | `focus` | the x (0-1) the camera moves toward; defaults to the first cast member |
+| `cuts` | splits one line into more shots: `[{"at": 0.5, "camera": "punch_in", "focus": 0.7}]`. `at` 0.1-0.9 of the scene; each cut switches to its own camera move (and optional focus) on the same set. |
+| `sfx` | extra sounds: `[{"type": "ding", "at": 0.6}]`. Types: `pop` `whoosh` `sting` `thud` `ding` `tap`. |
+| `cast[].costume` | `true` allows a deliberate change of skin, hair, outfit colour or glasses in that scene (otherwise `check` flags it). |
 
 **Character keys:** `skin`: `porcelain` `light` `medium` `tan` `brown` `deep` (or hex) · `hair` (hex) ·
 `hair_style`: `short` `slick` `curly` `long` `bun` `spiky` `ponytail` `bald` · `hat`: `none` `top_hat` `bowler`
@@ -79,13 +84,33 @@
 `facial_hair`: `none` `mustache` `beard` `goatee` · `glasses`: true/false. Colours accept hex or names
 (red, navy, teal, gold, ...).
 
+## Pacing
+
+- A **shot** is one camera move. Scene = one spoken line; `cuts` add shots inside it.
+- First 10 seconds: 4 or more shots (fast story Shorts run about 27 a minute in the opening).
+- Whole video: 20+ shots a minute. No single shot over about 4 seconds.
+- Good cuts: wide → close-up on the face as the key word lands (`punch_in` with `focus` on that character),
+  close-up → `drift` to reveal the other person, or `push_in` onto a prop the line names.
+- `check` estimates pacing from word counts; `preview` and `render` print the real numbers (`PACE:` lines).
+
+## Sound
+
+Every action gets one short sound on the frame it happens, automatically: `enter: pop` → pop,
+`enter: slide_*` → whoosh, a character turning `shocked`/`scared` → sting, `angry`/`furious` → thud,
+`walk`/`run` → soft steps, and every prop appearance → pop (unless `anim: none`). Add more with `sfx`.
+All sounds are synthesized with faded edges, so pauses stay silent and there are no clicks. `--no-sfx` turns
+them all off.
+
 ## Visual rules
 
 1. **Show the line.** "forged letters" → someone holds a document and a letter pops in; "fled to the mountains" → mountains.
 2. **Faces carry the story.** Shocked on the turn, furious when cheated, laughing on the win, sly on the con.
 3. **Change something every scene:** place, mood, pose or camera. `same_set_as` for continuity, but move the camera.
 4. **Establishing shots are fine:** a scene with no cast, just a set and a prop, for "the city", "the ocean".
-5. **Hook scene:** `punch_in`, the main character reacting big, a set that says where.
+5. **Hook scene (cold open):** `punch_in`, the main character reacting big, a set that says where, and the
+   payoff already on screen in the first frame (props `at: 0`, no `enter`). 9 words or fewer.
 6. **Last scene** returns to the first scene's place so the loop feels seamless.
 7. 1-4 characters per scene, never two in the same outfit colour. Use `front: crowd` for "everyone".
 8. Dress characters for the era and place; vary skin tones naturally for the setting.
+9. **One look per person.** Define each character once in `characters` and don't change skin, hair, outfit
+   colour or glasses per scene unless the story needs it (`"costume": true`).

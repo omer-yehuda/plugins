@@ -16,6 +16,7 @@ from .colors import seed
 from .compose import Movie, set_key
 from .crowd import crowd
 from .pen import font
+from .sfx import events
 from .sets import build, front
 
 _G: dict = {}
@@ -97,14 +98,18 @@ def prop_pops(sb: dict, timing) -> list[float]:
 
 
 def video(sb, timing, total, files, ffmpeg: str, out: str, voice=None, music=None, fps: int = 30,
-          workers: int = 2, sfx: bool = True, tmp: str = ".") -> str:
-    audio = mix(voice, [t0 for t0, _, _ in timing[1:]], prop_pops(sb, timing), total, music, sfx)
+          workers: int = 2, sfx: bool = True, tmp: str = ".", draft: bool = False) -> str:
+    """draft: half the frames and a smaller 540x960 file, for checking timing before the full render"""
+    audio = mix(voice, [t0 for t0, _, _ in timing[1:]], prop_pops(sb, timing), total, music, sfx,
+                events(sb, timing))
     wav = os.path.join(tmp, "mix.wav")
     write_wav(wav, audio)
     nframes = int(total * fps)
     cmd = [ffmpeg, "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(fps),
-           "-i", "-", "-i", wav, "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p",
-           "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", out]
+           "-i", "-", "-i", wav, "-c:v", "libx264", "-preset", "veryfast",
+           "-crf", "28" if draft else "20", *(["-vf", "scale=540:960"] if draft else []), "-pix_fmt", "yuv420p",
+           "-af", "adeclick=w=55:o=75:t=2,lowpass=f=12000",   # safety pass: Kokoro has nothing above 12 kHz
+           "-c:a", "aac", "-b:a", "128k" if draft else "192k", "-shortest", "-movflags", "+faststart", out]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
     assert proc.stdin is not None
     start = time.time()

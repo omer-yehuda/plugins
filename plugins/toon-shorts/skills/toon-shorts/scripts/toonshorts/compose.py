@@ -5,7 +5,7 @@ import math
 from PIL import Image, ImageDraw, ImageFilter
 
 from . import GY, H, M, SAFE, W
-from .camera import fit, parallax, shot
+from .camera import fit, parallax, segment, shot
 from .captions import caption_image, chunk, current
 from .character import CH, FOOT, extent, sprite
 from .colors import ease_out, overshoot, seed
@@ -83,7 +83,8 @@ class Movie:
         keep = []
         for c in sorted(sc.get("cast", []), key=lambda c: c.get("scale", 1.0)):
             look = dict(self.chars.get(c.get("id", ""), {}))
-            look.update({k: v for k, v in c.items() if k not in ("id", "x", "scale", "talking", "mood", "enter")})
+            skip = ("id", "x", "scale", "talking", "mood", "enter", "costume")
+            look.update({k: v for k, v in c.items() if k not in skip})
             mood = c.get("mood", look.pop("mood", "neutral"))
             sid = seed(c.get("id", ""), i)
             blink = ((t + (sid % 300) / 100) % 3.6) < 0.12
@@ -139,11 +140,10 @@ class Movie:
                     keep.append((x - half, y - half, x + half, y + half))
         if layers.get("front") is not None:
             world.alpha_composite(layers["front"])
-        cast = sc.get("cast", [])
-        focus = sc.get("focus", cast[0].get("x", 0.5) if cast else 0.5)
-        cx, cy, z = shot(sc.get("camera", "push_in"), lt / dur, lt, float(focus))
-        if i > 0 and lt < 0.15:               # cut punch: a tiny zoom kick on every cut
-            z *= 1 + 0.05 * (1 - lt / 0.15)
+        cam, focus, slt, sdur, k = segment(sc, lt, dur)
+        cx, cy, z = shot(cam, slt / sdur, slt, focus)
+        if (i > 0 or k > 0) and slt < 0.15:   # cut punch: a tiny zoom kick on every cut
+            z *= 1 + 0.05 * (1 - slt / 0.15)
         box = fit(cx, cy, z, keep)
         out = layers["far"].resize((W, H), Image.Resampling.BILINEAR, box=parallax(box, PARALLAX["far"]))
         out.alpha_composite(layers["mid"].resize((W, H), Image.Resampling.BILINEAR,

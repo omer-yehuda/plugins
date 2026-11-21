@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.1.0 (2026-11-21)
+
+### Added
+- `cuts`: split one spoken line into several shots, each with its own camera move and focus, on the same set. Fast story Shorts cut about 27 times a minute in the opening; one shot per sentence was about 15.
+- Pacing checks: `check` estimates shots per minute from word counts and flags a slow opening (fewer than 4 shots in the first 10 s), a whole video under 20 shots a minute, and any shot over 4 s. `preview` and `render` print the real numbers (`PACE:` lines) from the voice timing.
+- Cold open checks: the hook line should be 9 words or fewer, and the first frame should already show the payoff (no late props or entrances in scene 0).
+- Consistent characters: `check` flags a scene that changes a character's skin, hair, outfit colour or glasses from the character sheet, unless that cast entry says `"costume": true`.
+- Action sounds: every on-screen action gets its own short synthesized sound on the frame it happens: pop-in, slide-in whoosh, a sting when someone turns shocked or scared, a thud on anger, soft footsteps for walk and run. A scene's `sfx` list adds `pop`, `whoosh`, `sting`, `thud`, `ding` or `tap` at any point. All sounds have faded edges and no noise floor.
+- `render --draft`: 540x960, 15 fps (about 40% faster on the bundled example), for checking timing and sound before the full render.
+- `references/checklist.md`: the 11-point still checklist Claude uses on every preview tile.
+- OpenCode support: `opencode/commands/toon-short.md` runs the skill in OpenCode on a free model (README, "Run it free with OpenCode").
+
+### Fixed
+- Each trimmed voice line now fades in and out over 6 ms, so lines never start or stop on a hard edge.
+- Quieter pauses: cut whooshes, prop pops and entrance sounds are softer, and reaction sounds start on the line's first word instead of in the gap before it. On the bundled example the loudest pause went from -32.9 to -37.4 dBFS (the channel check wants under -35).
+- The final mix gets a declick and 12 kHz low-pass safety pass (Kokoro has nothing above 12 kHz), which takes the bundled example from about 20 to about 8 detected clicks a minute. The rest are inside spoken words and show up the same with Studio's mastering; still open.
+
+### Changed
+- The bundled examples use cuts and a cold open (English hook shortened to 9 words), and pass every new check.
+
+### Tests
+- New tests for cuts, pacing reports, the new checker notes and errors, action-sound events and silent edges, a frame change across a cut, and the draft render size and frame rate.
+
 ## 1.0.2 (2026-11-19)
 
 ### Fixed

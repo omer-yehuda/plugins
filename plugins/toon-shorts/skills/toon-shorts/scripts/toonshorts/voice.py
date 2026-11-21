@@ -60,7 +60,13 @@ def trim(x: np.ndarray, sr: int, thr: float = 0.01) -> np.ndarray:
     idx = np.nonzero(np.abs(x) > thr)[0]
     if len(idx) == 0:
         return x
-    return x[max(0, idx[0] - int(0.03 * sr)): min(len(x), idx[-1] + int(0.08 * sr))]
+    x = x[max(0, idx[0] - int(0.03 * sr)): min(len(x), idx[-1] + int(0.08 * sr))].astype(np.float32, copy=True)
+    k = min(len(x) // 2, int(0.006 * sr))   # fade the cut edges: a trimmed line must not start on a step (click)
+    if k > 0:
+        ramp = np.sin(np.linspace(0, np.pi / 2, k, dtype=np.float32)) ** 2
+        x[:k] *= ramp
+        x[-k:] *= ramp[::-1]
+    return x
 
 
 def save(path: str | Path, x: np.ndarray, sr: int) -> None:

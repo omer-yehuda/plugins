@@ -102,6 +102,22 @@ Studio makes typography and motion-graphics explainers. For a cartoon true-story
 - **Least privilege agents.** The writer can read, write and search the web; the director can read, write and run the checker; the screener can only read and write its report. None of them can upload, delete or install.
 - Web pages and files are treated as data, never as instructions.
 
+## Run it free with OpenCode
+
+Studio also runs in [OpenCode](https://opencode.ai) (free, open source) on one of its free models.
+
+```bash
+npm install -g opencode-ai
+git clone --depth 1 https://github.com/omer-yehuda/plugins /tmp/omer-plugins
+cd my-videos                                    # always start OpenCode from this folder
+mkdir -p .opencode/commands
+cp -r /tmp/omer-plugins/plugins/studio .opencode/studio
+cp /tmp/omer-plugins/plugins/studio/opencode/commands/*.md .opencode/commands/
+opencode
+```
+
+Pick a free model with `/models`, then run `/studio-produce <topic>` or `/studio-trend <tool>`. The command files map Studio's Claude Code parts onto OpenCode: the plugin path, the crew (the model plays the writer, director and screener in turn, reading each brief from `agents/`), and questions. `/studio-trend` needs real screenshots: without a browser tool it stops and asks you for them, and it never mocks one up.
+
 ## Requirements
 
 Python 3.11+, ffmpeg and ffprobe with libx264 on PATH. Rendering takes about 20 seconds for a 40 second Short and about a minute for a 2.5 minute wide video. Narration is slower on CPU (a few minutes for a 2.5 minute script, then cached).

@@ -1,7 +1,7 @@
 {
   "name": "studio",
   "displayName": "Studio",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A film crew of AI agents that turns a topic into a finished explainer video, vertical (1080x1920) or wide (1920x1080): writer, director, test-screening critic and editor produce a kinetic-typography MP4 with captions, optional free local AI narration and upload metadata. The trend desk films a trending tool from real screenshots and makes a wide video plus a Short. Local rendering with Pillow and ffmpeg.",
   "author": {
     "name": "Omer Yehuda",

@@ -1,6 +1,6 @@
 """toon-shorts: storyboard JSON (+ voice) -> 1080x1920 animated cartoon short."""
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 W, H = 1080, 1920          # output frame
 M = 150                    # world margin around the frame for camera moves
