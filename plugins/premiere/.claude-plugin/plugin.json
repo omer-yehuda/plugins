@@ -1,0 +1,14 @@
+{
+  "name": "premiere",
+  "displayName": "Premiere",
+  "version": "1.0.0",
+  "description": "A film crew of AI agents for realistic short films. A director writes the shot list, a cinematographer writes one prompt per shot with a consistent look, you generate the stills with the image model you choose, a continuity check rejects bad frames, and ffmpeg cuts a graded, scored film with camera moves, in wide or vertical.",
+  "author": {
+    "name": "Omer Yehuda",
+    "url": "https://github.com/omer-yehuda"
+  },
+  "repository": "https://github.com/omer-yehuda/plugins",
+  "license": "MIT",
+  "keywords": ["video", "film", "cinematic", "storyboard", "ffmpeg", "image-generation", "agents"],
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/premiere"
+}
