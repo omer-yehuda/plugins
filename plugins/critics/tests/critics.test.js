@@ -8,6 +8,9 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const c = require('../scripts/critics.js');
 
+// Symlink tests need permission to create symlinks (Windows without Developer Mode refuses with EPERM).
+const symlinks = { skip: (() => { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'symlink-probe-')); try { fs.symlinkSync(d, path.join(d, 'l')); return false; } catch { return 'cannot create symlinks on this machine'; } finally { fs.rmSync(d, { recursive: true, force: true }); } })() };
+
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'critics-'));
 const SCRIPT = path.join(__dirname, '..', 'scripts', 'critics.js');
 
@@ -82,7 +85,7 @@ test('CLI: open, list, stars end to end', () => {
 const { spawnSync } = require('child_process');
 const HOSTILE = ['$(touch /tmp/pwn-critics)', '`touch /tmp/pwn-critics`', 'x; rm -rf /tmp/pwn-critics-dir', '../../etc/passwd', '--help', '-rf', 'line1\nline2$(id)', 'a'.repeat(5000)];
 
-test('open --input-file refuses files outside a prep folder and symlinks, and keeps them', () => {
+test('open --input-file refuses files outside a prep folder and symlinks, and keeps them', symlinks, () => {
   const p = tmp();
   const outside = path.join(p, 'in.txt');
   fs.writeFileSync(outside, 'dish');
@@ -131,7 +134,7 @@ test('list and stars refuse a tracked .critics', () => {
   }
 });
 
-test('symlinked state folders are refused even outside git', () => {
+test('symlinked state folders are refused even outside git', symlinks, () => {
   const p = tmp();
   const outside = tmp();
   fs.symlinkSync(outside, path.join(p, '.critics'));
