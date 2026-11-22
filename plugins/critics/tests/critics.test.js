@@ -110,7 +110,7 @@ test('hostile dish names become safe ids and never execute', () => {
     const j = JSON.parse(r.stdout);
     assert.match(j.id, /^\d{8}-\d{6}-[a-z0-9-]+$/);
     assert.ok(j.id.length <= 60);
-    assert.ok(path.resolve(j.dir).startsWith(path.join(fs.realpathSync(p), '.critics', 'tastings')));
+    assert.ok(fs.realpathSync.native(j.dir).startsWith(path.join(fs.realpathSync.native(p), '.critics', 'tastings')));
     assert.ok(!fs.existsSync(f));
   }
   assert.ok(!fs.existsSync('/tmp/pwn-critics'));
