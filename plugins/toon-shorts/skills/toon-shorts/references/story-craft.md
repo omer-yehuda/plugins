@@ -24,7 +24,7 @@ Length budget: 45-60 s ≈ 115-150 English words (≈ 95-125 Hebrew words); 30-4
 
 | Beat | Lines | Job |
 |---|---|---|
-| Hook | 1 | The impossible claim, flat and plain. No greeting, no "did you know", no "in this video". |
+| Hook (cold open) | 1 | The impossible claim, flat and plain, 9 words or fewer, over a picture that already shows it. No greeting, no "did you know", no "in this video". |
 | Stakes | 1 | Make leaving feel like a loss: "And it only took him one letter." |
 | Setup | 1-2 | Who, where, when, in the fewest words. |
 | Escalation | 4-6 | Every line is a consequence of the last. Cut anything that is merely interesting. |
@@ -33,7 +33,7 @@ Length budget: 45-60 s ≈ 115-150 English words (≈ 95-125 Hebrew words); 30-4
 
 ## Line rules
 
-- One idea per line, under ~14 words; each line is one 2-5 second scene.
+- One idea per line, under ~14 words; each line is one scene. Lines over ~9 words get a cut in the storyboard.
 - Spoken rhythm: short words, contractions, active verbs.
 - Concrete nouns the animation can draw: letters, gold, a ship, a crown, a newspaper.
 - Say numbers the easy way: "twice", "half the city", not "on two separate occasions".

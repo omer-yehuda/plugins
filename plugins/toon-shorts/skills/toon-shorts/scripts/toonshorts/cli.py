@@ -72,6 +72,9 @@ def _prepare(a):
     for i, (t0, t1, _) in enumerate(timing):
         print(f"scene {i:2d}  {t0:6.2f}-{t1:6.2f}s  {sb['scenes'][i].get('say', '')[:56]}")
     print(f"total {total:.1f}s" + ("  (over 60s: too long for Shorts!)" if total > 60 else ""))
+    from .pacing import report
+    for line in report(sb["scenes"], [(t0, t1) for t0, t1, _ in timing]):
+        print("PACE: ", line)
     return sb, timing, total, ff, voice
 
 
@@ -95,7 +98,8 @@ def cmd_render(a) -> int:
     try:
         files = prerender(sb, tmp, a.workers)
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-        video(sb, timing, total, files, ff, a.out, voice, music, a.fps, a.workers, not a.no_sfx, tmp)
+        fps = min(a.fps, 15) if a.draft else a.fps
+        video(sb, timing, total, files, ff, a.out, voice, music, fps, a.workers, not a.no_sfx, tmp, a.draft)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     return 0
@@ -132,6 +136,7 @@ def parser() -> argparse.ArgumentParser:
             p.add_argument("--music")
             p.add_argument("--fps", type=int, default=30)
             p.add_argument("--no-sfx", action="store_true")
+            p.add_argument("--draft", action="store_true", help="quick 540x960 15 fps check render")
     return ap
 
 

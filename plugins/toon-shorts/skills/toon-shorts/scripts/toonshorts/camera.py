@@ -72,3 +72,22 @@ def parallax(box: Box, factor: float) -> Box:
     pcx = WW / 2 + (cx - WW / 2) * factor
     pcy = WH / 2 + (cy - WH / 2) * factor
     return clamp_box(pcx, pcy, W / zf, H / zf)
+
+
+def segment(sc: dict, lt: float, dur: float) -> tuple[str, float, float, float, int]:
+    """active shot inside a scene -> (camera, focus, seconds into the shot, shot length, shot index).
+
+    `cuts` splits one scene (one line) into several shots: [{"at": 0.5, "camera": "punch_in", "focus": 0.7}]."""
+    cast = sc.get("cast", [])
+    cam = sc.get("camera", "push_in")
+    focus = float(sc.get("focus", cast[0].get("x", 0.5) if cast else 0.5))
+    start, k = 0.0, 0
+    marks = sorted((c for c in sc.get("cuts", []) if isinstance(c, dict)), key=lambda c: float(c.get("at", 0)))
+    ends = [min(max(float(c.get("at", 0)), 0.0), 1.0) * dur for c in marks] + [dur]
+    for j, c in enumerate(marks):
+        if lt >= ends[j]:
+            start, k = ends[j], j + 1
+            cam = c.get("camera", cam)
+            focus = float(c.get("focus", focus))
+    end = next((e for e in ends if e > start), dur)
+    return cam, focus, lt - start, max(0.1, end - start), k

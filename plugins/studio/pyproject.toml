@@ -1,6 +1,6 @@
 [project]
 name = "studio"
-version = "1.1.0"
+version = "1.1.1"
 description = "Claude Code plugin: a film crew of AI agents that turns a topic into a vertical kinetic-typography explainer video"
 requires-python = ">=3.11"
 license = "MIT"

@@ -122,8 +122,12 @@ def check(sb: dict) -> tuple[list[str], list[str]]:
     for i, sc in enumerate(scenes):
         if _shape_ok(i, sc, errors):
             _check_scene(i, sc, sb, errors, notes)
+    from .pacing import notes as pace_notes, validate
+    from .sfx import KINDS
+    validate(sb, CAMERAS, KINDS, errors)
     if errors:
         return errors, notes
+    notes += pace_notes(sb)
     cams = [s.get("camera", "push_in") for s in scenes]
     for i in range(2, len(cams)):
         if cams[i] == cams[i - 1] == cams[i - 2]:

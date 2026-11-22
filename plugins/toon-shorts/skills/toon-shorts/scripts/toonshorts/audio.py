@@ -91,7 +91,8 @@ def music_bed(music: np.ndarray, n: int, fade_in: float = 0.5, xfade: float = 0.
 
 
 def mix(voice: np.ndarray | None, cuts: list[float], pops: list[float], total: float,
-        music: np.ndarray | None = None, sfx: bool = True) -> np.ndarray:
+        music: np.ndarray | None = None, sfx: bool = True,
+        actions: list[tuple[float, str]] | None = None) -> np.ndarray:
     n = int(total * SR) + SR
     out = np.zeros(n, np.float32)
     if voice is not None and len(voice):
@@ -100,11 +101,14 @@ def mix(voice: np.ndarray | None, cuts: list[float], pops: list[float], total: f
         for i, t in enumerate(cuts):
             w = whoosh(seed=i + 1)
             a = max(0, int((t - 0.2) * SR))
-            out[a:a + len(w)] += w[: max(0, n - a)] * 0.11
+            out[a:a + len(w)] += w[: max(0, n - a)] * 0.045  # cuts land in pauses: keep them soft
         for t in pops:
             pp = pop()
             a = max(0, int(t * SR))
-            out[a:a + len(pp)] += pp[: max(0, n - a)] * 0.18
+            out[a:a + len(pp)] += pp[: max(0, n - a)] * 0.12
+        if actions:
+            from .sfx import lay
+            lay(out, actions)
     if music is not None and len(music):
         m = music_bed(music, n)
         duck = np.ones(n, np.float32)
