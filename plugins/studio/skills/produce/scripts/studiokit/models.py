@@ -35,6 +35,20 @@ def model_ok(name: str, folder: Path | None = None) -> bool:
     return path.is_file() and not path.is_symlink() and path.stat().st_size == size and sha256(path) == want
 
 
+def emotion_model(folder: Path | None = None) -> Path:
+    """The emotion copy of the verified Kokoro model, made locally on first use (no download)."""
+    from .emotion import build_model
+    folder = folder or models_dir()
+    base, out = folder / "kokoro-v1.0.int8.onnx", folder / "kokoro-v1.0.int8.emo.onnx"
+    if not model_ok(base.name, folder):
+        raise ModelError("voice model missing or unverified. Ask the user, then run `studio.py setup --voice --yes`.")
+    if out.is_symlink():
+        out.unlink()
+    if not out.is_file() or out.stat().st_mtime < base.stat().st_mtime:
+        build_model(base, out)
+    return out
+
+
 def voice_ready() -> bool:
     return all(model_ok(n) for n in MODELS)
 

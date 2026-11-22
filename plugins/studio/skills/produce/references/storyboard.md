@@ -21,7 +21,7 @@ Top level: `title` (required), `scenes` (1 to 30, aim for 8 to 12), `format` (`s
 |---|---|---|
 | `type` | title, bullets, stat, compare, quote, image, cta | required |
 | `duration` | seconds, 1 to 20 (the `voice` command sets it from the narration) | from word count |
-| `say` | narration for this scene, up to 600 characters: spoken by `voice`, used for captions, never drawn | none |
+| `say` | narration for this scene, up to 600 characters: spoken by `voice`, used for captions, never drawn. Wrap the word that carries a feeling in `{feeling|words}` (see "Emotion tags" below) | none |
 | `theme` | `light` or `dark` | alternates light, dark, light... |
 | `accent` | coral, blue, green, yellow, purple, orange, pink, teal, or `#RRGGBB` | top-level `accent`, else coral |
 | `transition` | how this scene enters: cut, slide, fade, zoom-punch | first scene cut, others slide |
@@ -51,3 +51,25 @@ Top level: `title` (required), `scenes` (1 to 30, aim for 8 to 12), `format` (`s
 - Accent contrast of 3:1 on the scene theme (yellow only on dark).
 - Alternate light and dark for rhythm. Never three scene types in a row the same.
 - Keep it light: no code on screen. Text is left to right only (right-to-left is not supported in v1).
+
+## Emotion tags (in `say`)
+
+The voice reads every line with a little melody. For the words that carry a feeling, add a tag: `{feeling|words}`. Only those words change (pitch shape, length, loudness, a short beat before them). Captions show the words without the tag.
+
+```json
+"say": "{warn|Fair warning}: it is six times heavier to run."
+"say": "And the {surprise|surprise}? It is completely {excite|free}."
+```
+
+| Feeling | Use it for | What the voice does |
+|---|---|---|
+| `warn` | a catch, a limit, "careful" | short beat, firm and a bit slower |
+| `surprise` | a twist, a reveal | beat, pitch climbs to the end |
+| `excite` | the payoff, "free", a big number | brighter and a bit louder |
+| `wow` | a result that should land | beat, slower, rises and falls |
+| `punch` | a short claim, "Same prompt." | quick firm hit |
+| `ask` | the end question | rises like a real question |
+| `calm` | reassurance, "Relax." | softer, falls |
+| `sad` | the problem, the pain | slower, lower |
+
+Rules: one to three tags per line, on one to three words each. A tag on every word sounds as flat as none. Unknown feelings fail `check`. `voice --flat` gives the old flat read; `--lively 1.0-1.5` sets the melody of every line (default 1.2).

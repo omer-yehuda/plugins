@@ -77,6 +77,7 @@ The storyboard format is in [`skills/produce/references/storyboard.md`](skills/p
 Captions-only is the default: the words are on screen, and `captions.srt` is written for upload. For narration:
 
 - **AI narration (free, local):** `studio.py setup --voice --yes` (only after you agree) adds pinned kokoro-onnx to Studio's private venv and downloads the Kokoro-82M voice model (~120 MB, SHA-256 verified). Give each scene a `say` line, then `studio.py voice storyboard.json`: every line is voiced (default `am_michael` at 1.12x), each scene's duration is set to its line, and a mastered `voice.wav` (declicked, 12 kHz low-pass, -14 LUFS, silent pauses) is attached. Lines are cached, so an edit re-voices only that line. Captions follow the narration.
+- **Emotion in the voice:** every line gets a little melody, and words wrapped in a tag are said with feeling: `"say": "{warn|Fair warning}: it is heavier to run."` or `"And the {surprise|surprise}? It is {excite|free}."` Feelings: warn, surprise, excite, wow, punch, ask, calm, sad. Same voice; Studio makes a local copy of the verified model with pitch, length and energy controls (needs the pinned `onnx` package, added by `setup --voice`). `voice --flat` keeps the old read.
 - **Your own audio:** `--audio file.wav --fit-audio` (or `--audio-path-file`) stretches the scene timings to its length (within 0.6x to 1.8x).
 - **Check it:** `studio.py audiocheck video.mp4 --lines voice.lines.json` fails if a pause is louder than -35 dBFS or there are more than 3 clicks a minute.
 

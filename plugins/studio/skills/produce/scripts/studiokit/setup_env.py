@@ -43,7 +43,8 @@ def plan(voice: bool = False) -> str:
         mb = sum(size for _, size in MODELS.values()) >> 20
         text += (f"  3. for AI narration: pip install pinned {_pins(REQUIREMENTS_VOICE)} (and their dependencies) "
                  f"into the same venv\n  4. download the Kokoro voice model ({mb} MB, SHA-256 verified) from "
-                 f"github.com/thewh1teagle/kokoro-onnx into {models_dir()}\n")
+                 f"github.com/thewh1teagle/kokoro-onnx into {models_dir()}, then make a local emotion copy of it "
+                 f"(adds pitch, length and energy controls; nothing else is downloaded)\n")
     return text + "It will not touch your global Python or install system packages."
 
 
@@ -70,6 +71,8 @@ def setup(yes: bool, log=print, stdin=sys.stdin, ask=input, voice: bool = False)
         try:
             for name in MODELS:
                 fetch(name, log=log)
+            from .models import emotion_model
+            log(f"emotion voice model ready: {emotion_model().name}")
         except ModelError as e:
             raise SetupError(str(e)) from e
     ok, msg = ffmpeg_status()

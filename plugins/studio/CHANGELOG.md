@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0 (2026-11-22)
+
+- Emotion in the AI narration. Tag a word in `say` with `{feeling|words}` (warn, surprise, excite, wow, punch, ask, calm, sad) and only that word changes: pitch shape, length, loudness and a short beat before it. Every line also gets a little more melody (`voice --lively`, default 1.2; `--flat` for the old read). Same Kokoro voice: Studio makes a local copy of the verified model with three multiply inputs (sound length, pitch, energy); with them at 1.0 the audio is identical to the original. Needs the new pinned `onnx` package, which `setup --voice` installs; without it Studio says so and speaks without emotion.
+- `check` fails on unknown feelings or broken tags; captions and `voice.lines.json` never show tags.
+- The director and the trend desk tag the words that carry a feeling (one to three per line).
+
 ## 1.1.1 (2026-11-21)
 
 - OpenCode support: `opencode/commands/studio-produce.md` and `studio-trend.md` run Studio in OpenCode on a free model. The commands map the plugin path, play the crew roles in turn from `agents/`, and make `/studio-trend` ask for real screenshots when there is no browser tool (README, "Run it free with OpenCode"). No engine changes.
