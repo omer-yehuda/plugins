@@ -186,7 +186,8 @@ test('hostile bug reports become safe chart ids', () => {
     assert.strictEqual(r.code, 0, r.out);
     assert.match(r.json.id, /^\d{8}-\d{6}-[a-z0-9-]{1,40}$/);
     assert.ok(r.json.id.length <= 56);
-    assert.ok(path.resolve(r.json.chartDir).startsWith(path.join(fs.realpathSync(d), '.er', 'charts')));
+    // realpathSync.native expands Windows 8.3 short names (RUNNER~1) the way git reports the project root
+    assert.ok(fs.realpathSync.native(r.json.chartDir).startsWith(path.join(fs.realpathSync.native(d), '.er', 'charts')));
     assert.strictEqual(fs.readFileSync(path.join(r.json.chartDir, 'report.txt'), 'utf8'), h);
     assert.ok(!fs.existsSync(f));
   }
