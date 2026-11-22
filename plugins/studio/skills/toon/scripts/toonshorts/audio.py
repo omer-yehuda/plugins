@@ -26,7 +26,7 @@ def find_ffmpeg(explicit: str | None = None) -> str:
         return imageio_ffmpeg.get_ffmpeg_exe()
     except (ImportError, RuntimeError) as e:
         raise FfmpegMissing("ffmpeg not found. Run `python toon.py setup` (installs the pinned imageio-ffmpeg "
-                            "into the toon-shorts venv) or install ffmpeg yourself.") from e
+                            "into the Studio venv) or install ffmpeg yourself.") from e
 
 
 def decode(ffmpeg: str, path: str) -> np.ndarray:

@@ -43,8 +43,9 @@ def make_venv(log=print) -> Path:
 def pip_install(kind: str, log=print) -> None:
     py = make_venv(log)
     req = requirements(kind)
-    log(f"installing pinned packages from {req.name} into the toon-shorts venv")
-    r = subprocess.run([str(py), "-m", "pip", "install", "--disable-pip-version-check", "-q", "-r", str(req)],
+    log(f"installing pinned packages from {req.name} into the Studio venv")
+    locked = ["--require-hashes", "--only-binary=:all:"] if kind == "render" else []   # render pins are hash-locked
+    r = subprocess.run([str(py), "-m", "pip", "install", "--disable-pip-version-check", "-q", *locked, "-r", str(req)],
                        capture_output=True, text=True)
     if r.returncode != 0:
         raise SetupError(f"pip failed:\n{r.stderr[-2000:]}")
@@ -65,7 +66,7 @@ def fetch_model(name: str, folder: Path | None = None, log=print, opener=urllib.
     want, size = MODELS[name]
     tmp = path.with_suffix(path.suffix + ".part")
     log(f"downloading {name} ({size >> 20} MB) from github.com/thewh1teagle/kokoro-onnx")
-    req = urllib.request.Request(RELEASE + name, headers={"User-Agent": "toon-shorts"})
+    req = urllib.request.Request(RELEASE + name, headers={"User-Agent": "studio-plugin"})
     try:
         with opener(req, timeout=120) as r, open(tmp, "wb") as f:
             got = 0

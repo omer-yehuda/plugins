@@ -26,17 +26,10 @@
     {
       "name": "toon-shorts",
       "source": "./plugins/toon-shorts",
-      "description": "Animated short creator: turns a true story into an original voiced, captioned 1080x1920 cartoon MP4 for Shorts/TikTok/Reels, with toon characters, parallax sets, karaoke captions (Hebrew RTL), and a self-reviewed preview.",
+      "description": "Deprecated: Toon Shorts moved into studio (/studio:toon), with one shared setup. This stub only points you there and will be removed in the next release.",
       "category": "creative",
       "keywords": [
-        "video",
-        "shorts",
-        "animation",
-        "tiktok",
-        "reels",
-        "storytelling",
-        "tts",
-        "hebrew"
+        "deprecated"
       ]
     },
     {
@@ -93,16 +86,22 @@
     {
       "name": "studio",
       "source": "./plugins/studio",
-      "description": "A film crew of AI agents that turns a topic into a finished explainer video, vertical (1080x1920) or wide (1920x1080): writer, director, test-screening critic and editor produce a kinetic-typography MP4 with captions, optional free local AI narration and upload metadata. The trend desk films a trending tool from real screenshots and makes a wide video plus a Short. Local rendering with Pillow and ffmpeg.",
+      "description": "A film crew of AI agents in three formats: kinetic-typography explainers with AI narration and a trend desk, animated cartoon shorts from true stories with Hebrew RTL captions (formerly toon-shorts), and realistic short films from stills you generate (formerly Premiere). One install, one hash-locked venv, one voice model.",
       "category": "creative",
       "keywords": [
-        "video",
-        "shorts",
-        "explainer",
-        "motion-graphics",
-        "kinetic-typography",
         "agents",
-        "captions"
+        "animation",
+        "captions",
+        "cartoon",
+        "explainer",
+        "film",
+        "hebrew",
+        "kinetic-typography",
+        "motion-graphics",
+        "reels",
+        "shorts",
+        "tiktok",
+        "video"
       ]
     },
     {
@@ -196,16 +195,10 @@
     {
       "name": "premiere",
       "source": "./plugins/premiere",
-      "description": "A film crew of AI agents for realistic short films. A director writes the shot list, a cinematographer writes one prompt per shot with a consistent look, you generate the stills with the image model you choose, a continuity check rejects bad frames, and ffmpeg cuts a graded, scored film with camera moves, in wide or vertical.",
+      "description": "Deprecated: Premiere moved into studio (/studio:pitch, /studio:shoot, /studio:cut, /studio:dailies). This stub only points you there and will be removed in the next release.",
       "category": "creative",
       "keywords": [
-        "video",
-        "film",
-        "cinematic",
-        "storyboard",
-        "ffmpeg",
-        "image-generation",
-        "agents"
+        "deprecated"
       ]
     }
   ]

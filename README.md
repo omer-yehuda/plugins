@@ -12,7 +12,7 @@
 ![Node](https://img.shields.io/badge/node-%3E%3D18-339933)
 ![Python](https://img.shields.io/badge/python-3.11%2B-3776ab)
 
-**[Army command center (live)](https://omer-yehuda.github.io/plugins/)** · [Toon Shorts](https://omer-yehuda.github.io/plugins/toon-shorts/) · [Order of battle](https://omer-yehuda.github.io/plugins/#units)
+**[Army command center (live)](https://omer-yehuda.github.io/plugins/)** · [Studio toon](https://omer-yehuda.github.io/plugins/toon-shorts/) · [Order of battle](https://omer-yehuda.github.io/plugins/#units)
 
 </div>
 
@@ -24,7 +24,6 @@ Run this in Claude Code (v2.1.275 or later):
 
 ```
 /plugin install army --marketplace omer-yehuda/plugins
-/plugin install toon-shorts --marketplace omer-yehuda/plugins
 /plugin install court --marketplace omer-yehuda/plugins
 /plugin install er --marketplace omer-yehuda/plugins
 /plugin install atc --marketplace omer-yehuda/plugins
@@ -35,7 +34,6 @@ Run this in Claude Code (v2.1.275 or later):
 /plugin install academy --marketplace omer-yehuda/plugins
 /plugin install archive --marketplace omer-yehuda/plugins
 /plugin install newsroom --marketplace omer-yehuda/plugins
-/plugin install premiere --marketplace omer-yehuda/plugins
 ```
 
 Install only the ones you want.
@@ -46,8 +44,8 @@ Install only the ones you want.
 ```
 /plugin marketplace add omer-yehuda/plugins
 /plugin install army@omer-plugins
-/plugin install toon-shorts@omer-plugins
-/plugin install court@omer-plugins   # same pattern for er, atc, studio, critics, skill-installer, mission-control, academy, archive, newsroom, premiere
+/plugin install studio@omer-plugins
+/plugin install court@omer-plugins   # same pattern for er, atc, critics, skill-installer, mission-control, academy, archive, newsroom
 ```
 </details>
 
@@ -67,7 +65,7 @@ mission control, are we go?
 send this skill to the academy
 ask the archive why we chose REST
 newsroom, write the edition
-premiere, make a film about the last lighthouse keeper
+studio, make a film about the last lighthouse keeper
 ```
 
 To update later, run `/plugin marketplace update omer-plugins`.
@@ -77,18 +75,16 @@ To update later, run `/plugin marketplace update omer-plugins`.
 | Plugin | What it does | Version |
 |---|---|---|
 | [**army**](plugins/army/README.md) | Multi-agent orchestration. A Chief of Staff commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, backed by 110 on-demand field manuals. Session-bound safety gates, least-privilege tool kits, cost-aware model routing and local lessons-learned memory. | 1.2.0 |
-| [**toon-shorts**](plugins/toon-shorts/README.md) | Animated short creator. Turns a true story into an original voiced, captioned 1080x1920 cartoon MP4 for Shorts, TikTok and Reels: 10 ideas, retention script, free AI voice or your own, toon characters on parallax sets, karaoke captions with Hebrew RTL, and a preview Claude reviews before rendering. | 1.0.1 |
 | [**court**](plugins/court/README.md) | Code Court. Puts a technical decision on trial: opposing counsel argue each option from shared evidence, one rebuttal round, and a judge who never saw your opinion rules, with a dissent and the conditions that would overturn the verdict. | 1.0.0 |
 | [**er**](plugins/er/README.md) | Bug ER. A triage nurse, attending, surgeon and discharge check fix a bug with a regression test first and the smallest possible incision, under a hard budget (default 3 files, 40 lines). | 1.0.0 |
 | [**atc**](plugins/atc/README.md) | ATC: air traffic control for parallel Claude sessions. Sessions claim lanes (file globs), a hook asks before one session edits another's lane, and `/atc:clear` splits a big task across non-overlapping parallel pilots in worktrees. | 1.0.0 |
-| [**studio**](plugins/studio/README.md) | An AI film crew. Writer, director, test-screening critic and editor turn a topic into a vertical or wide kinetic-typography explainer MP4 with captions, optional free local AI narration and upload metadata. The trend desk films a trending tool from real screenshots and makes a wide video plus a Short. Rendered locally with Pillow and ffmpeg. | 1.1.0 |
+| [**studio**](plugins/studio/README.md) | An AI film crew in three formats. **Explainer:** writer, director, screener and editor turn a topic into a kinetic-typography MP4 (vertical or wide) with AI narration and emotion; the trend desk films a tool from real screenshots. **Toon** (formerly toon-shorts): a true story becomes a voiced cartoon short with original characters, parallax sets and Hebrew RTL karaoke captions. **Film** (formerly Premiere): director, cinematographer and continuity agents make a realistic short from stills you generate. One hash-locked venv, one voice model. | 2.0.0 |
 | [**critics**](plugins/critics/README.md) | The Critics' Table. Three independent critics (presentation, kitchen, recipe) taste your work, a head critic awards up to 3 stars with a short fix-before-serving list, and a re-taste shows the stars go up. | 1.0.0 |
 | [**skill-installer**](plugins/skill-installer/README.md) | Skill Installer, now with Customs built in. Every skill is scanned before it lands (CLEARED installs, SECONDARY INSPECTION asks, DENIED never installs), every file comes from one pinned commit, `skills.lock.json` records hashes and `/skill-installer:audit` rescans what you have. `/skill-installer:inspect` gives the full passport for any skill or plugin. A first filter, not a guarantee. | 2.0.0 |
 | [**mission-control**](plugins/mission-control/README.md) | Mission Control. Go or no-go before a release: a script collects the facts (versions that disagree, changes without a changelog entry, a dirty tree), four stations report, and an independent flight director rules GO, HOLD or NO-GO. It never tags, pushes or deploys. | 1.0.0 |
 | [**academy**](plugins/academy/README.md) | The Academy. An examiner writes missions from a skill's promise, each one runs with and without the skill in headless Claude Code, and the script grades it GRADUATED, RETAKE or EXPELLED with pass rate, tokens, cost and time. | 1.0.0 |
 | [**archive**](plugins/archive/README.md) | The Archive. One read-only search over the records your other plugins keep (verdicts, bug charts, reviews, lessons, rulings, report cards). A librarian answers with the file behind every claim. | 1.0.0 |
 | [**newsroom**](plugins/newsroom/README.md) | The Newsroom. A reporter reads the commits, an editor drafts release notes, a changelog entry, social posts and video metadata, and a fact-checker cuts every claim with no commit behind it. Drafts only. | 1.0.0 |
-| [**premiere**](plugins/premiere/README.md) | Premiere. A film crew for realistic short films: director, cinematographer and continuity agents, stills from the image model you choose, and an ffmpeg cut with camera moves, one grade, a score and captions. | 1.0.0 |
 
 ---
 
@@ -160,13 +156,13 @@ See the full documentation in [plugins/army/README.md](plugins/army/README.md).
 
 ---
 
-## Featured: Toon Shorts
+## Featured: Studio toon
 
 > One conversation, one finished cartoon short.
 
 Say **"make me an animated short"**. Claude asks a few questions, pitches 10 true-story ideas, writes a 30-60 second script built to hold attention, voices it, storyboards original toon characters on parallax sets, **checks its own preview frame by frame**, and renders the MP4 with a ready-to-paste title, description and hashtags.
 
-[![Frames from the bundled example, last tile in Hebrew](docs/images/toon-shorts.png)](plugins/toon-shorts/README.md)
+[![Frames from the bundled example, last tile in Hebrew](docs/images/toon-shorts.png)](plugins/studio/docs/toon.md)
 
 - **Original characters:** 12 moods, 11 poses, 6 skin tones, and a wardrobe of hats, outfits and 28 props.
 - **20 sets with depth:** three parallax layers, 5 times of day, landmarks and foreground overlays.
@@ -174,7 +170,7 @@ Say **"make me an animated short"**. Claude asks a few questions, pitches 10 tru
 - **Voice:** free Kokoro AI voices in 6 languages, your own recording in any language (timing snaps to your pauses), or captions only.
 - **Safe by construction:** nothing installs without asking, dependencies are pinned, and the model is SHA-256 verified. No telemetry.
 
-See the full documentation in [plugins/toon-shorts/README.md](plugins/toon-shorts/README.md).
+Run it with `/studio:toon`. Full documentation: [plugins/studio/docs/toon.md](plugins/studio/docs/toon.md).
 
 ---
 
@@ -183,7 +179,7 @@ See the full documentation in [plugins/toon-shorts/README.md](plugins/toon-short
 - **No telemetry.** Plugins in this marketplace send nothing anywhere on their own.
 - **Local memory only.** Project memory lives in `.army/` inside your project, protected by its own `.gitignore` (`*`) and `.git/info/exclude`, so neither git nor `npm pack` includes it. Add `.army` to `.dockerignore` if you build images. Per-user settings live in Claude Code's plugin data directory.
 - **Human in the loop.** Irreversible actions require your approval by default.
-- **Toon Shorts installs nothing on its own.** Setup asks first, then installs into a private venv (`~/.cache/toon-shorts`) with pinned packages and a hash-verified voice model.
+- **Studio installs nothing on its own.** Setup asks first, then installs into one private venv (`~/.cache/studio-plugin`) with hash-locked wheels and a SHA-256 verified voice model.
 - **Defensive security only.** The red-team specialist is restricted to your own project in a local or test environment.
 - The legal unit produces an automated risk review, **not legal advice**.
 
@@ -203,13 +199,7 @@ plugins/
     scripts/build-map.js          Generates the command-center map (fonts embedded)
     tests/                        Gate + lifecycle tests
     CHANGELOG.md
-  toon-shorts/
-    .claude-plugin/plugin.json    Plugin manifest
-    skills/toon-shorts/           SKILL.md · references · examples · engine (scripts/toonshorts)
-    tests/                        pytest suite (coverage gate 85%)
-    requirements*.txt             Pinned dependencies
-    CHANGELOG.md
-  court/ er/ atc/ critics/ mission-control/ academy/ archive/ newsroom/ premiere/
+  court/ er/ atc/ critics/ mission-control/ academy/ archive/ newsroom/
     skills/ · agents/ · scripts/ (zero-dependency Node) · tests/ (node:test)
   skill-installer/
     skills/                       install · browse · audit · inspect · manifest
@@ -217,6 +207,9 @@ plugins/
     docs/SCANNER.md               The customs scanner: rules, weighting, limits
     NOTICE                        Credit: adapted from OpenAI's Apache-2.0 Codex skill-installer
   studio/
+    skills/toon/                  SKILL.md · references · examples · toon engine (scripts/toonshorts)
+    skills/pitch|shoot|cut|dailies/  film format; helper in scripts/premiere.js
+    toon-tests/                   pytest suite for the toon engine (coverage gate 85%)
     skills/produce/               SKILL.md · examples · renderer (scripts/studiokit, Pillow + ffmpeg, Kokoro voice)
     skills/trend/                 SKILL.md · trend desk: real footage, wide video + Short
     tests/                        pytest suite
@@ -250,11 +243,11 @@ Plugin names must not start with `claude-` or `anthropic-`, because those prefix
 
 ```bash
 node --test plugins/army/tests/*.test.js               # gate + lifecycle tests
-for p in court er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js; done
+for p in court er atc critics skill-installer mission-control academy archive newsroom studio; do node --test plugins/$p/tests/*.test.js; done
 (cd plugins/studio && python -m pytest)       # studio renderer tests (pip install -r requirements-dev.txt)
 node tools/sync-army.js                       # regenerate files from units.json and standing orders
 node evals/run.js                             # plugins vs. plain Claude (needs a signed-in claude CLI)
-(cd plugins/toon-shorts && python -m pytest)   # toon-shorts engine tests (pip install -r requirements-dev.txt)
+(cd plugins/studio && python -m pytest toon-tests)   # toon engine tests
 claude plugin validate .                      # validate the marketplace
 node plugins/army/scripts/build-map.js --out docs/index.html   # rebuild the live map after changing the army
 ```

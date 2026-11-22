@@ -1,6 +1,6 @@
 ---
 name: continuity
-description: "Premiere CONTINUITY: looks at every generated still and rules KEEP or RESHOOT, checking faces, hands, stray text, look drift and resemblance to known characters. Cannot edit the shot list. Dispatched by the shoot skill."
+description: "Studio film CONTINUITY: looks at every generated still and rules KEEP or RESHOOT, checking faces, hands, stray text, look drift and resemblance to known characters. Cannot edit the shot list. Dispatched by the shoot skill."
 model: sonnet
 effort: high
 tools: Read, Glob, Write

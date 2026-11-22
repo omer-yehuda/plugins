@@ -1,4 +1,4 @@
-// Run: node --test plugins/premiere/tests/*.test.js   (render tests need ffmpeg and are skipped without it)
+// Run: node --test plugins/studio/tests/*.test.js   (render tests need ffmpeg and are skipped without it)
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert');

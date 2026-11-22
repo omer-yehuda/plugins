@@ -1,6 +1,6 @@
 ---
 name: cinematographer
-description: "Premiere CINEMATOGRAPHER: writes the look bible (one character block, one world block) and one image prompt per shot, so every generated still looks like the same film. Dispatched by the pitch skill."
+description: "Studio film CINEMATOGRAPHER: writes the look bible (one character block, one world block) and one image prompt per shot, so every generated still looks like the same film. Dispatched by the pitch skill."
 model: sonnet
 effort: medium
 tools: Read, Write

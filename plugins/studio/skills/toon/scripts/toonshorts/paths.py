@@ -9,9 +9,10 @@ FONT = SKILL_DIR / "assets" / "fonts" / "Rubik.ttf"
 
 
 def home() -> Path:
-    """Data dir for the venv and models. Override with TOON_SHORTS_HOME."""
-    env = os.environ.get("TOON_SHORTS_HOME")
-    return Path(env) if env else Path.home() / ".cache" / "toon-shorts"
+    """Data dir for the venv and models, shared with every Studio format (one venv, one voice model download).
+    Override with STUDIO_HOME (TOON_SHORTS_HOME still works, for setups made before toon-shorts joined Studio)."""
+    env = os.environ.get("TOON_SHORTS_HOME") or os.environ.get("STUDIO_HOME")
+    return Path(env) if env else Path.home() / ".cache" / "studio-plugin"
 
 
 def venv_dir() -> Path:

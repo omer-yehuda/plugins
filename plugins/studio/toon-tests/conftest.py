@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-SKILL = Path(__file__).resolve().parents[1] / "skills" / "toon-shorts"
+SKILL = Path(__file__).resolve().parents[1] / "skills" / "toon"
 EXAMPLES = SKILL / "examples"
 
 

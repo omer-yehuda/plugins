@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""toon-shorts entry point.
+"""Studio toon format (formerly toon-shorts) entry point.
 
-Runs inside the private venv created by `python toon.py setup` (~/.cache/toon-shorts/venv,
-override with TOON_SHORTS_HOME). If called with another interpreter it hands over to the
+Runs inside the private venv created by `python toon.py setup` (~/.cache/studio-plugin/venv,
+shared with every Studio format; override with STUDIO_HOME). If called with another interpreter it hands over to the
 venv. It never installs anything unless you run `setup`.
 """
 import os
@@ -10,7 +10,7 @@ import subprocess
 import sys
 
 if sys.version_info < (3, 11):
-    sys.exit("toon-shorts needs Python 3.11 or newer (found %d.%d)." % sys.version_info[:2])
+    sys.exit("Studio toon needs Python 3.11 or newer (found %d.%d)." % sys.version_info[:2])
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -34,7 +34,7 @@ def main() -> int:
             import numpy  # noqa: F401
             import PIL  # noqa: F401
         except ImportError:
-            print("toon-shorts is not set up yet. Ask the user, then run:\n"
+            print("Studio toon is not set up yet. Ask the user, then run:\n"
                   f"  python {os.path.abspath(__file__)} setup          (render engine)\n"
                   f"  python {os.path.abspath(__file__)} setup --voice  (adds the free AI voice)", file=sys.stderr)
             return 3

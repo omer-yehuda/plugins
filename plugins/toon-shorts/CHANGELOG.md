@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 (2026-11-23)
+
+- Deprecated. Toon Shorts moved into **studio 2.0.0** (/studio:toon) with the same engine and crew. The commands here only point there. This plugin will be removed in the next release.
+
 ## 1.1.0 (2026-11-21)
 
 ### Added

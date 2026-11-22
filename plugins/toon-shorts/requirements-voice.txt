@@ -1,5 +1,0 @@
-# Optional free AI voice (Kokoro-82M via kokoro-onnx, MIT; model Apache-2.0). Pinned incl. direct deps.
-kokoro-onnx==0.6.1
-onnxruntime==1.31.1
-phonemizer==3.4.0
-espeakng-loader==0.2.4

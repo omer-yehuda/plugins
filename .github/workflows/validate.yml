@@ -32,8 +32,8 @@ jobs:
         run: node --test plugins/army/tests/*.test.js
       - name: Map builds
         run: node plugins/army/scripts/build-map.js --out /tmp/army-map.html
-      - name: Node plugin tests (court, er, atc, critics, skill-installer, mission-control, academy, archive, newsroom, premiere)
-        run: for p in court er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js || exit 1; done
+      - name: Node plugin tests (court, er, atc, critics, skill-installer, mission-control, academy, archive, newsroom, studio film helper)
+        run: for p in court er atc critics skill-installer mission-control academy archive newsroom studio; do node --test plugins/$p/tests/*.test.js || exit 1; done
 
   studio:
     runs-on: ubuntu-latest
@@ -51,29 +51,19 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r requirements-dev.txt
       - name: Examples are valid
         run: for f in skills/produce/examples/*.json; do python skills/produce/scripts/studio.py check "$f"; done
-      - name: Tests
+      - name: Toon examples are valid
+        run: for f in skills/toon/examples/*.json; do python skills/toon/scripts/toon.py check "$f"; done
+      - name: Explainer tests (coverage gate 80%)
         run: python -m pytest
-      - name: Files stay under 200 lines
-        run: '! find skills tests -name "*.py" -exec awk ''END { if (NR > 200) print FILENAME }'' {} \; | grep .'
-
-  toon-shorts:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: plugins/toon-shorts
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+      - name: Toon tests (coverage gate 85%)
+        run: python -m pytest toon-tests
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          python-version: "3.12"
-      - name: Install pinned dev dependencies
-        run: python -m pip install --disable-pip-version-check -r requirements-dev.txt
-      - name: Examples are valid
-        run: for f in skills/toon-shorts/examples/*.json; do python skills/toon-shorts/scripts/toon.py check "$f"; done
-      - name: Tests (coverage gate 85%)
-        run: python -m pytest
+          node-version: 22
+      - name: Film helper tests
+        run: node --test tests/*.test.js
       - name: Files stay under 200 lines
-        run: '! find skills tests -name "*.py" -exec awk ''END { if (NR > 200) print FILENAME }'' {} \; | grep .'
+        run: '! find skills tests toon-tests -name "*.py" -exec awk ''END { if (NR > 200) print FILENAME }'' {} \; | grep .'
 
   windows:
     runs-on: windows-latest
@@ -91,11 +81,8 @@ jobs:
       - name: Node plugin tests (all suites run, then the job fails if any failed)
         run: |
           failed=""
-          for p in army court er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js || failed="$failed $p"; done
+          for p in army court er atc critics skill-installer mission-control academy archive newsroom studio; do node --test plugins/$p/tests/*.test.js || failed="$failed $p"; done
           if [ -n "$failed" ]; then echo "::error::failed:$failed"; exit 1; fi
-      - name: Studio tests
+      - name: Studio tests (explainer and toon engines)
         working-directory: plugins/studio
-        run: python -m pip install --disable-pip-version-check -r requirements-dev.txt && python -m pytest
-      - name: Toon Shorts tests
-        working-directory: plugins/toon-shorts
-        run: python -m pip install --disable-pip-version-check -r requirements-dev.txt && python -m pytest
+        run: python -m pip install --disable-pip-version-check -r requirements-dev.txt && python -m pytest && python -m pytest toon-tests

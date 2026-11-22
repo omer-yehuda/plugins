@@ -1,4 +1,0 @@
-# Render engine. Pinned; bump deliberately and re-vet.
-numpy==2.5.4
-pillow==13.0.0
-imageio-ffmpeg==0.8.1

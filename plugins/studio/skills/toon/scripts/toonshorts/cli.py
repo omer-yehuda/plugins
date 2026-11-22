@@ -106,7 +106,7 @@ def cmd_render(a) -> int:
 
 
 def parser() -> argparse.ArgumentParser:
-    ap = argparse.ArgumentParser(prog="toon.py", description="toon-shorts: storyboard -> animated short")
+    ap = argparse.ArgumentParser(prog="toon.py", description="Studio toon: storyboard -> animated short")
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("setup", help="create the private venv (pinned packages); --voice adds the AI voice")
     p.add_argument("--voice", action="store_true")

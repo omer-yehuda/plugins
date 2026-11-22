@@ -1,16 +1,16 @@
 ---
-description: Make an animated cartoon Short from a true story (toon-shorts skill)
+description: Make an animated cartoon Short from a true story (Studio toon skill)
 ---
 
-Load the `toon-shorts` skill with the skill tool (or read `.claude/skills/toon-shorts/SKILL.md`) and follow it
+Read `.opencode/studio/skills/toon/SKILL.md` and follow it
 step by step for this request:
 
 $ARGUMENTS
 
 How this setup differs from Claude Code:
 
-- `<skill>` in SKILL.md means `.claude/skills/toon-shorts` in this project. Run every command as
-  `python ".claude/skills/toon-shorts/scripts/toon.py" <command> ...` from the project folder.
+- `<skill>` in SKILL.md means `.opencode/studio/skills/toon` in this project (the copied Studio plugin folder).
+  Run every command as `python ".opencode/studio/skills/toon/scripts/toon.py" <command> ...` from the project folder.
 - Where SKILL.md says AskUserQuestion, use your question tool if you have one; otherwise ask in plain text with
   numbered options and wait for the answer.
 - Where SKILL.md says "open preview.png with Read", read the image file. If you cannot see images, tell the user

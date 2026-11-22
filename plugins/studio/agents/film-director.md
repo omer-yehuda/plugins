@@ -1,6 +1,6 @@
 ---
-name: director
-description: "Premiere DIRECTOR: turns a topic into a logline and a shot list (shots.json) for a short film made of still shots with camera moves. Dispatched by the pitch skill."
+name: film-director
+description: "Studio FILM DIRECTOR: turns a topic into a logline and a shot list (shots.json) for a short film made of still shots with camera moves. Dispatched by the pitch skill."
 model: sonnet
 effort: medium
 tools: Read, Write
