@@ -32,6 +32,11 @@ Run this in Claude Code (v2.1.275 or later):
 /plugin install studio --marketplace omer-yehuda/plugins
 /plugin install critics --marketplace omer-yehuda/plugins
 /plugin install skill-installer --marketplace omer-yehuda/plugins
+/plugin install mission-control --marketplace omer-yehuda/plugins
+/plugin install academy --marketplace omer-yehuda/plugins
+/plugin install archive --marketplace omer-yehuda/plugins
+/plugin install newsroom --marketplace omer-yehuda/plugins
+/plugin install premiere --marketplace omer-yehuda/plugins
 ```
 
 Install only the ones you want.
@@ -43,7 +48,7 @@ Install only the ones you want.
 /plugin marketplace add omer-yehuda/plugins
 /plugin install army@omer-plugins
 /plugin install toon-shorts@omer-plugins
-/plugin install court@omer-plugins   # same pattern for customs, er, atc, studio, critics, skill-installer
+/plugin install court@omer-plugins   # same pattern for customs, er, atc, studio, critics, skill-installer, mission-control, academy, archive, newsroom, premiere
 ```
 </details>
 
@@ -59,6 +64,11 @@ admit this bug: checkout total is off by one cent
 studio, make a video about what a Claude skill is
 let the critics taste it
 install the pdf skill from anthropics/skills
+mission control, are we go?
+send this skill to the academy
+ask the archive why we chose REST
+newsroom, write the edition
+premiere, make a film about the last lighthouse keeper
 ```
 
 To update later, run `/plugin marketplace update omer-plugins`.
@@ -76,6 +86,11 @@ To update later, run `/plugin marketplace update omer-plugins`.
 | [**studio**](plugins/studio/README.md) | An AI film crew. Writer, director, test-screening critic and editor turn a topic into a vertical or wide kinetic-typography explainer MP4 with captions, optional free local AI narration and upload metadata. The trend desk films a trending tool from real screenshots and makes a wide video plus a Short. Rendered locally with Pillow and ffmpeg. | 1.1.0 |
 | [**critics**](plugins/critics/README.md) | The Critics' Table. Three independent critics (presentation, kitchen, recipe) taste your work, a head critic awards up to 3 stars with a short fix-before-serving list, and a re-taste shows the stars go up. | 1.0.0 |
 | [**skill-installer**](plugins/skill-installer/README.md) | Skill Installer. Browse a skills repo or a plugin marketplace and install a skill from GitHub into `~/.claude/skills` or the project: dry run, quick risk check, atomic copy, backup on update, "did you mean" for typos. Adapted from OpenAI's Apache-2.0 Codex skill-installer. | 1.0.0 |
+| [**mission-control**](plugins/mission-control/README.md) | Mission Control. Go or no-go before a release: a script collects the facts (versions that disagree, changes without a changelog entry, a dirty tree), four stations report, and an independent flight director rules GO, HOLD or NO-GO. It never tags, pushes or deploys. | 1.0.0 |
+| [**academy**](plugins/academy/README.md) | The Academy. An examiner writes missions from a skill's promise, each one runs with and without the skill in headless Claude Code, and the script grades it GRADUATED, RETAKE or EXPELLED with pass rate, tokens, cost and time. | 1.0.0 |
+| [**archive**](plugins/archive/README.md) | The Archive. One read-only search over the records your other plugins keep (verdicts, bug charts, reviews, lessons, rulings, report cards). A librarian answers with the file behind every claim. | 1.0.0 |
+| [**newsroom**](plugins/newsroom/README.md) | The Newsroom. A reporter reads the commits, an editor drafts release notes, a changelog entry, social posts and video metadata, and a fact-checker cuts every claim with no commit behind it. Drafts only. | 1.0.0 |
+| [**premiere**](plugins/premiere/README.md) | Premiere. A film crew for realistic short films: director, cinematographer and continuity agents, stills from the image model you choose, and an ffmpeg cut with camera moves, one grade, a score and captions. | 1.0.0 |
 
 ---
 
@@ -196,7 +211,7 @@ plugins/
     tests/                        pytest suite (coverage gate 85%)
     requirements*.txt             Pinned dependencies
     CHANGELOG.md
-  court/ customs/ er/ atc/ critics/
+  court/ customs/ er/ atc/ critics/ mission-control/ academy/ archive/ newsroom/ premiere/
     skills/ · agents/ · scripts/ (zero-dependency Node) · tests/ (node:test)
   skill-installer/
     skills/                       install · browse
@@ -236,7 +251,7 @@ Plugin names must not start with `claude-` or `anthropic-`, because those prefix
 
 ```bash
 node --test plugins/army/tests/*.test.js               # gate + lifecycle tests
-for p in court customs er atc critics skill-installer; do node --test plugins/$p/tests/*.test.js; done
+for p in court customs er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js; done
 (cd plugins/studio && python -m pytest)       # studio renderer tests (pip install -r requirements-dev.txt)
 node tools/sync-army.js                       # regenerate files from units.json and standing orders
 node evals/run.js                             # plugins vs. plain Claude (needs a signed-in claude CLI)

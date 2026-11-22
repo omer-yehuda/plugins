@@ -1,0 +1,14 @@
+{
+  "name": "academy",
+  "displayName": "The Academy",
+  "version": "1.0.0",
+  "description": "No skill ships without passing the exam. An examiner writes missions from a skill's promise, the script runs each one with and without the skill in headless Claude Code, and the report card says GRADUATED, RETAKE or EXPELLED with pass rate, tokens, cost and time.",
+  "author": {
+    "name": "Omer Yehuda",
+    "url": "https://github.com/omer-yehuda"
+  },
+  "repository": "https://github.com/omer-yehuda/plugins",
+  "license": "MIT",
+  "keywords": ["evals", "skills", "testing", "benchmark", "quality", "subagents"],
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/academy"
+}

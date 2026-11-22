@@ -5,7 +5,7 @@
     "url": "https://github.com/omer-yehuda"
   },
   "metadata": {
-    "description": "A curated marketplace of tested Claude Code plugins by Omer Yehuda: Army (multi-agent orchestration), Toon Shorts (animated shorts), Code Court (decisions on trial), Customs (a first-filter scan of skills before you install), Bug ER (minimal-incision bug fixes), ATC (air traffic control for parallel sessions), Studio (AI film crew for explainer videos), The Critics' Table (3-star review) and Skill Installer (install skills from GitHub)."
+    "description": "A curated marketplace of tested Claude Code plugins by Omer Yehuda: Army (multi-agent orchestration), Toon Shorts (animated shorts), Code Court (decisions on trial), Customs (a first-filter scan of skills before you install), Bug ER (minimal-incision bug fixes), ATC (air traffic control for parallel sessions), Studio (AI film crew for explainer videos), The Critics' Table (3-star review), Skill Installer (install skills from GitHub), Mission Control (go or no-go before a release), The Academy (exams for skills), The Archive (one memory for every plugin), The Newsroom (release notes from commits) and Premiere (realistic short films)."
   },
   "plugins": [
     {
@@ -136,6 +136,77 @@
         "github",
         "marketplace",
         "package-manager"
+      ]
+    },
+    {
+      "name": "mission-control",
+      "source": "./plugins/mission-control",
+      "description": "Go or no-go before every release. A script collects the release facts (versions, changelogs, dirty tree), four stations report, and a flight director who never saw your opinion rules GO, HOLD or NO-GO. It never tags, pushes or deploys.",
+      "category": "productivity",
+      "keywords": [
+        "release",
+        "go-no-go",
+        "checklist",
+        "versioning",
+        "changelog",
+        "subagents"
+      ]
+    },
+    {
+      "name": "academy",
+      "source": "./plugins/academy",
+      "description": "No skill ships without passing the exam. An examiner writes missions from a skill's promise, the script runs each one with and without the skill in headless Claude Code, and the report card says GRADUATED, RETAKE or EXPELLED with pass rate, tokens, cost and time.",
+      "category": "development",
+      "keywords": [
+        "evals",
+        "skills",
+        "testing",
+        "benchmark",
+        "quality",
+        "subagents"
+      ]
+    },
+    {
+      "name": "archive",
+      "source": "./plugins/archive",
+      "description": "One memory for every plugin. Searches the local records your other plugins already keep (court verdicts, bug charts, reviews, lessons, countdowns, exams) and answers with the file behind each claim. Read-only: it never moves or edits a record.",
+      "category": "productivity",
+      "keywords": [
+        "memory",
+        "search",
+        "history",
+        "knowledge",
+        "citations",
+        "subagents"
+      ]
+    },
+    {
+      "name": "newsroom",
+      "source": "./plugins/newsroom",
+      "description": "Every release deserves a headline. A reporter reads the commits, an editor writes release notes, a changelog draft, social posts and video metadata, and a fact-checker cuts every claim that has no commit behind it. Drafts only: it never posts.",
+      "category": "productivity",
+      "keywords": [
+        "release-notes",
+        "changelog",
+        "announcements",
+        "social",
+        "writing",
+        "subagents"
+      ]
+    },
+    {
+      "name": "premiere",
+      "source": "./plugins/premiere",
+      "description": "A film crew of AI agents for realistic short films. A director writes the shot list, a cinematographer writes one prompt per shot with a consistent look, you generate the stills with the image model you choose, a continuity check rejects bad frames, and ffmpeg cuts a graded, scored film with camera moves, in wide or vertical.",
+      "category": "creative",
+      "keywords": [
+        "video",
+        "film",
+        "cinematic",
+        "storyboard",
+        "ffmpeg",
+        "image-generation",
+        "agents"
       ]
     }
   ]

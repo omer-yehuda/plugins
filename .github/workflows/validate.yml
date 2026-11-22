@@ -32,8 +32,8 @@ jobs:
         run: node --test plugins/army/tests/*.test.js
       - name: Map builds
         run: node plugins/army/scripts/build-map.js --out /tmp/army-map.html
-      - name: Node plugin tests (court, customs, er, atc, critics, skill-installer)
-        run: for p in court customs er atc critics skill-installer; do node --test plugins/$p/tests/*.test.js || exit 1; done
+      - name: Node plugin tests (court, customs, er, atc, critics, skill-installer, mission-control, academy, archive, newsroom, premiere)
+        run: for p in court customs er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js || exit 1; done
 
   studio:
     runs-on: ubuntu-latest

@@ -1,0 +1,14 @@
+{
+  "name": "archive",
+  "displayName": "The Archive",
+  "version": "1.0.0",
+  "description": "One memory for every plugin. Searches the local records your other plugins already keep (court verdicts, bug charts, reviews, lessons, countdowns, exams) and answers with the file behind each claim. Read-only: it never moves or edits a record.",
+  "author": {
+    "name": "Omer Yehuda",
+    "url": "https://github.com/omer-yehuda"
+  },
+  "repository": "https://github.com/omer-yehuda/plugins",
+  "license": "MIT",
+  "keywords": ["memory", "search", "history", "knowledge", "citations", "subagents"],
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/archive"
+}
