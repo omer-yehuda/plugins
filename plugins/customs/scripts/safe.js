@@ -65,9 +65,25 @@ function ensureStore(dir, subs = []) {
   return abs;
 }
 
+// Opens a file for reading without following a symlink. Windows has no O_NOFOLLOW, so there the path is checked with
+// lstat first and the opened handle is compared with it afterwards (same file id), which closes the swap-in race.
+const NOFOLLOW = fs.constants.O_NOFOLLOW || 0;
+function openNoFollow(file) {
+  if (NOFOLLOW) return fs.openSync(file, fs.constants.O_RDONLY | NOFOLLOW);
+  const before = fs.lstatSync(file, { bigint: true });
+  if (before.isSymbolicLink()) throw Object.assign(new Error(`refusing a symlink: ${path.basename(file)}`), { code: 'ELOOP' });
+  const fd = fs.openSync(file, fs.constants.O_RDONLY);
+  const after = fs.fstatSync(fd, { bigint: true });
+  if (after.ino !== before.ino || after.dev !== before.dev) {
+    fs.closeSync(fd);
+    throw Object.assign(new Error(`file changed while opening: ${path.basename(file)}`), { code: 'ELOOP' });
+  }
+  return fd;
+}
+
 // Reads the first line of a small text file (the way skills pass user input: never through a shell).
 function readTargetFile(file) {
-  const fd = fs.openSync(file, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0));
+  const fd = openNoFollow(file);
   try {
     const buf = Buffer.alloc(8192);
     const n = fs.readSync(fd, buf, 0, buf.length, 0);
@@ -86,4 +102,4 @@ function targetFileArg(argv) {
   return assertPrepFile(v);
 }
 
-module.exports = { within, safeName, cleanText, ensureStore, writeNew, readTargetFile, targetFileArg };
+module.exports = { openNoFollow, within, safeName, cleanText, ensureStore, writeNew, readTargetFile, targetFileArg };

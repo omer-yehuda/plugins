@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { analyze } = require('./analyze');
-const { within } = require('./safe');
+const { within, openNoFollow } = require('./safe');
 
 const MAX_BYTES = 2 * 1024 * 1024;
 const EDGE = 1024 * 1024;
@@ -86,7 +86,7 @@ function wiredIndex(root, entries, ctx) {
   for (const e of entries) {
     if (!REF_SOURCE.test(e.rel) || budget <= 0) continue;
     let text = '';
-    try { const fd = fs.openSync(e.abs, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0)); try { const b = readPart(fd, 0, 300000); budget -= b.length; text = b.toString('utf8'); } finally { fs.closeSync(fd); } } catch { continue; }
+    try { const fd = openNoFollow(e.abs); try { const b = readPart(fd, 0, 300000); budget -= b.length; text = b.toString('utf8'); } finally { fs.closeSync(fd); } } catch { continue; }
     for (const tok of text.match(/[\w@.\/-]{2,300}/g) || []) {
       const parts = tok.replace(/^\.?\/+/, '').split('/');
       for (let k = 0; k < parts.length && k < 8; k++) suffixes.add(parts.slice(k).join('/'));
@@ -104,7 +104,7 @@ function scanEntry(e, ctx, isWired) {
   ctx.files.push(rec);
   let fd;
   try {
-    fd = fs.openSync(abs, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0));
+    fd = openNoFollow(abs);
     const st = fs.fstatSync(fd);
     if (!st.isFile()) throw Object.assign(new Error('not a regular file'), { code: 'ENOTREG' });
     rec.size = st.size;
