@@ -5,82 +5,27 @@
     "url": "https://github.com/omer-yehuda"
   },
   "metadata": {
-    "description": "A curated marketplace of tested Claude Code plugins by Omer Yehuda: Army (multi-agent orchestration), Toon Shorts (animated shorts), Code Court (decisions on trial), Customs (a first-filter scan of skills before you install), Bug ER (minimal-incision bug fixes), ATC (air traffic control for parallel sessions), Studio (AI film crew for explainer videos), The Critics' Table (3-star review), Skill Installer (install skills from GitHub), Mission Control (go or no-go before a release), The Academy (exams for skills), The Archive (one memory for every plugin), The Newsroom (release notes from commits) and Premiere (realistic short films)."
+    "description": "Three production-grade Claude Code plugins by Omer Yehuda: Army (a chief of staff, 18 specialist units and 8 standalone drills), Studio (an AI film crew for explainers, cartoon shorts and realistic films) and Skill Installer (every skill scanned, pinned and locked)."
   },
   "plugins": [
     {
       "name": "army",
       "source": "./plugins/army",
-      "description": "A chief of staff that commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, with 110+ on-demand specialist playbooks, cost-aware model routing, safety gates and local lessons-learned memory.",
+      "description": "A chief of staff that commands 18 specialist units as subagents, plus 8 drills you can run on their own: trial (decisions), admit (bugs), taste (reviews), countdown (releases), exam (skill evals), recall (records), edition (release notes) and lanes (parallel sessions). 110+ on-demand playbooks, cost-aware model routing, safety gates and local memory.",
       "category": "productivity",
       "keywords": [
-        "orchestration",
-        "subagents",
-        "multi-agent",
-        "security",
         "code-review",
-        "research",
-        "legal"
-      ]
-    },
-    {
-      "name": "toon-shorts",
-      "source": "./plugins/toon-shorts",
-      "description": "Deprecated: Toon Shorts moved into studio (/studio:toon), with one shared setup. This stub only points you there and will be removed in the next release.",
-      "category": "creative",
-      "keywords": [
-        "deprecated"
-      ]
-    },
-    {
-      "name": "court",
-      "source": "./plugins/court",
-      "description": "Put any technical decision on trial. Opposing counsel argue each option from shared evidence, a judge who never saw your opinion rules, and the verdict names the conditions that would overturn it.",
-      "category": "productivity",
-      "keywords": [
-        "decisions",
-        "architecture",
-        "adr",
-        "subagents",
-        "debate",
-        "trade-offs"
-      ]
-    },
-    {
-      "name": "customs",
-      "source": "./plugins/customs",
-      "description": "Deprecated: Customs moved into skill-installer (/skill-installer:inspect), where it also gates every install. This stub only points you there and will be removed in the next release.",
-      "category": "security",
-      "keywords": [
-        "deprecated"
-      ]
-    },
-    {
-      "name": "er",
-      "source": "./plugins/er",
-      "description": "Your bug gets admitted, triaged, diagnosed and operated on with the smallest possible incision. A triage nurse, an attending, a surgeon and a discharge check, with a hard incision budget so a one-line bug never becomes a 40-file rewrite.",
-      "category": "development",
-      "keywords": [
         "debugging",
-        "bugfix",
-        "minimal-diff",
-        "regression-test",
-        "triage",
+        "decisions",
+        "evals",
+        "legal",
+        "multi-agent",
+        "orchestration",
+        "parallel-sessions",
+        "release",
+        "research",
+        "security",
         "subagents"
-      ]
-    },
-    {
-      "name": "atc",
-      "source": "./plugins/atc",
-      "description": "Air traffic control for parallel Claude Code sessions: claim lanes, avoid collisions. Sessions claim lanes (file globs); a hook asks before one session edits a file in another's lane, and a clearance skill splits a big task across non-overlapping parallel pilots. Coordination, not a sandbox.",
-      "category": "productivity",
-      "keywords": [
-        "parallel",
-        "subagents",
-        "worktrees",
-        "coordination",
-        "file-locking",
-        "multi-session"
       ]
     },
     {
@@ -105,20 +50,6 @@
       ]
     },
     {
-      "name": "critics",
-      "source": "./plugins/critics",
-      "description": "Three independent critics (presentation, kitchen, recipe) taste your work before it ships, then a head critic awards up to 3 stars with a short fix-before-serving list. Re-taste after fixes to see stars go up.",
-      "category": "development",
-      "keywords": [
-        "code-review",
-        "review",
-        "quality",
-        "ux",
-        "performance",
-        "subagents"
-      ]
-    },
-    {
       "name": "skill-installer",
       "source": "./plugins/skill-installer",
       "description": "Install Claude skills from GitHub the safe way: a customs scan gates every install (CLEARED installs, SECONDARY INSPECTION asks, DENIED never installs), files come from one pinned commit, skills.lock.json records hashes, and audit rescans what you have. Includes the Customs inspector.",
@@ -137,59 +68,93 @@
       ]
     },
     {
-      "name": "mission-control",
-      "source": "./plugins/mission-control",
-      "description": "Go or no-go before every release. A script collects the release facts (versions, changelogs, dirty tree), four stations report, and a flight director who never saw your opinion rules GO, HOLD or NO-GO. It never tags, pushes or deploys.",
+      "name": "toon-shorts",
+      "source": "./plugins/toon-shorts",
+      "description": "Deprecated: Toon Shorts moved into studio (/studio:toon), with one shared setup. This stub only points you there and will be removed in the next release.",
+      "category": "creative",
+      "keywords": [
+        "deprecated"
+      ]
+    },
+    {
+      "name": "court",
+      "source": "./plugins/court",
+      "description": "Deprecated: Code Court is now a drill of the army plugin (/army:trial and siblings). This stub only points you there and will be removed in the next release.",
       "category": "productivity",
       "keywords": [
-        "release",
-        "go-no-go",
-        "checklist",
-        "versioning",
-        "changelog",
-        "subagents"
+        "deprecated"
+      ]
+    },
+    {
+      "name": "customs",
+      "source": "./plugins/customs",
+      "description": "Deprecated: Customs moved into skill-installer (/skill-installer:inspect), where it also gates every install. This stub only points you there and will be removed in the next release.",
+      "category": "security",
+      "keywords": [
+        "deprecated"
+      ]
+    },
+    {
+      "name": "er",
+      "source": "./plugins/er",
+      "description": "Deprecated: Bug ER is now a drill of the army plugin (/army:admit and siblings). This stub only points you there and will be removed in the next release.",
+      "category": "development",
+      "keywords": [
+        "deprecated"
+      ]
+    },
+    {
+      "name": "atc",
+      "source": "./plugins/atc",
+      "description": "Deprecated: ATC is now a drill of the army plugin (/army:claim and siblings). This stub only points you there and will be removed in the next release.",
+      "category": "productivity",
+      "keywords": [
+        "deprecated"
+      ]
+    },
+    {
+      "name": "critics",
+      "source": "./plugins/critics",
+      "description": "Deprecated: The Critics' Table is now a drill of the army plugin (/army:taste and siblings). This stub only points you there and will be removed in the next release.",
+      "category": "development",
+      "keywords": [
+        "deprecated"
+      ]
+    },
+    {
+      "name": "mission-control",
+      "source": "./plugins/mission-control",
+      "description": "Deprecated: Mission Control is now a drill of the army plugin (/army:countdown and siblings). This stub only points you there and will be removed in the next release.",
+      "category": "productivity",
+      "keywords": [
+        "deprecated"
       ]
     },
     {
       "name": "academy",
       "source": "./plugins/academy",
-      "description": "No skill ships without passing the exam. An examiner writes missions from a skill's promise, the script runs each one with and without the skill in headless Claude Code, and the report card says GRADUATED, RETAKE or EXPELLED with pass rate, tokens, cost and time.",
+      "description": "Deprecated: The Academy is now a drill of the army plugin (/army:exam and siblings). This stub only points you there and will be removed in the next release.",
       "category": "development",
       "keywords": [
-        "evals",
-        "skills",
-        "testing",
-        "benchmark",
-        "quality",
-        "subagents"
+        "deprecated"
       ]
     },
     {
       "name": "archive",
       "source": "./plugins/archive",
-      "description": "One memory for every plugin. Searches the local records your other plugins already keep (court verdicts, bug charts, reviews, lessons, countdowns, exams) and answers with the file behind each claim. Read-only: it never moves or edits a record.",
+      "description": "Deprecated: The Archive is now a drill of the army plugin (/army:recall and siblings). This stub only points you there and will be removed in the next release.",
       "category": "productivity",
       "keywords": [
-        "memory",
-        "search",
-        "history",
-        "knowledge",
-        "citations",
-        "subagents"
+        "deprecated"
       ]
     },
     {
       "name": "newsroom",
       "source": "./plugins/newsroom",
-      "description": "Every release deserves a headline. A reporter reads the commits, an editor writes release notes, a changelog draft, social posts and video metadata, and a fact-checker cuts every claim that has no commit behind it. Drafts only: it never posts.",
+      "description": "Deprecated: The Newsroom is now a drill of the army plugin (/army:edition and siblings). This stub only points you there and will be removed in the next release.",
       "category": "productivity",
       "keywords": [
-        "release-notes",
-        "changelog",
-        "announcements",
-        "social",
-        "writing",
-        "subagents"
+        "deprecated"
       ]
     },
     {

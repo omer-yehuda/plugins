@@ -20,23 +20,13 @@
 
 ## Quick start
 
-Run this in Claude Code (v2.1.275 or later):
+Three plugins cover everything. Run this in Claude Code (v2.1.275 or later):
 
 ```
 /plugin install army --marketplace omer-yehuda/plugins
-/plugin install court --marketplace omer-yehuda/plugins
-/plugin install er --marketplace omer-yehuda/plugins
-/plugin install atc --marketplace omer-yehuda/plugins
 /plugin install studio --marketplace omer-yehuda/plugins
-/plugin install critics --marketplace omer-yehuda/plugins
 /plugin install skill-installer --marketplace omer-yehuda/plugins
-/plugin install mission-control --marketplace omer-yehuda/plugins
-/plugin install academy --marketplace omer-yehuda/plugins
-/plugin install archive --marketplace omer-yehuda/plugins
-/plugin install newsroom --marketplace omer-yehuda/plugins
 ```
-
-Install only the ones you want.
 
 <details>
 <summary>Older Claude Code versions</summary>
@@ -45,7 +35,7 @@ Install only the ones you want.
 /plugin marketplace add omer-yehuda/plugins
 /plugin install army@omer-plugins
 /plugin install studio@omer-plugins
-/plugin install court@omer-plugins   # same pattern for er, atc, critics, skill-installer, mission-control, academy, archive, newsroom
+/plugin install skill-installer@omer-plugins
 ```
 </details>
 
@@ -53,19 +43,16 @@ Restart Claude Code (or run `/reload-plugins`), then type:
 
 ```
 raise the army build a landing page for my habit-tracking app
-make me an animated short about the man who sold the Eiffel Tower
 put it on trial: should we move from REST to GraphQL?
-/skill-installer:inspect https://github.com/<owner>/<repo>
 admit this bug: checkout total is off by one cent
-/atc:claim src/billing/** (invoice refactor)
-studio, make a video about what a Claude skill is
 let the critics taste it
-install the pdf skill from anthropics/skills
 mission control, are we go?
-send this skill to the academy
-ask the archive why we chose REST
 newsroom, write the edition
+studio, make a video about what a Claude skill is
+make me an animated short about the man who sold the Eiffel Tower
 studio, make a film about the last lighthouse keeper
+install the pdf skill from anthropics/skills
+/skill-installer:audit
 ```
 
 To update later, run `/plugin marketplace update omer-plugins`.
@@ -74,17 +61,21 @@ To update later, run `/plugin marketplace update omer-plugins`.
 
 | Plugin | What it does | Version |
 |---|---|---|
-| [**army**](plugins/army/README.md) | Multi-agent orchestration. A Chief of Staff commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, backed by 110 on-demand field manuals. Session-bound safety gates, least-privilege tool kits, cost-aware model routing and local lessons-learned memory. | 1.2.0 |
-| [**court**](plugins/court/README.md) | Code Court. Puts a technical decision on trial: opposing counsel argue each option from shared evidence, one rebuttal round, and a judge who never saw your opinion rules, with a dissent and the conditions that would overturn the verdict. | 1.0.0 |
-| [**er**](plugins/er/README.md) | Bug ER. A triage nurse, attending, surgeon and discharge check fix a bug with a regression test first and the smallest possible incision, under a hard budget (default 3 files, 40 lines). | 1.0.0 |
-| [**atc**](plugins/atc/README.md) | ATC: air traffic control for parallel Claude sessions. Sessions claim lanes (file globs), a hook asks before one session edits another's lane, and `/atc:clear` splits a big task across non-overlapping parallel pilots in worktrees. | 1.0.0 |
-| [**studio**](plugins/studio/README.md) | An AI film crew in three formats. **Explainer:** writer, director, screener and editor turn a topic into a kinetic-typography MP4 (vertical or wide) with AI narration and emotion; the trend desk films a tool from real screenshots. **Toon** (formerly toon-shorts): a true story becomes a voiced cartoon short with original characters, parallax sets and Hebrew RTL karaoke captions. **Film** (formerly Premiere): director, cinematographer and continuity agents make a realistic short from stills you generate. One hash-locked venv, one voice model. | 2.0.0 |
-| [**critics**](plugins/critics/README.md) | The Critics' Table. Three independent critics (presentation, kitchen, recipe) taste your work, a head critic awards up to 3 stars with a short fix-before-serving list, and a re-taste shows the stars go up. | 1.0.0 |
-| [**skill-installer**](plugins/skill-installer/README.md) | Skill Installer, now with Customs built in. Every skill is scanned before it lands (CLEARED installs, SECONDARY INSPECTION asks, DENIED never installs), every file comes from one pinned commit, `skills.lock.json` records hashes and `/skill-installer:audit` rescans what you have. `/skill-installer:inspect` gives the full passport for any skill or plugin. A first filter, not a guarantee. | 2.0.0 |
-| [**mission-control**](plugins/mission-control/README.md) | Mission Control. Go or no-go before a release: a script collects the facts (versions that disagree, changes without a changelog entry, a dirty tree), four stations report, and an independent flight director rules GO, HOLD or NO-GO. It never tags, pushes or deploys. | 1.0.0 |
-| [**academy**](plugins/academy/README.md) | The Academy. An examiner writes missions from a skill's promise, each one runs with and without the skill in headless Claude Code, and the script grades it GRADUATED, RETAKE or EXPELLED with pass rate, tokens, cost and time. | 1.0.0 |
-| [**archive**](plugins/archive/README.md) | The Archive. One read-only search over the records your other plugins keep (verdicts, bug charts, reviews, lessons, rulings, report cards). A librarian answers with the file behind every claim. | 1.0.0 |
-| [**newsroom**](plugins/newsroom/README.md) | The Newsroom. A reporter reads the commits, an editor drafts release notes, a changelog entry, social posts and video metadata, and a fact-checker cuts every claim with no commit behind it. Drafts only. | 1.0.0 |
+| [**army**](plugins/army/README.md) | **Get work done.** A Chief of Staff commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, backed by 110 on-demand field manuals. Plus 8 **drills** you can run on their own: `trial` (a decision goes to court, an independent judge rules), `admit` (bug ER: regression test first, smallest fix), `taste` (three critics and a star rating), `countdown` (release go or no-go), `exam` (a skill tested with and without it), `recall` (search every record), `edition` (release notes and posts, fact-checked) and `lanes` (parallel sessions claim files). Safety gates, least-privilege kits, cost-aware routing, local memory. | 2.0.0 |
+| [**studio**](plugins/studio/README.md) | **Make video.** An AI film crew in three formats. **Explainer:** a topic becomes a kinetic-typography MP4 (vertical or wide) with AI narration and emotion; the trend desk films a tool from real screenshots. **Toon:** a true story becomes a voiced cartoon short with original characters, parallax sets and Hebrew RTL karaoke captions. **Film:** director, cinematographer and continuity agents make a realistic short from stills you generate. One hash-locked venv, one voice model. | 2.0.0 |
+| [**skill-installer**](plugins/skill-installer/README.md) | **Install skills safely.** Every skill is scanned by Customs before it lands (CLEARED installs, SECONDARY INSPECTION asks, DENIED never installs), every file comes from one pinned commit, `skills.lock.json` records hashes and `/skill-installer:audit` rescans what you have. `/skill-installer:inspect` gives the full passport for any skill or plugin. A first filter, not a guarantee. | 2.0.0 |
+
+<details>
+<summary>Moved in November 2026 (old plugins are stubs for one release)</summary>
+
+| Old plugin | Now |
+|---|---|
+| court, er, critics, mission-control, academy, archive, newsroom, atc | army drills: `/army:trial`, `/army:admit`, `/army:taste`, `/army:countdown`, `/army:exam`, `/army:recall`, `/army:edition`, `/army:claim` and their siblings |
+| toon-shorts, premiere | studio: `/studio:toon`, `/studio:pitch` · `shoot` · `cut` · `dailies` |
+| customs | skill-installer: `/skill-installer:inspect`, `/skill-installer:manifest`, and it gates every install |
+
+Each old plugin still installs, and its commands tell you where they moved. They will be removed in the next release.
+</details>
 
 ---
 
@@ -199,8 +190,8 @@ plugins/
     scripts/build-map.js          Generates the command-center map (fonts embedded)
     tests/                        Gate + lifecycle tests
     CHANGELOG.md
-  court/ er/ atc/ critics/ mission-control/ academy/ archive/ newsroom/
-    skills/ · agents/ · scripts/ (zero-dependency Node) · tests/ (node:test)
+  court/ er/ atc/ critics/ mission-control/ academy/ archive/ newsroom/ customs/ toon-shorts/ premiere/
+    Deprecated stubs: skills that point to the new commands (removed next release)
   skill-installer/
     skills/                       install · browse · audit · inspect · manifest
     scripts/si.js                 Zero-dependency installer (GitHub tree API + git fallback), gated by scripts/scan.js
@@ -243,7 +234,7 @@ Plugin names must not start with `claude-` or `anthropic-`, because those prefix
 
 ```bash
 node --test plugins/army/tests/*.test.js               # gate + lifecycle tests
-for p in court er atc critics skill-installer mission-control academy archive newsroom studio; do node --test plugins/$p/tests/*.test.js; done
+for p in army skill-installer studio; do node --test plugins/$p/tests/*.test.js; done
 (cd plugins/studio && python -m pytest)       # studio renderer tests (pip install -r requirements-dev.txt)
 node tools/sync-army.js                       # regenerate files from units.json and standing orders
 node evals/run.js                             # plugins vs. plain Claude (needs a signed-in claude CLI)

@@ -1,10 +1,15 @@
 ---
 name: transcript
-description: Show an Academy report card, or list the exams in this project.
-disable-model-invocation: true
-argument-hint: "[exam-id]"
+description: Moved. The Academy is now a drill of the army plugin. Use ONLY when the user runs /academy:transcript. Points to /army:transcript.
 ---
 
-Helper: `node "${CLAUDE_PLUGIN_ROOT}/scripts/academy.js"`.
+# The Academy has moved
 
-With no argument, run it with `list` and show a table: id, status, grade. With an argument, match it against the ids that `list` prints, then run `transcript <id>` and show the `markdown` field as it is. If the exam has not been run, say so and mention `/academy:exam`. Add nothing else.
+The Academy is now a **drill** of the army plugin: the same procedure, agents and records folder, runnable on its own without raising the army.
+
+Tell the user, in two lines:
+
+1. This command moved to `/army:transcript`.
+2. Install it with `/plugin install army@omer-plugins`, then uninstall this one with `/plugin uninstall academy@omer-plugins`.
+
+If army is already installed, offer to run `/army:transcript` with the same request now. Do nothing else from this stub.

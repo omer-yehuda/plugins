@@ -1,7 +1,15 @@
 ---
 name: log
-description: List past Mission Control countdowns and their rulings in this project.
-disable-model-invocation: true
+description: Moved. Mission Control is now a drill of the army plugin. Use ONLY when the user runs /mission-control:log. Points to /army:log.
 ---
 
-Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/mission.js" list` and show the result as a table with columns: id, status (open or ruled), ruling, telemetry floor. If there are no countdowns, say so and mention `/mission-control:countdown`. Add nothing else.
+# Mission Control has moved
+
+Mission Control is now a **drill** of the army plugin: the same procedure, agents and records folder, runnable on its own without raising the army.
+
+Tell the user, in two lines:
+
+1. This command moved to `/army:log`.
+2. Install it with `/plugin install army@omer-plugins`, then uninstall this one with `/plugin uninstall mission-control@omer-plugins`.
+
+If army is already installed, offer to run `/army:log` with the same request now. Do nothing else from this stub.

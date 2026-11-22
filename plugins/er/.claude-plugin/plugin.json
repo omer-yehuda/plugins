@@ -1,8 +1,8 @@
 {
   "name": "er",
   "displayName": "Bug ER",
-  "version": "1.0.0",
-  "description": "Your bug gets admitted, triaged, diagnosed and operated on with the smallest possible incision. A triage nurse, an attending, a surgeon and a discharge check, with a hard incision budget so a one-line bug never becomes a 40-file rewrite.",
+  "version": "1.1.0",
+  "description": "Deprecated: Bug ER is now a drill of the army plugin (/army:admit, /army:chart). This stub only points you there and will be removed in the next release.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
@@ -17,5 +17,5 @@
     "triage",
     "subagents"
   ],
-  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/er"
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/army"
 }

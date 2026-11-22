@@ -1,14 +1,21 @@
 {
   "name": "mission-control",
   "displayName": "Mission Control",
-  "version": "1.0.0",
-  "description": "Go or no-go before every release. A script collects the release facts (versions, changelogs, dirty tree), four stations report, and a flight director who never saw your opinion rules GO, HOLD or NO-GO. It never tags, pushes or deploys.",
+  "version": "1.1.0",
+  "description": "Deprecated: Mission Control is now a drill of the army plugin (/army:countdown, /army:scrub, /army:log). This stub only points you there and will be removed in the next release.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
   },
   "repository": "https://github.com/omer-yehuda/plugins",
   "license": "MIT",
-  "keywords": ["release", "go-no-go", "checklist", "versioning", "changelog", "subagents"],
-  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/mission-control"
+  "keywords": [
+    "release",
+    "go-no-go",
+    "checklist",
+    "versioning",
+    "changelog",
+    "subagents"
+  ],
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/army"
 }

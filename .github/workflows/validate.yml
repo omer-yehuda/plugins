@@ -28,12 +28,12 @@ jobs:
         run: for p in plugins/*/; do claude plugin validate "$p"; done
       - name: Generated files in sync with units.json
         run: node tools/sync-army.js --check
-      - name: Army tests (gate + lifecycle)
+      - name: Army tests (gate, lifecycle and the 8 drills)
         run: node --test plugins/army/tests/*.test.js
       - name: Map builds
         run: node plugins/army/scripts/build-map.js --out /tmp/army-map.html
-      - name: Node plugin tests (court, er, atc, critics, skill-installer, mission-control, academy, archive, newsroom, studio film helper)
-        run: for p in court er atc critics skill-installer mission-control academy archive newsroom studio; do node --test plugins/$p/tests/*.test.js || exit 1; done
+      - name: Node plugin tests (skill-installer, studio film helper)
+        run: for p in skill-installer studio; do node --test plugins/$p/tests/*.test.js || exit 1; done
 
   studio:
     runs-on: ubuntu-latest
@@ -81,7 +81,7 @@ jobs:
       - name: Node plugin tests (all suites run, then the job fails if any failed)
         run: |
           failed=""
-          for p in army court er atc critics skill-installer mission-control academy archive newsroom studio; do node --test plugins/$p/tests/*.test.js || failed="$failed $p"; done
+          for p in army skill-installer studio; do node --test plugins/$p/tests/*.test.js || failed="$failed $p"; done
           if [ -n "$failed" ]; then echo "::error::failed:$failed"; exit 1; fi
       - name: Studio tests (explainer and toon engines)
         working-directory: plugins/studio

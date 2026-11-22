@@ -4,6 +4,7 @@
 //   - the standing-orders block inside every agent
 //   - the order-of-battle table in skills/raise/SKILL.md
 //   - the order-of-battle table in plugins/army/README.md
+//   - the drills table (plugins that joined the army) in both of those files
 // Usage: node tools/sync-army.js [--check]     (--check exits 1 if anything is out of date; used in CI)
 'use strict';
 const fs = require('fs');
@@ -11,7 +12,10 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..', 'plugins', 'army');
 const check = process.argv.includes('--check');
-const units = JSON.parse(fs.readFileSync(path.join(ROOT, 'units.json'), 'utf8')).units;
+const spec = JSON.parse(fs.readFileSync(path.join(ROOT, 'units.json'), 'utf8'));
+const units = spec.units;
+const drills = spec.drills || [];
+const drillAgents = new Set(drills.flatMap((d) => d.agents));
 const orders = fs.readFileSync(path.join(ROOT, 'doctrine', 'shared', 'standing-orders.md'), 'utf8').trim();
 const changed = [];
 const problems = [];
@@ -52,14 +56,21 @@ for (const u of units) {
   write(file, next);
 }
 for (const f of fs.readdirSync(agentDir)) {
-  if (f.endsWith('.md') && !units.some((u) => `${u.id}.md` === f)) problems.push(`agents/${f} has no entry in units.json`);
+  if (f.endsWith('.md') && !units.some((u) => `${u.id}.md` === f) && !drillAgents.has(f.slice(0, -3))) problems.push(`agents/${f} has no entry in units.json`);
 }
+for (const a of drillAgents) if (!fs.existsSync(path.join(agentDir, `${a}.md`))) problems.push(`agents/${a}.md (a drill agent) is missing`);
+for (const d of drills) for (const s of d.skills) if (!fs.existsSync(path.join(ROOT, 'skills', s, 'SKILL.md'))) problems.push(`skills/${s}/SKILL.md (drill ${d.id}) is missing`);
 
 // 2. raise skill table
 const raiseFile = path.join(ROOT, 'skills', 'raise', 'SKILL.md');
 const raiseRows = ['| Unit (subagent) | Use for | full | lean |', '|---|---|---|---|',
   ...units.map((u) => `| \`army:${u.id}\` | ${u.use} | ${u.full} | ${u.lean} |`)].join('\n');
 write(raiseFile, replaceBlock(fs.readFileSync(raiseFile, 'utf8'), 'ORDER OF BATTLE', raiseRows, 'skills/raise/SKILL.md'));
+
+// 2b. drills table (raise skill and README)
+const drillRows = ['| Drill | Run | Unit it extends | Use for | Formerly |', '|---|---|---|---|---|',
+  ...drills.map((d) => `| ${d.id} | ${d.skills.map((s) => `\`/army:${s}\``).join(' ')} | ${d.unit} | ${d.use} | ${d.from} |`)].join('\n');
+write(raiseFile, replaceBlock(fs.readFileSync(raiseFile, 'utf8'), 'DRILLS', drillRows, 'skills/raise/SKILL.md'));
 
 // 3. README table
 const readmeFile = path.join(ROOT, 'README.md');
@@ -70,7 +81,7 @@ const readmeRows = [`**${units.length} units, ${total} specialist playbooks.** G
     const s = specialists(bodies[u.id] || '');
     return `| \`${u.id}\` | ${u.callsign} | ${s.length ? s.join(', ') : u.use} | ${u.tools ? 'scoped' : 'all'} | ${u.full} | ${u.lean} |`;
   })].join('\n');
-write(readmeFile, replaceBlock(fs.readFileSync(readmeFile, 'utf8'), 'ORDER OF BATTLE', readmeRows, 'README.md'));
+write(readmeFile, replaceBlock(replaceBlock(fs.readFileSync(readmeFile, 'utf8'), 'ORDER OF BATTLE', readmeRows, 'README.md'), 'DRILLS', drillRows, 'README.md'));
 
 if (problems.length) { console.error(problems.map((p) => 'error: ' + p).join('\n')); process.exit(1); }
 if (changed.length) console.log(`${check ? 'out of date' : 'updated'}:\n  ${changed.join('\n  ')}`);
