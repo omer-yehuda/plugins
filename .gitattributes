@@ -1,0 +1,11 @@
+# Keep LF everywhere so Windows checkouts match CI (scanners, fixtures and generated frontmatter compare bytes).
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.ico binary
+*.ttf binary
+*.woff2 binary
+*.wav binary
+*.mp3 binary
+*.mp4 binary
+*.onnx binary
