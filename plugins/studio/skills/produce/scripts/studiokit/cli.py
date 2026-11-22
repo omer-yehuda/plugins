@@ -72,7 +72,7 @@ def cmd_voice(a) -> int:
     """Narrate every scene's `say` line, fit the scene durations to it and point `audio` at voice.wav."""
     from .voice import narrate
     load(a.storyboard)                       # refuse to narrate an invalid storyboard
-    res = narrate(Path(a.storyboard), a.voice, a.speed)
+    res = narrate(Path(a.storyboard), a.voice, a.speed, lively=1.0 if a.flat else a.lively)
     sb, warns = load(a.storyboard)           # the new durations must still pass the checks
     print(f"voice: {res['audio']}\nlines: {res['lines']}\nlength: {sb.duration:.1f}s")
     for w in warns:
@@ -150,6 +150,8 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("storyboard")
     s.add_argument("--voice", default="am_michael", help="Kokoro voice id (default am_michael)")
     s.add_argument("--speed", type=float, default=1.12, help="speech speed, 0.8-1.4 (default 1.12)")
+    s.add_argument("--lively", type=float, default=1.2, help="melody of every line, 1.0-1.5 (default 1.2)")
+    s.add_argument("--flat", action="store_true", help="old flat read: no melody, {feeling|words} tags ignored")
     s = sub.add_parser("audiocheck", help="check a rendered video or wav: quiet pauses, no clicks")
     s.add_argument("media")
     s.add_argument("--lines", help="voice.lines.json from the voice step (finds the pauses)")
@@ -180,8 +182,8 @@ def main(argv: list[str] | None = None) -> int:
     if a.cmd == "render" and not 0.1 <= a.scale <= 1.0:
         print("ERROR: --scale must be between 0.1 and 1.0", file=sys.stderr)
         return EXIT_ERROR
-    if a.cmd == "voice" and not 0.8 <= a.speed <= 1.4:
-        print("ERROR: --speed must be between 0.8 and 1.4", file=sys.stderr)
+    if a.cmd == "voice" and not (0.8 <= a.speed <= 1.4 and 1.0 <= a.lively <= 1.5):
+        print("ERROR: --speed must be between 0.8 and 1.4, --lively between 1.0 and 1.5", file=sys.stderr)
         return EXIT_ERROR
     try:
         return COMMANDS[a.cmd](a)

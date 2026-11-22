@@ -68,4 +68,6 @@ def say(raw, where: str, errs: list) -> str:
     if not isinstance(v, str) or not v.strip() or len(v) > MAX_SAY:
         errs.append(f"{where}: 'say' must be non-empty text of at most {MAX_SAY} characters")
         return ""
-    return " ".join(v.split())
+    from .emotion import plain, problems
+    errs.extend(f"{where}: 'say' {p}" for p in problems(v))
+    return " ".join(plain(v).split())

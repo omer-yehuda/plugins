@@ -52,6 +52,7 @@ Show the user the beats in 5 lines or fewer: **Looks good** · **Stronger hook**
 - `wide/storyboard.json`: `"format": "wide"`, 14 to 20 scenes, at least a third `screen` scenes, a `link` scene near the end, `cta` last.
 - `short/storyboard.json`: `"format": "short"`, 6 to 8 scenes, the proof moment as a `screen` scene, total under 60 s, `cta` last ("Subscribe", "full video on the channel").
 - Every scene gets a `say` line (the narration). On-screen text stays short (the checker warns).
+- Emotion: tag the words that carry a feeling, `{warn|Fair warning}`, `{surprise|surprise}`, `{excite|free}`, `{ask|pick first?}` (storyboard reference, "Emotion tags"). One to three per line.
 - Alternate light and dark. On light scenes use an accent with 3:1 contrast (not yellow or bright green).
 
 Run `S check` on both until `OK`.
