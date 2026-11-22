@@ -285,9 +285,9 @@ test('plugin hygiene: source files stay small, no em dashes, only node built-ins
   for (const f of files) {
     const text = fs.readFileSync(f, 'utf8');
     assert.ok(text.split('\n').length <= 250, `${f} is too long`);
-    for (const m of text.matchAll(/require\('([^']+)'\)/g)) assert.ok(m[1].startsWith('.') || ['fs', 'os', 'path', 'child_process', 'crypto'].includes(m[1]), `${f} requires ${m[1]}`);
+    for (const m of text.matchAll(/require\('([^']+)'\)/g)) assert.ok(m[1].startsWith('.') || ['fs', 'os', 'path', 'child_process', 'crypto'].includes(m[1].replace(/^node:/, '')), `${f} requires ${m[1]}`);
   }
-  for (const f of ['README.md', 'CHANGELOG.md', 'agents/officer.md', 'skills/inspect/SKILL.md', 'skills/manifest/SKILL.md', '.claude-plugin/plugin.json']) {
+  for (const f of ['README.md', 'CHANGELOG.md', 'agents/officer.md', 'skills/inspect/SKILL.md', 'skills/manifest/SKILL.md', 'skills/install/SKILL.md', 'skills/browse/SKILL.md', 'skills/audit/SKILL.md', '.claude-plugin/plugin.json']) {
     assert.ok(!fs.readFileSync(path.join(ROOT, f), 'utf8').includes('\u2014'), `${f} has an em dash`);
   }
 });

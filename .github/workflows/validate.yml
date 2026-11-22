@@ -32,8 +32,8 @@ jobs:
         run: node --test plugins/army/tests/*.test.js
       - name: Map builds
         run: node plugins/army/scripts/build-map.js --out /tmp/army-map.html
-      - name: Node plugin tests (court, customs, er, atc, critics, skill-installer, mission-control, academy, archive, newsroom, premiere)
-        run: for p in court customs er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js || exit 1; done
+      - name: Node plugin tests (court, er, atc, critics, skill-installer, mission-control, academy, archive, newsroom, premiere)
+        run: for p in court er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js || exit 1; done
 
   studio:
     runs-on: ubuntu-latest
@@ -89,7 +89,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Node plugin tests
-        run: for p in army court customs er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js || exit 1; done
+        run: for p in army court er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js || exit 1; done
       - name: Studio tests
         working-directory: plugins/studio
         run: python -m pip install --disable-pip-version-check -r requirements-dev.txt && python -m pytest

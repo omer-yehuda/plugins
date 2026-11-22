@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2026-11-23)
+
+- Deprecated. The scanner, officer, inspect and manifest moved into **skill-installer 2.0.0** (`/skill-installer:inspect`, `/skill-installer:manifest`). The commands here only point there. This plugin will be removed in the next release.
+
 ## 1.0.0 (2026-11-19)
 
 - `/customs:inspect`: locate (path, GitHub URL or installed plugin), static scan, officer review, passport (CLEARED, SECONDARY INSPECTION, DENIED) and a saved report in `.customs/reports/`.

@@ -1,8 +1,8 @@
 {
   "name": "skill-installer",
   "displayName": "Skill Installer",
-  "version": "1.0.0",
-  "description": "Install Claude skills straight from GitHub: browse a skills repo or a plugin marketplace, dry-run first, get a quick risk check, then install into ~/.claude/skills or the project's .claude/skills with an atomic copy and a backup on update. Adapted from OpenAI's Apache-2.0 Codex skill-installer.",
+  "version": "2.0.0",
+  "description": "Install Claude skills from GitHub the safe way: a customs scan gates every install (CLEARED installs, SECONDARY INSPECTION asks, DENIED never installs), every file comes from one pinned commit, skills.lock.json records hashes, and audit rescans what you have. Includes the Customs inspector. A first filter, not a guarantee.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
@@ -13,8 +13,12 @@
     "skills",
     "installer",
     "github",
-    "marketplace",
-    "package-manager"
+    "security",
+    "supply-chain",
+    "scanner",
+    "lockfile",
+    "audit",
+    "prompt-injection"
   ],
   "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/skill-installer"
 }

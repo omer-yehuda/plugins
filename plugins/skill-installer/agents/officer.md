@@ -1,6 +1,6 @@
 ---
 name: officer
-description: "Customs OFFICER: reads a skill or plugin the way the static scanner cannot (intent, hidden behaviour, mismatch between promise and code). Read-only, no Write tool: returns the report text. Dispatched by /customs:inspect."
+description: "Customs OFFICER: reads a skill or plugin the way the static scanner cannot (intent, hidden behaviour, mismatch between promise and code). Read-only, no Write tool: returns the report text. Dispatched by /skill-installer:inspect."
 model: sonnet
 effort: high
 tools: Read, Glob, Grep

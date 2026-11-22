@@ -1,8 +1,8 @@
 {
   "name": "customs",
   "displayName": "Customs",
-  "version": "1.0.0",
-  "description": "Border control for skills and plugins: every skill needs a passport. Scans a plugin or skill (local path, GitHub URL or installed plugin) before you trust it and stamps it CLEARED, SECONDARY INSPECTION or DENIED. A first filter, not a guarantee.",
+  "version": "1.1.0",
+  "description": "Deprecated: Customs moved into the skill-installer plugin (/skill-installer:inspect), where it also gates every install. This stub only points you there and will be removed in the next release.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
@@ -18,5 +18,5 @@
     "scanner",
     "prompt-injection"
   ],
-  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/customs"
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/skill-installer"
 }

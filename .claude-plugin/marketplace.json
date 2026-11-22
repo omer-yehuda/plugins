@@ -56,16 +56,10 @@
     {
       "name": "customs",
       "source": "./plugins/customs",
-      "description": "Border control for skills and plugins: every skill needs a passport. Scans a plugin or skill (local path, GitHub URL or installed plugin) before you trust it and stamps it CLEARED, SECONDARY INSPECTION or DENIED. A first filter, not a guarantee.",
+      "description": "Deprecated: Customs moved into skill-installer (/skill-installer:inspect), where it also gates every install. This stub only points you there and will be removed in the next release.",
       "category": "security",
       "keywords": [
-        "security",
-        "supply-chain",
-        "skills",
-        "plugins",
-        "audit",
-        "scanner",
-        "prompt-injection"
+        "deprecated"
       ]
     },
     {
@@ -128,14 +122,19 @@
     {
       "name": "skill-installer",
       "source": "./plugins/skill-installer",
-      "description": "Install Claude skills straight from GitHub: browse a skills repo or a plugin marketplace, dry-run first, get a quick risk check, then install into ~/.claude/skills or the project with an atomic copy and a backup on update.",
-      "category": "productivity",
+      "description": "Install Claude skills from GitHub the safe way: a customs scan gates every install (CLEARED installs, SECONDARY INSPECTION asks, DENIED never installs), files come from one pinned commit, skills.lock.json records hashes, and audit rescans what you have. Includes the Customs inspector.",
+      "category": "security",
       "keywords": [
-        "skills",
-        "installer",
+        "audit",
         "github",
+        "installer",
+        "lockfile",
         "marketplace",
-        "package-manager"
+        "package-manager",
+        "scanner",
+        "security",
+        "skills",
+        "supply-chain"
       ]
     },
     {

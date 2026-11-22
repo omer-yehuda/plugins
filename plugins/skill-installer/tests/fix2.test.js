@@ -218,6 +218,7 @@ test('N4: the skill always cleans up, and no script deletes anything but clones 
   assert.match(skill, /Always run this fixed command/);
   for (const f of fs.readdirSync(path.join(ROOT, 'scripts')).filter((n) => n !== 'rules.js' && n !== 'checks.js' && n !== 'analyze.js' && n !== 'norm.js')) {
     const t = fs.readFileSync(path.join(ROOT, 'scripts', f), 'utf8');
-    if (/unlinkSync|rmSync|rmdirSync/.test(t)) assert.ok(['fetch.js', 'prep.js'].includes(f), `${f} deletes files`);
+    // fetch/prep: clones and prep folders; github/gate: their own mkdtemp folders; install: its own staging folder
+    if (/unlinkSync|rmSync|rmdirSync/.test(t)) assert.ok(['fetch.js', 'prep.js', 'github.js', 'gate.js', 'install.js'].includes(f), `${f} deletes files`);
   }
 });
