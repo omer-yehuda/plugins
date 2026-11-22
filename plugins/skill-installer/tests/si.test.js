@@ -174,3 +174,21 @@ test('reads YAML block descriptions', () => {
   assert.strictEqual(frontmatter('---\nname: x\ndescription: >\n  Line one\n  line two.\n---\n').description, 'Line one line two.');
   assert.strictEqual(frontmatter('---\ndescription: |-\n  a\n  b\nname: y\n---\n').name, 'y');
 });
+
+test('unscanned content (vendored node_modules) is never CLEARED by the gate', () => {
+  const r = repo(); const dest = tmp('dest');
+  write(r, 'skills/vendored/SKILL.md', md('vendored'));
+  write(r, 'skills/vendored/node_modules/left-pad/index.js', 'module.exports = (s) => s;\n');
+  const out = JSON.parse(run(['install', 'demo/repo/skills/vendored', '--local', r, '--dest', dest, '--dry-run', '--json']).stdout);
+  assert.strictEqual(out.installed[0].verdict, 'SECONDARY INSPECTION');
+  assert.strictEqual(out.installed[0].action, 'needs-approval');
+  assert.strictEqual(out.installed[0].findings[0].rule, 'SK001');
+});
+
+test('a planted lockfile symlink is refused, never written through', (t) => {
+  const r = repo(); const dest = tmp('dest'); const victim = path.join(tmp('victim'), 'keep.txt');
+  fs.writeFileSync(victim, 'keep');
+  try { fs.symlinkSync(victim, path.join(dest, 'skills.lock.json')); } catch { t.skip('cannot create symlinks on this machine'); return; }
+  assert.notStrictEqual(run(['install', 'demo/repo/skills/alpha', '--local', r, '--dest', dest]).status, 0);
+  assert.strictEqual(fs.readFileSync(victim, 'utf8'), 'keep');
+});

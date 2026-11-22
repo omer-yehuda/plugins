@@ -61,7 +61,7 @@ For an update, show `changes` in one line (for example "2 files changed, 1 added
 
 ## 3. Decide with the user (SECONDARY INSPECTION only)
 
-Show the findings in one short list (severity, file:line, reason) and ask once with AskUserQuestion: **Inspect first (Recommended)** (runs `/skill-installer:inspect <same URL>`, which adds the officer's reading of intent), **Install anyway** or **Cancel**. Only on **Install anyway** add `"accept": true` in step 4. The scanner is a first filter, not a guarantee: say so in one line.
+If `unscanned` lists files, say first that those files (vendored `node_modules`, binaries, files too large to read whole) would be installed without being scanned. Show the findings in one short list (severity, file:line, reason) and ask once with AskUserQuestion: **Inspect first (Recommended)** (runs `/skill-installer:inspect <same URL>`, which adds the officer's reading of intent), **Install anyway** or **Cancel**. Only on **Install anyway** add `"accept": true` in step 4. The scanner is a first filter, not a guarantee: say so in one line.
 
 ## 4. Install
 

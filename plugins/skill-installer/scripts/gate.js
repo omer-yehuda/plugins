@@ -23,15 +23,23 @@ function stage(files) {
   return dir;
 }
 
-const summary = (r) => ({
-  verdict: r.verdict,
-  counts: r.counts,
-  findings: (r.findings || [])
-    .filter((f) => SEV[f.sev] >= SEV.MEDIUM)
-    .sort((a, b) => SEV[b.sev] - SEV[a.sev])
-    .slice(0, TOP)
-    .map((f) => ({ sev: f.sev, rule: f.rule, file: f.file, line: f.line, why: f.msg })),
-});
+// Anything the scanner could not read (vendored node_modules, opaque binaries, truncated or unreadable files, a cutoff)
+// would be installed unscanned, so for the install gate a coverage gap is never CLEARED. Gaps are listed first.
+const summary = (r) => {
+  const all = r.findings || [];
+  const gaps = all.filter((f) => f.cat === 'coverage');
+  const rank = (f) => (f.cat === 'coverage' ? 10 : 0) + SEV[f.sev];
+  return {
+    verdict: r.verdict === 'CLEARED' && gaps.length ? 'SECONDARY INSPECTION' : r.verdict,
+    counts: r.counts,
+    unscanned: gaps.map((f) => f.file),
+    findings: all
+      .filter((f) => f.cat === 'coverage' || SEV[f.sev] >= SEV.MEDIUM)
+      .sort((a, b) => rank(b) - rank(a))
+      .slice(0, TOP)
+      .map((f) => ({ sev: f.sev, rule: f.rule, file: f.file, line: f.line, why: f.msg })),
+  };
+};
 
 // Returns { verdict, counts, findings } for in-memory files [{ rel, buf }].
 function inspectFiles(files) {

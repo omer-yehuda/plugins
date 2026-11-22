@@ -23,12 +23,17 @@ function read(root) {
   return { lockVersion: 1, skills: {} };
 }
 
+// Write-then-rename through an unpredictable temp name created exclusively (O_EXCL also refuses a planted symlink),
+// and never replace a lockfile that is itself a symlink or not a regular file.
 function write(root, data) {
   const file = path.join(root, LOCK);
-  if (fs.existsSync(file) && fs.lstatSync(file).isSymbolicLink()) throw new Error(`${file} is a symlink, not touching it`);
-  const tmp = `${file}.${process.pid}.tmp`;
-  fs.writeFileSync(tmp, JSON.stringify(data, null, 2) + '\n', { flag: 'w' });
-  fs.renameSync(tmp, file);
+  let st = null;
+  try { st = fs.lstatSync(file); } catch { /* no lockfile yet */ }
+  if (st && (st.isSymbolicLink() || !st.isFile())) throw new Error(`${file} is a symlink or not a regular file, not touching it`);
+  const tmp = `${file}.${crypto.randomBytes(8).toString('hex')}.tmp`;
+  const fd = fs.openSync(tmp, fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_EXCL | (fs.constants.O_NOFOLLOW || 0), 0o600);
+  try { fs.writeFileSync(fd, JSON.stringify(data, null, 2) + '\n'); } finally { fs.closeSync(fd); }
+  try { fs.renameSync(tmp, file); } catch (e) { fs.rmSync(tmp, { force: true }); throw e; }
 }
 
 function record(root, name, entry) {
