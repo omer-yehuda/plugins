@@ -16,7 +16,8 @@ def test_prep_prints_a_fresh_private_path(tmp_path, capsys):
     assert run("prep", "--root", tmp_path) == 0
     q = capsys.readouterr().out.strip()
     assert p != q and os.path.isdir(os.path.dirname(p)) and not os.path.exists(p)
-    assert (os.stat(os.path.dirname(p)).st_mode & 0o077) == 0
+    if os.name == "posix":  # Windows has no POSIX mode bits; the temp folder ACL is per-user there
+        assert (os.stat(os.path.dirname(p)).st_mode & 0o077) == 0
 
 
 def test_prep_refuses_a_symlinked_studio(tmp_path, capsys):

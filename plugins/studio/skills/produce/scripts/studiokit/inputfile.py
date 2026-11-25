@@ -35,12 +35,20 @@ def read_prep_file(file: str | os.PathLike) -> tuple[str, Path]:
     """Return (text, path). Refuses symlinks and anything outside a prep folder. Call discard(path) after a good parse."""
     path = Path(os.path.abspath(file))
     _check_dir(path.parent)
+    nofollow = getattr(os, "O_NOFOLLOW", 0)
     try:
-        fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        # Windows has no O_NOFOLLOW: refuse a symlink by lstat first, then check the opened handle is that same file.
+        before = None if nofollow else path.lstat()
+        if before is not None and stat.S_ISLNK(before.st_mode):
+            raise InputFileError("cannot read the input file (symlinks are refused)")
+        fd = os.open(path, os.O_RDONLY | nofollow)
     except OSError as e:
         raise InputFileError("cannot read the input file (symlinks are refused)") from e
     try:
-        if not stat.S_ISREG(os.fstat(fd).st_mode):
+        st = os.fstat(fd)
+        if before is not None and (st.st_ino, st.st_dev) != (before.st_ino, before.st_dev):
+            raise InputFileError("the input file changed while it was opened")
+        if not stat.S_ISREG(st.st_mode):
             raise InputFileError("the input file is not a regular file")
         data = os.read(fd, MAX_BYTES)
     finally:

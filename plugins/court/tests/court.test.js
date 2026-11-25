@@ -8,6 +8,9 @@ const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
 const { slugify, parseOptions, openCase, listCases, casePath } = require('../scripts/court.js');
 
+// Symlink tests need permission to create symlinks (Windows without Developer Mode refuses with EPERM).
+const symlinks = { skip: (() => { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'symlink-probe-')); try { fs.symlinkSync(d, path.join(d, 'l')); return false; } catch { return 'cannot create symlinks on this machine'; } finally { fs.rmSync(d, { recursive: true, force: true }); } })() };
+
 const SCRIPT = path.join(__dirname, '..', 'scripts', 'court.js');
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'court-'));
 const git = (cwd, ...a) => execFileSync('git', a, { cwd, stdio: 'ignore' });
@@ -133,7 +136,7 @@ test('--input-file route: JSON in, id out, file deleted', () => {
   assert.strictEqual(spawnSync('node', [SCRIPT, 'open', '--input-file', path.join(p, 'nope.json'), '--project', p], { encoding: 'utf8' }).status, 1);
 });
 
-test('--input-file refuses files outside a prep folder and symlinks, and never deletes them', () => {
+test('--input-file refuses files outside a prep folder and symlinks, and never deletes them', symlinks, () => {
   const p = tmp();
   const outside = path.join(p, 'in.json');
   fs.writeFileSync(outside, '{"title":"x","options":["A","B"]}');
@@ -178,7 +181,7 @@ test('list and path refuse a tracked .court (planted state)', () => {
   assert.strictEqual(JSON.parse(r.stdout).error, 'planted-court');
 });
 
-test('symlinked state folders are refused, even outside git', () => {
+test('symlinked state folders are refused, even outside git', symlinks, () => {
   const p = tmp();
   const outside = tmp();
   fs.symlinkSync(outside, path.join(p, '.court'));
