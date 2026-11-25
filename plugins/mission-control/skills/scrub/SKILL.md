@@ -1,20 +1,15 @@
 ---
 name: scrub
-description: Mission Control re-poll. Use ONLY when the user runs /mission-control:scrub <id> or says "re-run the countdown" after fixing blocking items. Re-checks a past countdown against the repository as it is now and rules again.
-argument-hint: "<countdown-id>"
+description: Moved. Mission Control is now a drill of the army plugin. Use ONLY when the user runs /mission-control:scrub. Points to /army:scrub.
 ---
 
-# Mission Control: scrub and re-poll
+# Mission Control has moved
 
-**Countdown:** $ARGUMENTS
+Mission Control is now a **drill** of the army plugin: the same procedure, agents and records folder, runnable on its own without raising the army.
 
-Helper: `node "${CLAUDE_PLUGIN_ROOT}/scripts/mission.js"` (`MC`).
+Tell the user, in two lines:
 
-1. Run `MC list` and match the id the user gave against the printed ids. Use only an id the script printed. No match: show the list and stop.
-2. Run `MC path <id>` and read the old `ruling.md` and `facts.json` there. Note the old ruling, the blocking list and the `base` ref recorded in the facts.
-3. Open a fresh countdown exactly as `/mission-control:countdown` Phase 1 does, with the same title plus "recheck" and `since` set to the recorded `base` (empty when the old `baseKind` was `none`).
-4. Dispatch `mission-control:station` only for the desks that said NO-GO last time, with the same briefs, and copy nothing from the old reports. For desks that said GO, write a one-line report: "GO carried over from <old id>; not re-polled."
-5. Dispatch `mission-control:flight-director` as in Phase 3, adding the path of the old `ruling.md` so it can say what changed.
-6. Show the readout from Phase 4 with one extra line: `WAS: <old ruling>  NOW: <new ruling>`.
+1. This command moved to `/army:scrub`.
+2. Install it with `/plugin install army@omer-plugins`, then uninstall this one with `/plugin uninstall mission-control@omer-plugins`.
 
-Never fix anything yourself during a scrub, and never release.
+If army is already installed, offer to run `/army:scrub` with the same request now. Do nothing else from this stub.

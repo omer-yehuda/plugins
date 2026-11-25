@@ -1,8 +1,8 @@
 {
   "name": "army",
   "displayName": "Army",
-  "version": "1.2.0",
-  "description": "A chief of staff that commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, with 110+ on-demand specialist playbooks, cost-aware model routing, safety gates and local lessons-learned memory.",
+  "version": "2.0.0",
+  "description": "A chief of staff that commands 18 specialist units as subagents, plus 8 drills you can run on their own: put a decision on trial, admit a bug, let critics taste the work, go/no-go a release, examine a skill, recall past records, write the release edition, and claim lanes for parallel sessions. 110+ on-demand playbooks, cost-aware model routing, safety gates and local memory.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
@@ -10,13 +10,19 @@
   "repository": "https://github.com/omer-yehuda/plugins",
   "license": "MIT",
   "keywords": [
-    "orchestration",
-    "subagents",
-    "multi-agent",
-    "security",
+    "changelog",
     "code-review",
+    "debugging",
+    "decisions",
+    "evals",
+    "legal",
+    "multi-agent",
+    "orchestration",
+    "parallel-sessions",
+    "release",
     "research",
-    "legal"
+    "security",
+    "subagents"
   ],
   "homepage": "https://omer-yehuda.github.io/plugins/"
 }

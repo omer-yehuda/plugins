@@ -1,14 +1,21 @@
 {
   "name": "academy",
   "displayName": "The Academy",
-  "version": "1.0.0",
-  "description": "No skill ships without passing the exam. An examiner writes missions from a skill's promise, the script runs each one with and without the skill in headless Claude Code, and the report card says GRADUATED, RETAKE or EXPELLED with pass rate, tokens, cost and time.",
+  "version": "1.1.0",
+  "description": "Deprecated: The Academy is now a drill of the army plugin (/army:enroll, /army:exam, /army:transcript). This stub only points you there and will be removed in the next release.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
   },
   "repository": "https://github.com/omer-yehuda/plugins",
   "license": "MIT",
-  "keywords": ["evals", "skills", "testing", "benchmark", "quality", "subagents"],
-  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/academy"
+  "keywords": [
+    "evals",
+    "skills",
+    "testing",
+    "benchmark",
+    "quality",
+    "subagents"
+  ],
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/army"
 }
