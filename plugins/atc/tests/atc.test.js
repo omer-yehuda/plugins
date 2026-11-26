@@ -9,6 +9,9 @@ const { execFileSync, spawn, spawnSync } = require('child_process');
 const ATC = path.join(__dirname, '..', 'scripts', 'atc.js');
 const glob = require(path.join(__dirname, '..', 'scripts', 'lib', 'glob.js'));
 
+// Symlink tests need permission to create symlinks (Windows without Developer Mode refuses with EPERM).
+const symlinks = { skip: (() => { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'symlink-probe-')); try { fs.symlinkSync(d, path.join(d, 'l')); return false; } catch { return 'cannot create symlinks on this machine'; } finally { fs.rmSync(d, { recursive: true, force: true }); } })() };
+
 function sh(cmd, args, cwd) { return execFileSync(cmd, args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] }).toString(); }
 function tmpRepo() {
   const dir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'atc-')));
@@ -355,7 +358,7 @@ test('security: claim reads globs and purpose from --plan-file, shell text stays
   assert.equal(atcJson(dir, ['claim', '--session', 'S', '--plan-file', path.join(dir, 'nope.json')]).error, 'bad-plan-file');
 });
 
-test('security: plan files outside a prep folder or symlinked are refused and never deleted', () => {
+test('security: plan files outside a prep folder or symlinked are refused and never deleted', symlinks, () => {
   const dir = tmpRepo();
   const outside = path.join(dir, 'claim.json');
   fs.writeFileSync(outside, JSON.stringify({ globs: ['src/api/**'] }));

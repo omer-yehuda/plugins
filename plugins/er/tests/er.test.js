@@ -9,6 +9,9 @@ const { spawnSync, execFileSync } = require('child_process');
 const ER = path.join(__dirname, '..', 'scripts', 'er.js');
 const { slugify, isTestFile } = require(ER);
 
+// Symlink tests need permission to create symlinks (Windows without Developer Mode refuses with EPERM).
+const symlinks = { skip: (() => { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'symlink-probe-')); try { fs.symlinkSync(d, path.join(d, 'l')); return false; } catch { return 'cannot create symlinks on this machine'; } finally { fs.rmSync(d, { recursive: true, force: true }); } })() };
+
 function sh(cwd, ...args) {
   return execFileSync('git', ['-c', 'user.email=t@t', '-c', 'user.name=t', '-c', 'commit.gpgsign=false', ...args], { cwd, encoding: 'utf8' });
 }
@@ -158,7 +161,7 @@ test('incision: bad input is rejected', () => {
 
 const HOSTILE = ['$(touch /tmp/pwn-er)', '`touch /tmp/pwn-er`', 'x; rm -rf /tmp/pwn-er-dir', '../../etc/passwd', '--help', '-rf', 'line1\nline2$(id)', 'a'.repeat(5000)];
 
-test('admit --input-file refuses files outside a prep folder and symlinks, and keeps them', () => {
+test('admit --input-file refuses files outside a prep folder and symlinks, and keeps them', symlinks, () => {
   const d = repo();
   const outside = path.join(d, 'in.txt');
   fs.writeFileSync(outside, 'report');
@@ -183,7 +186,8 @@ test('hostile bug reports become safe chart ids', () => {
     assert.strictEqual(r.code, 0, r.out);
     assert.match(r.json.id, /^\d{8}-\d{6}-[a-z0-9-]{1,40}$/);
     assert.ok(r.json.id.length <= 56);
-    assert.ok(path.resolve(r.json.chartDir).startsWith(path.join(fs.realpathSync(d), '.er', 'charts')));
+    // realpathSync.native expands Windows 8.3 short names (RUNNER~1) the way git reports the project root
+    assert.ok(fs.realpathSync.native(r.json.chartDir).startsWith(path.join(fs.realpathSync.native(d), '.er', 'charts')));
     assert.strictEqual(fs.readFileSync(path.join(r.json.chartDir, 'report.txt'), 'utf8'), h);
     assert.ok(!fs.existsSync(f));
   }
@@ -205,7 +209,7 @@ test('list and show refuse a tracked .er', () => {
   assert.strictEqual(er(d, 'show').json.error, 'planted-chart');
 });
 
-test('symlinked .er and symlinked chart files are refused or skipped', () => {
+test('symlinked .er and symlinked chart files are refused or skipped', symlinks, () => {
   const d = repo();
   const outside = fs.mkdtempSync(path.join(os.tmpdir(), 'er-out-'));
   fs.symlinkSync(outside, path.join(d, '.er'));

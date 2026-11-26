@@ -40,7 +40,7 @@ test('start protects .army from git and npm, and prints the model map', () => {
   assert.strictEqual(s.models['army:defense'], 'sonnet'); // lean by default
   fs.writeFileSync(path.join(s.missionDir, 'defense.md'), 'SECRET FINDING');
   assert.strictEqual(execFileSync('git', ['status', '--porcelain', '--ignored=no'], { cwd: dir, env: ENV }).toString().includes('.army'), false);
-  const pack = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json'], { cwd: dir, env: ENV, stdio: ['ignore', 'pipe', 'ignore'] }).toString());
+  const pack = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json'], { cwd: dir, env: ENV, stdio: ['ignore', 'pipe', 'ignore'], shell: process.platform === 'win32' }).toString());
   const files = pack[0].files.map((f) => f.path);
   assert.ok(!files.some((f) => f.startsWith('.army')), 'npm pack must not include .army: ' + files.join(','));
 });

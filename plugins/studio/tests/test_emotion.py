@@ -7,6 +7,8 @@ import pytest
 from studiokit import emotion, voice
 from studiokit.spec import validate
 
+from conftest import needs_ffmpeg
+
 
 def test_plain_and_parse():
     line = "{warn|Fair warning}: it is {excite|free}."
@@ -57,6 +59,7 @@ class FakeTTS:
         return np.full(int(24000 * 0.05 * len(text.split())), 0.2, np.float32), 24000
 
 
+@needs_ffmpeg
 def test_fake_engine_hears_plain_text_and_lines_have_no_tags(tmp_path):
     p = tmp_path / "s.json"
     p.write_text(json.dumps({"title": "T", "scenes": [{"type": "title", "text": "Hi", "say": "{wow|Eighteen} helpers."}]}))
