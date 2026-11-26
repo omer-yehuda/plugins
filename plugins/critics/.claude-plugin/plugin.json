@@ -1,8 +1,8 @@
 {
   "name": "critics",
   "displayName": "The Critics' Table",
-  "version": "1.0.0",
-  "description": "Three independent critics (presentation, kitchen, recipe) taste your work before it ships, then a head critic awards up to 3 stars with a short fix-before-serving list. Re-taste after fixes to see stars go up.",
+  "version": "1.1.0",
+  "description": "Deprecated: The Critics' Table is now a drill of the army plugin (/army:taste, /army:retaste, /army:menu). This stub only points you there and will be removed in the next release.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
@@ -17,5 +17,5 @@
     "performance",
     "subagents"
   ],
-  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/critics"
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/army"
 }

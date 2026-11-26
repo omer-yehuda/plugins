@@ -1,7 +1,15 @@
 ---
 name: shelf
-description: Show which plugin folders The Archive can read in this project, and which it skipped and why.
-disable-model-invocation: true
+description: Moved. The Archive is now a drill of the army plugin. Use ONLY when the user runs /archive:shelf. Points to /army:shelf.
 ---
 
-Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/archive.js" shelf` and show a table with columns: plugin, folder, records, status. Under it list any skipped folders with the reason. Add nothing else.
+# The Archive has moved
+
+The Archive is now a **drill** of the army plugin: the same procedure, agents and records folder, runnable on its own without raising the army.
+
+Tell the user, in two lines:
+
+1. This command moved to `/army:shelf`.
+2. Install it with `/plugin install army@omer-plugins`, then uninstall this one with `/plugin uninstall archive@omer-plugins`.
+
+If army is already installed, offer to run `/army:shelf` with the same request now. Do nothing else from this stub.

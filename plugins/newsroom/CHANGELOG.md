@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2026-11-23)
+
+- Deprecated. The Newsroom is now a drill of **army 2.0.0** (/army:edition, /army:headline, /army:wire) with the same agents and records folder. The commands here only point there. This plugin will be removed in the next release.
+
 ## 1.0.0 (2026-11-22)
 
 - `/newsroom:edition [since-ref]`: a reporter reads the commits and files, an editor writes release notes, a changelog draft, X and LinkedIn posts, YouTube metadata and a video brief, and a fact-checker writes corrections. One correction round, then the drafts are handed over.

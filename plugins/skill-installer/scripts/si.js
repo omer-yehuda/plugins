@@ -4,8 +4,10 @@
    Adapted from OpenAI's Codex skill-installer (Apache-2.0); see NOTICE.
 
    node si.js list    [owner/repo[/path] | URL] [--json]
-   node si.js install <owner/repo/path | URL> [--path p ...] [--all] [--name n] [--scope user|project] [--dry-run] [--force] [--json]
+   node si.js install <owner/repo/path | URL> [--path p ...] [--all] [--name n] [--scope user|project] [--dry-run] [--force] [--accept] [--json]
+     Every skill is scanned first (gate.js). DENIED never installs; SECONDARY INSPECTION needs --accept.
    node si.js market  [owner/repo] [--json]
+   node si.js audit   [--scope user|project] [--json]  -> rescan installed skills, compare with skills.lock.json
    node si.js prep                       -> private temp folder for a request file
    node si.js run --request <file>       -> same ops, arguments read from JSON (no user text in the shell)
 */
@@ -16,6 +18,9 @@ const path = require('node:path');
 const { InstallError, parseTarget, cleanPath, skillNameFrom } = require('./source');
 const { Repo } = require('./github');
 const inst = require('./install');
+const gate = require('./gate');
+const lock = require('./lock');
+const auditor = require('./audit');
 
 const DEFAULT_LIST = 'anthropics/skills/skills';
 const DEFAULT_MARKET = 'omer-yehuda/plugins';
@@ -28,6 +33,7 @@ function parseArgv(argv) {
     else if (a === '--dry-run') o.dryRun = true;
     else if (a === '--force') o.force = true;
     else if (a === '--all') o.all = true;
+    else if (a === '--accept') o.accept = true;
     else if (a === '--path') { while (argv[i + 1] && !argv[i + 1].startsWith('--')) o.paths.push(argv[++i]); }
     else if (['--name', '--scope', '--ref', '--local', '--dest', '--method', '--request'].includes(a)) o[a.slice(2)] = argv[++i];
     else if (!a.startsWith('--') && o.target === undefined) o.target = a;
@@ -46,7 +52,7 @@ function fromRequest(file) {
   const str = (v) => (v === undefined || v === null ? undefined : String(v));
   return {
     op: str(r.op), target: str(r.target), paths: Array.isArray(r.paths) ? r.paths.map(String) : [], all: !!r.all,
-    name: str(r.name), scope: str(r.scope), ref: str(r.ref), dryRun: !!r.dryRun, force: !!r.force, json: true,
+    name: str(r.name), scope: str(r.scope), ref: str(r.ref), dryRun: !!r.dryRun, force: !!r.force, accept: r.accept === true, json: true,
   };
 }
 
@@ -100,18 +106,28 @@ async function install(o) {
     }
     const root = o.dest ? path.resolve(o.dest) : inst.destRoot(o.scope || 'user');
     const results = [];
+    const locked = lock.read(root).skills;
     for (const d of dirs) {
       const name = skillNameFrom(d || src.repo, dirs.length === 1 ? o.name : undefined);
       const files = await repo.files(d);
       const fm = inst.validate(files);
-      const warn = inst.risks(files);
+      const scan = gate.inspectFiles(files);
+      const hashes = lock.hashFiles(files);
       const bytes = files.reduce((n, f) => n + f.buf.length, 0);
-      const r = { name, from: `${src.owner}/${src.repo}/${d}`, skillName: fm.name, files: files.length, bytes, scripts: inst.hasScripts(files), warnings: warn };
+      const r = { name, from: `${src.owner}/${src.repo}/${d}`, skillName: fm.name, commit: repo.commit, files: files.length, bytes,
+        scripts: inst.hasScripts(files), verdict: scan.verdict, findings: scan.findings, warnings: inst.risks(files), action: gate.decide(scan.verdict, o.accept) };
+      if (locked[name]) Object.assign(r, { previousCommit: locked[name].commit, changes: lock.diff(locked[name].files, hashes.files) });
       if (o.dryRun) r.wouldInstallTo = path.join(root, name);
-      else Object.assign(r, inst.write(root, name, files, { force: o.force }));
+      else if (r.action === 'install') {
+        Object.assign(r, inst.write(root, name, files, { force: o.force }));
+        lock.record(root, name, { source: `${src.owner}/${src.repo}`, path: d, ref: src.ref, commit: repo.commit, sha256: hashes.sha256,
+          files: hashes.files, verdict: scan.verdict, accepted: scan.verdict !== 'CLEARED', installedAt: new Date().toISOString() });
+      }
       results.push(r);
     }
-    return { ok: true, dryRun: !!o.dryRun, via: repo.via, ms: Date.now() - t0, installed: results, restart: !o.dryRun };
+    const held = o.dryRun ? [] : results.filter((r) => r.action !== 'install');
+    const error = held.length ? `Not installed: ${held.map((r) => `${r.name} (${r.verdict})`).join(', ')}.` : undefined;
+    return { ok: !held.length, error, dryRun: !!o.dryRun, via: repo.via, ms: Date.now() - t0, installed: results, restart: !o.dryRun && held.length < results.length };
   } finally { repo.close(); }
 }
 
@@ -132,8 +148,12 @@ async function market(o) {
 function text(op, r) {
   if (op === 'list') return [`Skills in ${r.repo} (${r.count}):`, ...r.skills.map((s, i) => `${i + 1}. ${s.name}${s.installed ? ' (already installed)' : ''}${s.description ? ' - ' + s.description : ''}`)].join('\n');
   if (op === 'market') return [`${r.marketplace} (${r.count} plugins). First: ${r.add}`, ...r.plugins.map((p) => `- ${p.name}: ${p.description}\n    ${p.install}`)].join('\n');
-  if (!r.ok) return `${r.error}\n${(r.choices || []).map((c) => '  ' + c).join('\n')}`;
-  return r.installed.map((x) => `${r.dryRun ? 'Would install' : 'Installed'} ${x.name} -> ${x.dest || x.wouldInstallTo} (${x.files} files)` +
+  if (op === 'audit') return auditor.text(r);
+  if (!r.ok && !r.installed) return `${r.error}\n${(r.choices || []).map((c) => '  ' + c).join('\n')}`;
+  const VERBS = { install: ['Would install', 'Installed'], 'needs-approval': ['Needs your OK first', 'Held back (needs your OK)'], blocked: ['Would be blocked', 'Blocked'] };
+  const verb = (x) => VERBS[x.action][r.dryRun ? 0 : 1];
+  return r.installed.map((x) => `${verb(x)} ${x.name} -> ${x.dest || x.wouldInstallTo || '(not written)'} (${x.files} files, customs: ${x.verdict})` +
+    x.findings.map((f) => `\n  ${f.sev} ${f.rule} ${f.file}:${f.line} ${f.why}`).join('') +
     x.warnings.map((w) => `\n  check: ${w.file} ${w.why}`).join('')).join('\n') + (r.dryRun ? '' : '\nRestart Claude Code (or /reload-plugins) to pick up new skills.');
 }
 
@@ -145,8 +165,8 @@ async function main(argv) {
     return 0;
   }
   if (o.op === 'run') { if (!o.request) throw new InstallError('run needs --request <file>.'); o = fromRequest(o.request); }
-  const ops = { list, install, market };
-  if (!ops[o.op]) throw new InstallError('Usage: si.js list|install|market|prep|run (see the header of si.js).');
+  const ops = { list, install, market, audit: (q) => auditor.audit(q.scope) };
+  if (!ops[o.op]) throw new InstallError('Usage: si.js list|install|market|audit|prep|run (see the header of si.js).');
   const r = await ops[o.op](o);
   console.log(o.json ? JSON.stringify(r, null, 2) : text(o.op, r));
   return r.ok === false ? 1 : 0;

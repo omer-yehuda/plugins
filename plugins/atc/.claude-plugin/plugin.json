@@ -1,8 +1,8 @@
 {
   "name": "atc",
   "displayName": "ATC: Air Traffic Control",
-  "version": "1.0.0",
-  "description": "Air traffic control for parallel Claude Code sessions: claim lanes, avoid collisions. Sessions claim lanes (file globs); a hook asks before one session edits a file in another's lane, and a clearance skill splits a big task across non-overlapping parallel pilots. Coordination, not a sandbox.",
+  "version": "1.1.0",
+  "description": "Deprecated: ATC is now a drill of the army plugin (/army:claim, /army:clear, /army:radar, /army:release). This stub only points you there and will be removed in the next release.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
@@ -17,5 +17,5 @@
     "file-locking",
     "multi-session"
   ],
-  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/atc"
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/army"
 }

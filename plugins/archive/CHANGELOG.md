@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2026-11-23)
+
+- Deprecated. The Archive is now a drill of **army 2.0.0** (/army:recall, /army:catalog, /army:shelf, /army:timeline) with the same agents and records folder. The commands here only point there. This plugin will be removed in the next release.
+
 ## 1.0.0 (2026-11-22)
 
 - `/archive:recall <question>`: a script searches the local records of other plugins, and a read-only librarian answers from the matched files with a path behind every claim. Nothing found is reported as nothing found.

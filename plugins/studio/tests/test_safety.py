@@ -131,7 +131,10 @@ def test_new_dir_gives_up(tmp_path, monkeypatch):
 
 def test_requirements_are_hash_locked():
     text = (Path(__file__).resolve().parents[1] / "requirements.txt").read_text()
-    assert "Pillow==12.3.0" in text and text.count("--hash=sha256:") >= 10
+    for pin in ("pillow==13.0.0", "numpy==2.5.4", "imageio-ffmpeg==0.8.1"):   # one venv for explainer, toon and film
+        assert pin in text
+    assert text.count("--hash=sha256:") >= 30
+    assert all(line.startswith(("#", "    --hash=sha256:")) or line.endswith(" \\") or "==" in line for line in text.splitlines() if line)
     assert "pytest" not in text
 
 

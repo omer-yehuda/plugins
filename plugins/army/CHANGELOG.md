@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.0.0 (2026-11-23)
+
+Eight plugins joined the army as **drills**: complete procedures with their own independent agents that run on their own or as a step of a mission.
+
+| Drill | Commands | Formerly |
+|---|---|---|
+| trial | `/army:trial` `/army:appeal` `/army:docket` | court |
+| admit | `/army:admit` `/army:chart` | er |
+| taste | `/army:taste` `/army:retaste` `/army:menu` | critics |
+| countdown | `/army:countdown` `/army:scrub` `/army:log` | mission-control |
+| exam | `/army:enroll` `/army:exam` `/army:transcript` | academy |
+| recall | `/army:recall` `/army:catalog` `/army:shelf` `/army:timeline` | archive |
+| edition | `/army:edition` `/army:headline` `/army:wire` | newsroom |
+| lanes | `/army:claim` `/army:clear` `/army:radar` `/army:release` | atc |
+
+- Scripts live in `scripts/<drill>/`, tests in `tests/`, old docs in `docs/drills/`. Agents keep their names under `army:` (for example `army:judge`, `army:surgeon`). Records stay in their folders (`.court/`, `.er/` and so on), so earlier records and the archive keep working.
+- `units.json` lists the drills; `tools/sync-army.js` accepts their agents and generates the drills table in the README and the raise skill.
+- HQ now runs a drill when a step of the operation order matches one (a real fork goes to trial, a single failure to admit, review to taste, a release to countdown and edition, parallel engineering to lanes).
+- The ATC lane hook is part of the army's hooks. It only acts when a lane has been claimed.
+- Breaking: install `army` instead of the eight plugins above. They remain for one release as stubs that point to the new commands.
+
+
 ## 1.2.0 (2026-11-19)
 
 Hardening release, based on an external design review.
