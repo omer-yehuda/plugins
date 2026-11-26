@@ -1,6 +1,6 @@
 ---
 name: recon
-description: "Army RECON scout: fast, read-only codebase map written to .army/recon.md. Dispatched by army HQ, or when the user names this unit."
+description: "Army RECON scout: fast, read-only codebase map written to .army/recon.md. Dispatched by army HQ."
 model: haiku
 maxTurns: 30
 tools: Read, Glob, Grep, Write

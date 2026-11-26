@@ -2,6 +2,7 @@
 name: release
 description: Free the file lanes this Claude session claimed. Use ONLY when the user runs /army:release or explicitly asks to release, unlock or give up this session's lanes.
 argument-hint: ""
+disable-model-invocation: true
 ---
 
 # Release lanes

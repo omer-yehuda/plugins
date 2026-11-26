@@ -1,6 +1,6 @@
 ---
 name: editor
-description: "The Newsroom EDITOR: turns the reporter's wire into release notes, a changelog draft, social posts, video metadata and a video brief. Uses only facts that are on the wire. Dispatched by the edition and headline skills."
+description: "Newsroom EDITOR: release notes, changelog, posts and a video brief from the wire only. Dispatched by /army:edition."
 model: sonnet
 effort: medium
 tools: Read, Write

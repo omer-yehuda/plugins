@@ -1,6 +1,6 @@
 ---
 name: defense
-description: "Army DEFENSE unit: security review of the user's own project. Reports; never edits. Dispatched by army HQ, or when the user names this unit."
+description: "Army DEFENSE unit: security review of the user's own project. Reports; never edits. Dispatched by army HQ."
 model: sonnet
 effort: high
 tools: Read, Glob, Grep, Write, Bash, WebSearch, WebFetch

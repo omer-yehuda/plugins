@@ -1,6 +1,6 @@
 ---
 name: appeal
-description: Code Court appeal. Use ONLY when the user says "appeal the ruling" or runs /army:appeal. Reopens a past case with new evidence so the judge re-rules and shows what changed. Never trigger for ordinary tasks.
+description: "Code Court appeal. Use ONLY when the user says \"appeal the ruling\" or runs /army:appeal. Re-rules a past case with new evidence."
 argument-hint: "<case-id> <new evidence>"
 ---
 

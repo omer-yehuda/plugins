@@ -1,6 +1,6 @@
 ---
 name: trial
-description: Code Court. Use ONLY when the user explicitly says "put it on trial" or "take this to court", or runs /army:trial. Puts a technical decision (2 to 4 options) on trial with opposing counsel and an independent judge. Never trigger for ordinary questions or tasks.
+description: "Code Court. Use ONLY when the user says \"put it on trial\", \"take this to court\" or runs /army:trial. Opposing counsel and an independent judge rule on 2-4 options."
 argument-hint: "<decision, e.g. should we move from REST to GraphQL?> [--full]"
 ---
 

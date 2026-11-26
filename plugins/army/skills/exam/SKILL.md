@@ -1,6 +1,6 @@
 ---
 name: exam
-description: The Academy exam. Use ONLY when the user explicitly runs /army:exam or says "run the academy exam". Runs an approved exam in headless Claude Code, with and without the skill, and shows the report card. It spends real tokens, so never start it without the user's explicit yes.
+description: "The Academy exam. Use ONLY when the user says \"run the academy exam\" or runs /army:exam. Tests a skill with and without it in headless Claude Code; spends tokens, so ask first."
 argument-hint: "<exam-id> [--repeat N] [--only mission-id]"
 ---
 

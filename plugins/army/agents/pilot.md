@@ -1,6 +1,6 @@
 ---
 name: pilot
-description: "ATC PILOT: implements one flight of a split task strictly inside its assigned file lane. Dispatched by /army:clear, or when the user names this agent."
+description: "Lanes PILOT: implements one flight of a split task inside its file lane only. Dispatched by /army:clear."
 model: sonnet
 effort: medium
 tools: Read, Write, Edit, MultiEdit, NotebookEdit, Glob, Grep, Bash

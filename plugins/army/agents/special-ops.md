@@ -1,6 +1,6 @@
 ---
 name: special-ops
-description: "Army SPECIAL OPS: missions in domains no other unit covers, and safe workarounds when stuck. Dispatched by army HQ, or when the user names this unit."
+description: "Army SPECIAL OPS: missions in domains no other unit covers, and safe workarounds when stuck. Dispatched by army HQ."
 model: sonnet
 effort: high
 tools: Read, Glob, Grep, Write, Edit, Bash, WebSearch, WebFetch

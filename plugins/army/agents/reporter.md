@@ -1,6 +1,6 @@
 ---
 name: reporter
-description: "The Newsroom REPORTER: reads the commits and the changed files of a release and writes what changed for a user, one cited line per change. Read-only on the project. Dispatched by the edition and headline skills."
+description: "Newsroom REPORTER: what changed in a release, one cited line per change. Read-only. Dispatched by /army:edition."
 model: haiku
 effort: low
 tools: Read, Glob, Grep, Write

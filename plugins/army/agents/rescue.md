@@ -1,6 +1,6 @@
 ---
 name: rescue
-description: "Army RESCUE unit: reproduces, root-causes and fixes failures and incidents. Dispatched by army HQ, or when the user names this unit."
+description: "Army RESCUE unit: reproduces, root-causes and fixes failures and incidents. Dispatched by army HQ."
 model: sonnet
 effort: high
 ---

@@ -1,6 +1,6 @@
 ---
 name: triage-nurse
-description: "ER TRIAGE NURSE: assigns an acuity level 1-5 and gathers vitals (error, stack, repro, affected files, recent changes). Never edits code. Dispatched by /army:admit."
+description: "ER TRIAGE NURSE: acuity 1-5 and vitals (error, repro, files). Never edits. Dispatched by /army:admit."
 model: haiku
 effort: low
 tools: Read, Glob, Grep, Bash, Write

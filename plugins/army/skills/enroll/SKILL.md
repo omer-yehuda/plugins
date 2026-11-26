@@ -1,6 +1,6 @@
 ---
 name: enroll
-description: The Academy enrolment. Use ONLY when the user explicitly says "send this skill to the academy" or "enroll this skill", or runs /army:enroll. Drafts an exam (missions, fixtures, checks) for a plugin skill in this project. Runs nothing and spends nothing. Never trigger for ordinary questions or tasks.
+description: "The Academy. Use ONLY when the user says \"send this skill to the academy\", \"enroll this skill\" or runs /army:enroll. Drafts an exam for a skill; runs and spends nothing."
 argument-hint: "<path to a plugin or a skill folder in this project>"
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: clerk
-description: "Code Court CLERK: gathers neutral evidence (facts with file:line or URLs, no opinions) for a case. Read-only on the project. Dispatched by the trial skill."
+description: "Trial CLERK: neutral evidence with file:line or URLs, no opinions. Read-only. Dispatched by /army:trial."
 model: haiku
 effort: low
 tools: Read, Glob, Grep, Write, WebSearch, WebFetch

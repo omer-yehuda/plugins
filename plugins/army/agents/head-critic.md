@@ -1,6 +1,6 @@
 ---
 name: head-critic
-description: "Critics' Table: merges the three tasting cards into one review and awards the overall stars. Reads only the cards and the menu. Dispatched by the army:taste skill, or when the user names this critic."
+description: "HEAD CRITIC: merges the three cards into one review and awards the stars. Dispatched by /army:taste."
 model: sonnet
 effort: medium
 tools: Read, Glob, Grep, Write

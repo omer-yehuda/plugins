@@ -1,6 +1,6 @@
 ---
 name: recall
-description: The Archive. Use ONLY when the user explicitly says "ask the archive ..." or "what does the archive say about ...", or runs /army:recall. Answers a question from the local records other plugins saved in this project (verdicts, bug charts, reviews, lessons), citing the file behind each claim. Never trigger for ordinary questions.
+description: "The Archive. Use ONLY when the user says \"ask the archive ...\", \"what does the archive say about ...\" or runs /army:recall. Answers from the records this project keeps, citing each file."
 argument-hint: "<question, e.g. why did we choose REST?>"
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: admit
-description: Bug ER chief physician. Use ONLY when the user explicitly says "admit this bug", "send it to the ER" or runs /army:admit. Triages, diagnoses, operates with the smallest possible diff and discharges, in four steps with a hard incision budget. Never trigger for ordinary coding tasks or general debugging questions.
+description: "Bug ER. Use ONLY when the user says \"admit this bug\", \"send it to the ER\" or runs /army:admit. Regression test first, smallest fix, hard incision budget. Not for ordinary debugging."
 argument-hint: "<bug report | error | failing test> [--full] [--budget FILES/LINES]"
 ---
 

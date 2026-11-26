@@ -1,6 +1,6 @@
 ---
 name: raise
-description: Army chief of staff. Use ONLY when the user explicitly says "raise the army" or runs /army:raise. Briefs once, then plans and dispatches specialist army units (subagents) to completion. Never trigger for ordinary tasks.
+description: "Army chief of staff. Use ONLY when the user says \"raise the army\" or runs /army:raise. Briefs once, then plans and dispatches specialist units to completion. Never for ordinary tasks."
 argument-hint: "<mission>"
 ---
 
@@ -93,18 +93,6 @@ For large or architectural missions, dispatch `army:ops` to draft the plan.
 
 Drills are complete procedures with their own independent agents. The user can run them without raising the army, and HQ uses one when a step of the operation order matches it, instead of improvising the same thing with a unit:
 
-<!-- BEGIN DRILLS -->
-| Drill | Run | Unit it extends | Use for | Formerly |
-|---|---|---|---|---|
-| trial | `/army:trial` `/army:appeal` `/army:docket` | ops | put a technical decision on trial: counsel argue each option, an independent judge rules | court |
-| admit | `/army:admit` `/army:chart` | rescue | fix one bug: regression test first, smallest incision under a hard budget | er |
-| taste | `/army:taste` `/army:retaste` `/army:menu` | inspector-general | three independent critics review the work, a head critic awards up to 3 stars | critics |
-| countdown | `/army:countdown` `/army:scrub` `/army:log` | inspector-general | release go or no-go from collected facts and four stations | mission-control |
-| exam | `/army:enroll` `/army:exam` `/army:transcript` | rnd | test a skill with and without it in headless Claude Code; pass rate, tokens, cost | academy |
-| recall | `/army:recall` `/army:catalog` `/army:shelf` `/army:timeline` | history | search every record the army keeps, with the file behind every claim | archive |
-| edition | `/army:edition` `/army:headline` `/army:wire` | comms | release notes, changelog, social posts and a video brief from the commits, fact-checked | newsroom |
-| lanes | `/army:claim` `/army:clear` `/army:radar` `/army:release` | engineering | parallel sessions claim file lanes; a hook asks before one edits another's lane | atc |
-<!-- END DRILLS -->
 
 - A real fork between options (a framework, a data store, an architecture): run `/army:trial` and adopt the verdict in `opord.md`.
 - A single failing behaviour during engineering: run `/army:admit` instead of a free-form fix.

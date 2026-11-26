@@ -4,7 +4,7 @@
 //   - the standing-orders block inside every agent
 //   - the order-of-battle table in skills/raise/SKILL.md
 //   - the order-of-battle table in plugins/army/README.md
-//   - the drills table (plugins that joined the army) in both of those files
+//   - the drills table (plugins that joined the army) in the README
 // Usage: node tools/sync-army.js [--check]     (--check exits 1 if anything is out of date; used in CI)
 'use strict';
 const fs = require('fs');
@@ -45,7 +45,7 @@ for (const u of units) {
   if (!fs.existsSync(file)) { problems.push(`agents/${u.id}.md is missing`); continue; }
   const text = fs.readFileSync(file, 'utf8');
   const body = text.replace(/^---\n[\s\S]*?\n---\n?/, '');
-  const fm = ['---', `name: ${u.id}`, `description: ${JSON.stringify(u.description + " Dispatched by army HQ, or when the user names this unit.")}`, `model: ${u.lean}`];
+  const fm = ['---', `name: ${u.id}`, `description: ${JSON.stringify(u.description + " Dispatched by army HQ.")}`, `model: ${u.lean}`];
   if (u.effort) fm.push(`effort: ${u.effort}`);
   if (u.maxTurns) fm.push(`maxTurns: ${u.maxTurns}`);
   if (u.tools) fm.push(`tools: ${u.tools.join(', ')}`);
@@ -70,7 +70,6 @@ write(raiseFile, replaceBlock(fs.readFileSync(raiseFile, 'utf8'), 'ORDER OF BATT
 // 2b. drills table (raise skill and README)
 const drillRows = ['| Drill | Run | Unit it extends | Use for | Formerly |', '|---|---|---|---|---|',
   ...drills.map((d) => `| ${d.id} | ${d.skills.map((s) => `\`/army:${s}\``).join(' ')} | ${d.unit} | ${d.use} | ${d.from} |`)].join('\n');
-write(raiseFile, replaceBlock(fs.readFileSync(raiseFile, 'utf8'), 'DRILLS', drillRows, 'skills/raise/SKILL.md'));
 
 // 3. README table
 const readmeFile = path.join(ROOT, 'README.md');

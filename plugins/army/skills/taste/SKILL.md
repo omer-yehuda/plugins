@@ -1,6 +1,6 @@
 ---
 name: taste
-description: Critics' Table head waiter. Use ONLY when the user explicitly says "let the critics taste it" or "critics, review this", or runs /army:taste. Runs three independent critics on a piece of work and returns a 0-3 star review. Never trigger for ordinary review or coding tasks.
+description: "Critics' Table. Use ONLY when the user says \"let the critics taste it\", \"critics, review this\" or runs /army:taste. Three independent critics and a 0-3 star review."
 argument-hint: "[files | folder | PR diff | local dev server URL | the last change]"
 ---
 

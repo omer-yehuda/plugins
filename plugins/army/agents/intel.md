@@ -1,6 +1,6 @@
 ---
 name: intel
-description: "Army INTEL unit: competitors, market, audience, tech scouting, verification and wargames. Dispatched by army HQ, or when the user names this unit."
+description: "Army INTEL unit: competitors, market, audience, tech scouting, verification and wargames. Dispatched by army HQ."
 model: sonnet
 effort: medium
 tools: Read, Glob, Grep, Write, WebSearch, WebFetch

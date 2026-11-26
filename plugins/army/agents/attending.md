@@ -1,6 +1,6 @@
 ---
 name: attending
-description: "ER ATTENDING: forms 2-3 differential hypotheses, tests them with read-only experiments and names the root cause with file:line evidence. Never edits code. Dispatched by /army:admit."
+description: "ER ATTENDING: tests 2-3 hypotheses read-only, names the root cause at file:line. Dispatched by /army:admit."
 model: sonnet
 effort: high
 tools: Read, Glob, Grep, Bash, Write

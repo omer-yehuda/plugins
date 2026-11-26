@@ -1,6 +1,6 @@
 ---
 name: examiner
-description: "The Academy EXAMINER: writes an exam (missions, fixtures, checks) for a skill from what the skill promises, not from how it is built. Dispatched by the enroll skill."
+description: "Academy EXAMINER: writes an exam for a skill from what it promises. Dispatched by /army:enroll."
 model: sonnet
 effort: medium
 tools: Read, Glob, Write

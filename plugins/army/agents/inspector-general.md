@@ -1,6 +1,6 @@
 ---
 name: inspector-general
-description: "Army INSPECTOR GENERAL: judges deliverables cold against the requirements. Never edits. Dispatched by army HQ, or when the user names this unit."
+description: "Army INSPECTOR GENERAL: judges deliverables cold against the requirements. Never edits. Dispatched by army HQ."
 model: sonnet
 effort: high
 tools: Read, Glob, Grep, Bash, Write, WebSearch, WebFetch

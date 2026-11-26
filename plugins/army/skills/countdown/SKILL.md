@@ -1,6 +1,6 @@
 ---
 name: countdown
-description: Mission Control. Use ONLY when the user explicitly says "mission control, are we go?", "run the countdown" or "go or no-go", or runs /army:countdown. Checks whether a release is ready and rules GO, HOLD or NO-GO. Never trigger for ordinary questions or tasks, and never to perform a release.
+description: "Mission Control. Use ONLY when the user says \"mission control, are we go?\", \"run the countdown\", \"go or no-go\" or runs /army:countdown. Rules GO, HOLD or NO-GO on a release; never releases."
 argument-hint: "[since-ref, e.g. v1.2.0] [--full]"
 ---
 

@@ -2,6 +2,7 @@
 name: retaste
 description: Critics' Table re-tasting. Use ONLY when the user runs /army:retaste <id> or says "critics, taste it again" after fixing a previous tasting. Each critic re-checks only its own send-back items and the head critic updates the stars.
 argument-hint: "<tasting id>"
+disable-model-invocation: true
 ---
 
 # The Second Service (HQ)

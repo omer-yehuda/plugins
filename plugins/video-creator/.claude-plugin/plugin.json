@@ -1,0 +1,14 @@
+{
+  "name": "video-creator",
+  "displayName": "Video Creator",
+  "version": "1.1.0",
+  "description": "One command per visual style: /video-creator:voxel, /video-creator:3d-realistic, /video-creator:anime and 11 more, plus mix two styles, restyle a finished story and save your own. A screenwriter plans the shots in the style, code locks the style into every prompt, a free animatic shows the timing before you spend credits, a frame checker rejects bad frames, and ffmpeg cuts the styled video with moves, transitions, texture, a music bed and captions for Shorts, TikTok, Reels, YouTube or feed.",
+  "author": {
+    "name": "Omer Yehuda",
+    "url": "https://github.com/omer-yehuda"
+  },
+  "repository": "https://github.com/omer-yehuda/plugins",
+  "license": "MIT",
+  "keywords": ["video", "styles", "shorts", "tiktok", "reels", "ai-video", "animation", "ffmpeg", "image-generation", "agents"],
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/video-creator"
+}

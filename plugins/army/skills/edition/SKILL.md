@@ -1,6 +1,6 @@
 ---
 name: edition
-description: The Newsroom. Use ONLY when the user explicitly says "newsroom, write the edition" or "write the release announcement with the newsroom", or runs /army:edition. Turns the commits since a ref into release notes, a changelog draft, social posts and video metadata, all fact-checked against the commits. Drafts only. Never trigger for ordinary writing tasks.
+description: "The Newsroom. Use ONLY when the user says \"newsroom, write the edition\" or runs /army:edition. Fact-checked release notes, changelog, posts and video metadata from the commits. Drafts only."
 argument-hint: "[since-ref, e.g. v1.2.0]"
 ---
 

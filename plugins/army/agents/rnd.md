@@ -1,6 +1,6 @@
 ---
 name: rnd
-description: "Army R&D unit: drafts new skills, playbooks and automations. Proposals only. Dispatched by army HQ, or when the user names this unit."
+description: "Army R&D unit: drafts new skills, playbooks and automations. Proposals only. Dispatched by army HQ."
 model: sonnet
 effort: high
 tools: Read, Glob, Grep, Write, Bash, WebSearch, WebFetch

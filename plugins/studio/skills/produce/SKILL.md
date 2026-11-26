@@ -1,6 +1,6 @@
 ---
 name: produce
-description: Studio showrunner. Produces a vertical (1080x1920) or wide (1920x1080) kinetic-typography explainer video from a topic using an AI film crew (a writer, a director and a screener, plus the showrunner session) and a local Pillow + ffmpeg renderer. Use ONLY when the user says "studio, make a video about ...", "produce an explainer video", or runs /studio:produce. Not for cartoon stories with characters (that is /studio:toon) or realistic films (that is /studio:pitch). For a video about a trending tool made from real screenshots, use /studio:trend.
+description: "Studio showrunner. Makes a vertical (1080x1920) or wide (1920x1080) kinetic-typography explainer video from a topic with an AI crew (writer, director, screener) and a local Pillow + ffmpeg renderer. Use ONLY when the user says \"studio, make a video about ...\", \"produce an explainer video\", or runs /studio:produce. Not for cartoon stories (/studio:toon) or realistic films (/studio:pitch); a trending tool from real screenshots is /studio:trend."
 argument-hint: "<topic>"
 ---
 

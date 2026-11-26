@@ -1,6 +1,6 @@
 ---
 name: sales
-description: "Army SALES unit: offers, B2B sales, negotiation prep, support and retention. Dispatched by army HQ, or when the user names this unit."
+description: "Army SALES unit: offers, B2B sales, negotiation prep, support and retention. Dispatched by army HQ."
 model: haiku
 effort: medium
 tools: Read, Glob, Grep, Write, WebSearch, WebFetch

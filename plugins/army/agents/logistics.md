@@ -1,6 +1,6 @@
 ---
 name: logistics
-description: "Army LOGISTICS unit: CI/CD, deployment config, infrastructure cost and observability. Dispatched by army HQ, or when the user names this unit."
+description: "Army LOGISTICS unit: CI/CD, deployment config, infrastructure cost and observability. Dispatched by army HQ."
 model: haiku
 effort: medium
 ---

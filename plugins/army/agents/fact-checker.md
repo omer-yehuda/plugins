@@ -1,6 +1,6 @@
 ---
 name: fact-checker
-description: "The Newsroom FACT-CHECKER: checks every claim in the drafts against the commits and the files. Cannot edit the drafts; writes corrections only. Dispatched by the edition and headline skills."
+description: "Newsroom FACT-CHECKER: checks every claim against commits and files. Dispatched by /army:edition."
 model: sonnet
 effort: high
 tools: Read, Glob, Grep, Write

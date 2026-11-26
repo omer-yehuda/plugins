@@ -20,11 +20,12 @@
 
 ## Quick start
 
-Three plugins cover everything. Run this in Claude Code (v2.1.275 or later):
+Four plugins cover everything. Run this in Claude Code (v2.1.275 or later):
 
 ```
 /plugin install army --marketplace omer-yehuda/plugins
 /plugin install studio --marketplace omer-yehuda/plugins
+/plugin install video-creator --marketplace omer-yehuda/plugins
 /plugin install skill-installer --marketplace omer-yehuda/plugins
 ```
 
@@ -35,6 +36,7 @@ Three plugins cover everything. Run this in Claude Code (v2.1.275 or later):
 /plugin marketplace add omer-yehuda/plugins
 /plugin install army@omer-plugins
 /plugin install studio@omer-plugins
+/plugin install video-creator@omer-plugins
 /plugin install skill-installer@omer-plugins
 ```
 </details>
@@ -51,6 +53,8 @@ newsroom, write the edition
 studio, make a video about what a Claude skill is
 make me an animated short about the man who sold the Eiffel Tower
 studio, make a film about the last lighthouse keeper
+/video-creator:voxel a village that rebuilds itself every morning
+/video-creator:mix noir+cyberpunk a detective who never sleeps
 install the pdf skill from anthropics/skills
 /skill-installer:audit
 ```
@@ -63,6 +67,7 @@ To update later, run `/plugin marketplace update omer-plugins`.
 |---|---|---|
 | [**army**](plugins/army/README.md) | **Get work done.** A Chief of Staff commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, backed by 110 on-demand field manuals. Plus 8 **drills** you can run on their own: `trial` (a decision goes to court, an independent judge rules), `admit` (bug ER: regression test first, smallest fix), `taste` (three critics and a star rating), `countdown` (release go or no-go), `exam` (a skill tested with and without it), `recall` (search every record), `edition` (release notes and posts, fact-checked) and `lanes` (parallel sessions claim files). Safety gates, least-privilege kits, cost-aware routing, local memory. | 2.0.0 |
 | [**studio**](plugins/studio/README.md) | **Make video.** An AI film crew in three formats. **Explainer:** a topic becomes a kinetic-typography MP4 (vertical or wide) with AI narration and emotion; the trend desk films a tool from real screenshots. **Toon:** a true story becomes a voiced cartoon short with original characters, parallax sets and Hebrew RTL karaoke captions. **Film:** director, cinematographer and continuity agents make a realistic short from stills you generate. One hash-locked venv, one voice model. | 2.0.0 |
+| [**video-creator**](plugins/video-creator/README.md) | **One command per visual style.** 14 style packs (voxel, 3d-realistic, 3d-cartoon, anime, claymation, pixel-art, low-poly, comic, watercolor, cyberpunk, paper-cutout, documentary, noir, horror), `mix a+b`, `restyle` and your own packs. The style is added to every image prompt by code, a free animatic renders in seconds, and stills and clips mix in one cut for Shorts, YouTube, square or feed, with a synthesized royalty-free score. | 1.1.0 |
 | [**skill-installer**](plugins/skill-installer/README.md) | **Install skills safely.** Every skill is scanned by Customs before it lands (CLEARED installs, SECONDARY INSPECTION asks, DENIED never installs), every file comes from one pinned commit, `skills.lock.json` records hashes and `/skill-installer:audit` rescans what you have. `/skill-installer:inspect` gives the full passport for any skill or plugin. A first filter, not a guarantee. | 2.0.0 |
 
 <details>
@@ -164,6 +169,10 @@ Say **"make me an animated short"**. Claude asks a few questions, pitches 10 tru
 Run it with `/studio:toon`. Full documentation: [plugins/studio/docs/toon.md](plugins/studio/docs/toon.md).
 
 ---
+
+## Token cost
+
+`node tools/token-budget.js` shows what each plugin adds to every session (the skill and agent descriptions Claude always sees; hidden skills cost nothing until typed). CI fails when a plugin goes over budget: 3,000 always-loaded characters per plugin (army 6,500 and studio 3,600, as suites that replaced 9 and 3 plugins), 520 per description and 12,000 per skill body.
 
 ## Privacy & safety
 

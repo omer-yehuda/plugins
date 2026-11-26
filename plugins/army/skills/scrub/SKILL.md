@@ -2,6 +2,7 @@
 name: scrub
 description: Mission Control re-poll. Use ONLY when the user runs /army:scrub <id> or says "re-run the countdown" after fixing blocking items. Re-checks a past countdown against the repository as it is now and rules again.
 argument-hint: "<countdown-id>"
+disable-model-invocation: true
 ---
 
 # Mission Control: scrub and re-poll

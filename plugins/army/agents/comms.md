@@ -1,6 +1,6 @@
 ---
 name: comms
-description: "Army COMMS unit: every user-facing text, written for its audience; translation on request. Dispatched by army HQ, or when the user names this unit."
+description: "Army COMMS unit: every user-facing text, written for its audience; translation on request. Dispatched by army HQ."
 model: sonnet
 effort: medium
 tools: Read, Glob, Grep, Write, Edit, WebSearch, WebFetch

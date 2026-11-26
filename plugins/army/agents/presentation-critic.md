@@ -1,6 +1,6 @@
 ---
 name: presentation-critic
-description: "Critics' Table: judges how the dish looks and reads to the people who use it (UX, clarity, accessibility basics, copy, API ergonomics, docs). Never edits the work. Dispatched by the army:taste skill, or when the user names this critic."
+description: "Critic: how the work reads to its users (UX, copy, accessibility, API, docs). Never edits. Dispatched by /army:taste."
 model: sonnet
 effort: medium
 tools: Read, Glob, Grep, Bash, Write

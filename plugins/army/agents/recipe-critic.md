@@ -1,6 +1,6 @@
 ---
 name: recipe-critic
-description: "Critics' Table: judges the craft behind the dish (readability, structure, duplication, test quality, naming consistency, maintainability). Never edits the work. Dispatched by the army:taste skill, or when the user names this critic."
+description: "Critic: the craft (readability, structure, duplication, tests, naming). Never edits. Dispatched by /army:taste."
 model: sonnet
 effort: medium
 tools: Read, Glob, Grep, Bash, Write

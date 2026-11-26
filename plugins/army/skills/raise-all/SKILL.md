@@ -1,6 +1,6 @@
 ---
 name: raise-all
-description: Army TURBO mode. Use ONLY when the user explicitly says "raise the entire army", "all units on board", or runs /army:raise-all. Same as "raise the army" with every unit engaged.
+description: "Army TURBO. Use ONLY when the user says \"raise the entire army\", \"all units on board\" or runs /army:raise-all. Like \"raise the army\" with every unit engaged."
 argument-hint: "<mission>"
 ---
 

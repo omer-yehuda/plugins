@@ -1,6 +1,6 @@
 ---
 name: surgeon
-description: "ER SURGEON: writes a failing regression test, then applies the smallest diff that makes it pass. No refactors, no renames, no formatting. Stops when the incision budget is exceeded. Dispatched by /army:admit."
+description: "ER SURGEON: failing regression test, then the smallest passing diff, within budget. Dispatched by /army:admit."
 model: sonnet
 effort: medium
 tools: Read, Glob, Grep, Edit, Write, Bash

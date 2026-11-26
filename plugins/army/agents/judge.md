@@ -1,6 +1,6 @@
 ---
 name: judge
-description: "Code Court JUDGE: rules on a case from the case file, evidence, briefs and rebuttals only. Independent: never sees the main session's opinion. Dispatched by the trial and appeal skills."
+description: "Trial JUDGE: rules from the case file only, never sees the session's opinion. Dispatched by /army:trial, /army:appeal."
 model: sonnet
 effort: high
 tools: Read, Glob, Write

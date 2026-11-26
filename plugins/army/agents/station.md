@@ -1,6 +1,6 @@
 ---
 name: station
-description: "Mission Control STATION: polls one desk (flight, payload, range safety or recovery) for a release and reports GO or NO-GO with evidence. Read-only on the project. Dispatched by the countdown and scrub skills."
+description: "Countdown STATION: polls one desk for a release, GO or NO-GO with evidence. Read-only. Dispatched by /army:countdown."
 model: haiku
 effort: low
 tools: Read, Glob, Grep, Write

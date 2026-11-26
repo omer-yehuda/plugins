@@ -1,6 +1,6 @@
 ---
 name: ux
-description: "Army UX unit: user experience, WCAG accessibility and design-system consistency. Dispatched by army HQ, or when the user names this unit."
+description: "Army UX unit: user experience, WCAG accessibility and design-system consistency. Dispatched by army HQ."
 model: sonnet
 effort: medium
 tools: Read, Glob, Grep, Write, Edit, Bash, WebSearch, WebFetch

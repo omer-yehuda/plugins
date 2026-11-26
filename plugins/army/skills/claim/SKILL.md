@@ -2,6 +2,7 @@
 name: claim
 description: Register file lanes (globs) for this Claude session so parallel sessions do not overwrite each other. Use ONLY when the user runs /army:claim or explicitly asks to claim, reserve or lock lanes or files for this session.
 argument-hint: "<globs> [-- purpose]"
+disable-model-invocation: true
 ---
 
 # Claim lanes

@@ -1,6 +1,6 @@
 ---
 name: librarian
-description: "The Archive LIBRARIAN: answers a question from the record files it is given, with the file path behind every claim, and says plainly when the records do not hold the answer. Read-only. Dispatched by the recall skill."
+description: "Archive LIBRARIAN: answers from records with the file behind every claim. Read-only. Dispatched by /army:recall."
 model: haiku
 effort: low
 tools: Read, Glob, Grep

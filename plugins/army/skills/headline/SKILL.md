@@ -2,6 +2,7 @@
 name: headline
 description: The Newsroom, one plugin or package only. Use ONLY when the user runs /army:headline <unit> or says "newsroom, a headline for <unit>". Writes a title, one paragraph and one post for what changed in that unit since the last tag, fact-checked against the commits.
 argument-hint: "<plugin or package name>"
+disable-model-invocation: true
 ---
 
 # The Newsroom: one headline

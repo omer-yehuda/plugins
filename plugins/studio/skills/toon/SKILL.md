@@ -1,6 +1,6 @@
 ---
 name: toon
-description: Studio toon format (formerly toon-shorts). Makes an original animated cartoon YouTube Short / TikTok / Reel (1080x1920 MP4) from a true story. Asks a few questions, pitches 10 story ideas, writes a 30-60 second retention script, makes a free AI voiceover (or uses the user's recording), storyboards toon characters on parallax sets with karaoke captions (English or Hebrew RTL), checks a preview, and renders the MP4. Use when the user asks for an animated short, a cartoon short, a faceless story video, or a Reel/TikTok/Short made from a story, or runs /studio:toon.
+description: "Studio toon format (formerly toon-shorts). Makes an original animated cartoon Short/TikTok/Reel (1080x1920 MP4) from a true story: 10 ideas, a retention script, free AI voice or your recording, toon characters on parallax sets, karaoke captions (English or Hebrew RTL), a checked preview and the render. Use when the user asks for an animated or cartoon short, a faceless story video, or runs /studio:toon."
 ---
 
 # Studio: toon

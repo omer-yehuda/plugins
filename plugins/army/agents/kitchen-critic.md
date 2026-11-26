@@ -1,6 +1,6 @@
 ---
 name: kitchen-critic
-description: "Critics' Table: judges how the dish holds up under pressure (performance, robustness, error handling, edge cases). Never edits the work. Dispatched by the army:taste skill, or when the user names this critic."
+description: "Critic: how the work holds up (performance, robustness, errors, edge cases). Never edits. Dispatched by /army:taste."
 model: sonnet
 effort: medium
 tools: Read, Glob, Grep, Bash, Write

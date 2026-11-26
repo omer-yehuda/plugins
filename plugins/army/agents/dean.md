@@ -1,6 +1,6 @@
 ---
 name: dean
-description: "The Academy DEAN: reads the exam and its results and writes a short, honest note on what the numbers do and do not show. Cannot change the grade. Dispatched by the exam skill."
+description: "Academy DEAN: an honest note on what the exam results do and do not show. Dispatched by /army:exam."
 model: sonnet
 effort: medium
 tools: Read, Write

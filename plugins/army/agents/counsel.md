@@ -1,6 +1,6 @@
 ---
 name: counsel
-description: "Code Court COUNSEL: argues for ONE option and against the others, from the evidence file plus its own verified research. Dispatched by the trial skill."
+description: "Trial COUNSEL: argues for one option from the evidence and its own research. Dispatched by /army:trial."
 model: sonnet
 effort: medium
 tools: Read, Glob, Grep, Write, WebSearch, WebFetch

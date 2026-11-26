@@ -5,7 +5,7 @@
     "url": "https://github.com/omer-yehuda"
   },
   "metadata": {
-    "description": "Three production-grade Claude Code plugins by Omer Yehuda: Army (a chief of staff, 18 specialist units and 8 standalone drills), Studio (an AI film crew for explainers, cartoon shorts and realistic films) and Skill Installer (every skill scanned, pinned and locked)."
+    "description": "Production-grade Claude Code plugins by Omer Yehuda: Army (a chief of staff, 18 specialist units and 8 standalone drills), Studio (an AI film crew for explainers, cartoon shorts and realistic films), Video Creator (one command per visual style) and Skill Installer (every skill scanned, pinned and locked)."
   },
   "plugins": [
     {
@@ -65,6 +65,22 @@
         "security",
         "skills",
         "supply-chain"
+      ]
+    },
+    {
+      "name": "video-creator",
+      "source": "./plugins/video-creator",
+      "description": "One command per visual style (/video-creator:voxel, /video-creator:3d-realistic, /video-creator:anime and 11 more), plus mix two styles, restyle a story and save your own. Style locked into every prompt by code, a free animatic before you spend credits, a frame checker, and an ffmpeg cut with per-style fps, grade, texture, transitions, music bed and captions for Shorts, TikTok, Reels, YouTube or feed.",
+      "category": "creative",
+      "keywords": [
+        "video",
+        "styles",
+        "shorts",
+        "tiktok",
+        "reels",
+        "ai-video",
+        "animation",
+        "ffmpeg"
       ]
     },
     {

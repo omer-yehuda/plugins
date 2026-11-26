@@ -1,6 +1,6 @@
 ---
 name: clear
-description: ATC HQ. Use ONLY when the user says "ATC, clear for takeoff" or "split this across parallel agents", or runs /army:clear. Splits one big task into 2-5 flights with non-overlapping file lanes, runs them as parallel pilots (worktrees when available), merges locally, tests and checks nobody left their lane. Never trigger for ordinary tasks.
+description: "Lanes. Use ONLY when the user says \"ATC, clear for takeoff\", \"split this across parallel agents\" or runs /army:clear. Splits a task into 2-5 parallel pilots with non-overlapping file lanes."
 argument-hint: "<big task>"
 ---
 

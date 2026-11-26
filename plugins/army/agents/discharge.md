@@ -1,6 +1,6 @@
 ---
 name: discharge
-description: "ER DISCHARGE: runs the relevant test suite and lint/typecheck, checks the diff against the incision budget, flags changes outside the root-cause area and writes the discharge chart. Never edits. Dispatched by /army:admit."
+description: "ER DISCHARGE: runs tests and lint, checks the diff against the budget, writes the chart. Dispatched by /army:admit."
 model: haiku
 effort: medium
 tools: Read, Glob, Grep, Bash, Write

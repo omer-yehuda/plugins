@@ -1,6 +1,6 @@
 ---
 name: flight-director
-description: "Mission Control FLIGHT DIRECTOR: rules GO, HOLD or NO-GO from the release facts and the station reports only. Independent: never sees the main session's opinion. Dispatched by the countdown and scrub skills."
+description: "FLIGHT DIRECTOR: rules GO, HOLD or NO-GO from facts and station reports only. Dispatched by /army:countdown."
 model: sonnet
 effort: high
 tools: Read, Glob, Write
