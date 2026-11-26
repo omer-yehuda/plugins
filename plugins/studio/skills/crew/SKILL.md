@@ -13,6 +13,7 @@ STUDIO: an AI film crew
   SHOWRUNNER (the main session)  asks 3 quick questions, runs the crew, makes the final cut
     1. WRITER    researches, verifies facts with URLs, writes a 30-60 s retention script
     2. DIRECTOR  turns the script into storyboard.json and makes the checker pass
+                 then directs camera positions and flow (shots table, /studio:director)
     3. VOICE     optional: your own audio file, or none (captions-only is the default)
     4. EDITOR    renders a contact sheet of key frames
     5. SCREENER  test-screening critic reads the sheet, reports readability, pacing, hook

@@ -6,7 +6,8 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
-const { init, check, prompts, dailies, cut, list } = require('../scripts/premiere.js');
+const { init, check, shots, prompts, dailies, cut, list } = require('../scripts/premiere.js');
+const direct = require('../scripts/direct.js');
 const film = require('../scripts/film.js');
 
 const SCRIPT = path.join(__dirname, '..', 'scripts', 'premiere.js');
@@ -149,4 +150,37 @@ test('cut renders a draft film with sound, captions and metadata', render, () =>
   assert.match(fs.readFileSync(r.captions, 'utf8'), /It starts at dusk/);
   assert.match(fs.readFileSync(r.metadata, 'utf8'), /Declare altered or synthetic content/);
   assert.ok(!fs.readdirSync(path.join(prod.dir, 'shots')).some((n) => n.includes('.tmp.')));
+});
+
+test('director: size and angle are validated, and flow notes follow the shot list', () => {
+  const dir = tmp();
+  const errs = film.validate({ shots: [shot('a', { size: 'huge' }), shot('b', { angle: 'side' }), shot('c')] }, dir).errors.join('\n');
+  assert.match(errs, /shot 1: size must be one of wide, medium, close, detail/);
+  assert.match(errs, /shot 2: angle must be one of eye, low, high, over-shoulder, top/);
+  const good = [shot('a', { size: 'wide', move: 'pull-out' }), shot('b', { size: 'medium', angle: 'low', move: 'pan-right' }), shot('c', { size: 'close', move: 'hold' })];
+  const v = film.validate({ shots: good }, dir);
+  assert.deepStrictEqual([v.ok, v.flow], [true, []]);
+  assert.match(direct.flow([shot('a'), shot('b', { size: 'wide' }), shot('c')])[0], /no size on shots 1, 3/);
+  const notes = direct.flow([
+    shot('a', { size: 'close', move: 'pan-left' }), shot('b', { size: 'close', move: 'pan-right' }),
+    shot('c', { size: 'close', angle: 'low', move: 'pan-right' }), shot('d', { size: 'detail', move: 'pan-right' }), shot('e', { size: 'detail', angle: 'top', move: 'push-in' }),
+  ]).join('\n');
+  for (const re of [/pan-left on a close shot slides the subject/, /pan-left then pan-right swings/, /same size \(close\) and same angle/, /pan-right three times running/, /three close shots running/, /push-in on a detail shot/]) assert.match(notes, re);
+  assert.doesNotMatch(direct.flow([shot('a', { size: 'close' }), shot('b', { size: 'close', angle: 'low', move: 'hold' })]).join('\n'), /jump cut/);
+  assert.deepStrictEqual(direct.flow(null), []);
+  assert.deepStrictEqual(direct.table([shot('a', { size: 'wide' }), null]).length, 2);
+});
+
+test('shots prints the director table and flow notes for a production', () => {
+  const { p, prod } = production();
+  const r = shots(p, prod.id);
+  assert.strictEqual(r.ok, true);
+  assert.strictEqual(r.flowOk, false);
+  assert.match(r.flow[0], /no size on shots 1, 2, 3/);
+  assert.match(r.table[1], /^1 {2}01-open/);
+  assert.deepStrictEqual(check(p, prod.id).flow, r.flow);
+  fs.writeFileSync(prod.files.shots, JSON.stringify({ shots: [] }));
+  assert.strictEqual(shots(p, prod.id).error, 'bad-shots');
+  const c = cli(p, 'shots', 'nope');
+  assert.strictEqual(c.status, 1);
 });

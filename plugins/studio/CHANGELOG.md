@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.1.0 (2026-11-26)
+
+**Director pass** (camera positions and shot-to-shot flow) in every format, run inside every production and available on its own as `/studio:director [storyboard | film id]`. One skill for all three formats; it picks the format from what you give it. The agents work from a printed shot table instead of re-reading the JSON (fewer tokens).
+
+- **Explainer:** `studio.py shots <storyboard>` prints one line per scene and `FLOW:` notes (also shown by `check` as `flow:` warnings): a `screen` scene with no `zoom`; a zoom box over 80% of the screenshot; a pointer outside the zoom box; a `click` after the scene ends; the same screenshot twice running without a `cut`; too many `zoom-punch` entries; one transition four or more times in a row. Runs in `/studio:produce` and on both cuts of `/studio:trend`. Craft sheet: `skills/produce/references/director.md`.
+- **Toon:** `toon.py shots <storyboard>` prints camera, size, focus and set per shot with `FLOW:` notes: an aimed camera with nothing at its focus; an uncut shot that leaves the speaker; characters swapping sides on one set; a pan reversing the one before; a sideways camera against a walking character; a cut repeating camera and focus; three close shots in a row. Runs between the storyboard and the preview. Craft sheet: `skills/toon/references/director.md`.
+- **Film:** two optional shot fields, `size` (`wide`, `medium`, `close`, `detail`) and `angle` (`eye`, `low`, `high`, `over-shoulder`, `top`), set by the film director and turned into framing words by the cinematographer. `premiere.js shots <id>` prints the camera plan and flow notes (also returned by `check`). Runs inside every `/studio:pitch`. Craft sheet: `skills/pitch/director.md`. Shot lists without the new fields still validate and render.
+- Tests: new suites for the explainer flow notes, the toon shot list and the film fields. The bundled examples pass with no flow notes.
+
+(Ported from a cloud session's work for studio 1.3.0, toon-shorts 1.2.0 and premiere 1.1.0, written before those three became one plugin.)
+
 ## 2.0.0 (2026-11-23)
 
 - **Three formats in one plugin.** The toon-shorts plugin is now `/studio:toon` (cartoon shorts, Hebrew RTL), and Premiere is now `/studio:pitch`, `/studio:shoot`, `/studio:cut` and `/studio:dailies` (realistic films). Their engines moved in unchanged: `skills/toon/scripts/toonshorts/` and `scripts/premiere.js`. Docs: [docs/toon.md](docs/toon.md), [docs/film.md](docs/film.md).
@@ -9,7 +20,6 @@
 - The explainer, the crew screen and the showrunner point story topics to `/studio:toon` or `/studio:pitch`.
 - OpenCode: `opencode/commands/studio-toon.md`.
 - Breaking: install `studio` instead of `toon-shorts` or `premiere`. Both old plugins remain for one release as stubs that point here.
-
 
 ## 1.2.0 (2026-11-22)
 

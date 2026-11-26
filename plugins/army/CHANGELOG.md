@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.1.0 (2026-11-26)
+
+Token saving. (Ported from a cloud session's 1.3.0 work, written before the drills joined.)
+
+### Added
+- **Token ledger.** A `SubagentStop` hook sums each finished unit's transcript usage into `<mission>/usage.jsonl` (new tokens: input, cache writes and output; cache reads listed apart). `phase`, `status` and `end` print the total and a per-unit list, and HQ puts it in the final report. Units that ran in a git worktree are counted. HQ's own tokens are not.
+- **`/army:budget <tokens|off>`**: a per-mission ceiling for the units (for example `400k`). A `PostToolUse` hook on the Agent tool tells HQ once at 80% (finish with the planned units, merge briefs, drop optional units) and once at 100% (dispatch nothing new, say what was left out). Advice, not a hard stop. Changing it during a mission asks for approval, like `mode` and `gates`.
+- **`/army:mode eco`**: a third model profile. Sonnet for engineering, rescue, defense, legal, ops and the inspector-general; Haiku for the other twelve units. HQ also runs smaller: at most 4 units, 120-word SITREPs, no re-briefs, no Turbo. `units.json` has a new `eco` field and the generated tables a new column.
+
+### Fixed
+- **Lessons caps now hold.** 100 lessons separated by blank lines used to load as 50, and a single very long line went into context whole. `start` now counts non-blank lines, cuts a line at 400 characters and stops at 12 KB; `end` refuses a file that is too large to load whole.
+
+### Changed
+- `army.js` prints compact single-line JSON instead of indented JSON (fewer tokens on every call).
+- The Chief of Staff's token discipline is longer: name specialists in every brief, give units a file scope, reuse earlier reports, watch the ledger at each phase.
+
+### Not changed
+- The safety gate. None of the gate findings from the latest review are addressed in this release.
+
+### Tests
+- 5 new lifecycle tests: lesson caps, eco routing, ledger and budget warnings, worktree units, compact output.
+
 ## 2.0.0 (2026-11-23)
 
 Eight plugins joined the army as **drills**: complete procedures with their own independent agents that run on their own or as a step of a mission.

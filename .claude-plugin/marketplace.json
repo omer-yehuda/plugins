@@ -11,7 +11,7 @@
     {
       "name": "army",
       "source": "./plugins/army",
-      "description": "A chief of staff that commands 18 specialist units as subagents, plus 8 drills you can run on their own: trial (decisions), admit (bugs), taste (reviews), countdown (releases), exam (skill evals), recall (records), edition (release notes) and lanes (parallel sessions). 110+ on-demand playbooks, cost-aware model routing, safety gates and local memory.",
+      "description": "A chief of staff that commands 18 specialist units as subagents, plus 8 drills you can run on their own: trial (decisions), admit (bugs), taste (reviews), countdown (releases), exam (skill evals), recall (records), edition (release notes) and lanes (parallel sessions). 110+ on-demand playbooks, model profiles (eco, lean, full), a measured token ledger with a per-mission budget, safety gates and local memory.",
       "category": "productivity",
       "keywords": [
         "code-review",
@@ -31,7 +31,7 @@
     {
       "name": "studio",
       "source": "./plugins/studio",
-      "description": "A film crew of AI agents in three formats: kinetic-typography explainers with AI narration and a trend desk, animated cartoon shorts from true stories with Hebrew RTL captions (formerly toon-shorts), and realistic short films from stills you generate (formerly Premiere). One install, one hash-locked venv, one voice model.",
+      "description": "A film crew of AI agents in three formats: kinetic-typography explainers with AI narration and a trend desk, animated cartoon shorts from true stories with Hebrew RTL captions (formerly toon-shorts), and realistic short films from stills you generate (formerly Premiere). A director pass sets camera positions and shot-to-shot flow in every format. One install, one hash-locked venv, one voice model.",
       "category": "creative",
       "keywords": [
         "agents",

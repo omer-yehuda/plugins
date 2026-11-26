@@ -52,6 +52,10 @@ Top level: `title` (required), `scenes` (1 to 30, aim for 8 to 12), `format` (`s
 - Alternate light and dark for rhythm. Never three scene types in a row the same.
 - Keep it light: no code on screen. Text is left to right only (right-to-left is not supported in v1).
 
+## Camera positions and flow
+
+`studio.py shots storyboard.json` prints the director's scene list (how each scene enters, where the camera goes on `screen` scenes) and `FLOW:` notes: a `screen` scene with no zoom or a zoom that barely moves, a pointer outside the zoom box, a click after the scene ends, the same screenshot twice without a `cut`, too many `zoom-punch` entries, one transition four times in a row. `check` lists the same notes as `flow:` warnings. The craft sheet is `director.md` next to this file.
+
 ## Emotion tags (in `say`)
 
 The voice reads every line with a little melody. For the words that carry a feeling, add a tag: `{feeling|words}`. Only those words change (pitch shape, length, loudness, a short beat before them). Captions show the words without the tag.

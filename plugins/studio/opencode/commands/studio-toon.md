@@ -17,4 +17,6 @@ How this setup differs from Claude Code:
   the preview path and ask them to check it against `references/checklist.md` with you, tile by tile.
 - Facts: search for each fact you use and name the source in the description. Search YouTube for the idea too;
   if well-known videos already tell it the same way, pick another idea or another angle.
+- The director pass in Step 5 is part of the skill itself: read `references/director.md` and run
+  `toon.py shots`. No separate skill is needed here.
 - Keep the PACE lines that `check`, `preview` and `render` print clean before the full render.

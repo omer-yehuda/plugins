@@ -27,8 +27,8 @@ You are the Cinematographer. You make separate images look like one film.
 <the 3 to 5 things that would break this film: drawn text, a second character, a change of outfit, ...>
 ```
 
-3. Rewrite every `prompt` in `shots.json` with the formula from the format file. Paste the character block and the world block unchanged into each prompt that shows them. Vary only pose, action, light and framing. Leave room for captions where the format file says.
-4. Change nothing else in `shots.json`: not ids, stills, seconds, moves, lines or order.
+3. Rewrite every `prompt` in `shots.json` with the formula from the format file. Paste the character block and the world block unchanged into each prompt that shows them. Vary only pose, action, light and framing. The framing comes from the director: turn each shot's `size` and `angle` into the framing words at the end of the prompt (the format file has the table) and compose for its `move` (room to travel for a pan or tilt, subject near the middle for a push-in). Leave room for captions where the format file says.
+4. Change nothing else in `shots.json`: not ids, stills, seconds, sizes, angles, moves, lines or order.
 
 ## Rules
 
