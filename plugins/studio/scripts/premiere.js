@@ -6,6 +6,7 @@
  *   premiere.js prep [--project DIR]                    make a fresh temp folder, print {"input": "<tmp>/input.json"}
  *   premiere.js init --input-file F [--project DIR]     F is that prep path, JSON {"title": "...", "format": "wide" | "vertical"}
  *   premiere.js check <id>                              validate shots.json, list the stills that are still missing
+ *   premiere.js shots <id>                              the director's shot table (size, angle, move) and flow notes
  *   premiere.js prompts <id>                            write prompts.md: one prompt and one file name per shot
  *   premiere.js dailies <id>                            write dailies.jpg, a contact sheet of the stills that exist
  *   premiere.js cut <id> [--draft]                      render film.mp4, captions.srt and metadata.md
@@ -23,6 +24,7 @@ const { spawnSync } = require('child_process');
 const inputfile = require('./inputfile');
 const { make, isLink, parseArgs } = require('./state');
 const film = require('./film');
+const direct = require('./direct');
 
 const store = make('.premiere', 'productions', 'planted-premiere');
 const fail = (error, message, extra) => ({ ok: false, error, message, ...extra });
@@ -60,6 +62,13 @@ function check(project, id) {
   const l = load(project, id);
   if (!l.ok) return l;
   return { ok: l.v.ok, id, format: l.format, ...l.v, ready: l.v.ok && l.v.missing.length === 0 };
+}
+
+function shots(project, id) {
+  const l = load(project, id);
+  if (!l.ok) return l;
+  if (!l.v.ok) return fail('bad-shots', 'shots.json has errors', { errors: l.v.errors });
+  return { ok: true, id, table: direct.table(l.doc.shots), flow: l.v.flow, flowOk: l.v.flow.length === 0 };
 }
 
 function prompts(project, id) {
@@ -156,14 +165,15 @@ function main(argv) {
     const inp = readInput(flags['input-file']);
     res = inp.error ? fail('bad-input', inp.error) : init(project, inp.title, inp.format);
   } else if (cmd === 'check') res = check(project, arg);
+  else if (cmd === 'shots') res = shots(project, arg);
   else if (cmd === 'prompts') res = prompts(project, arg);
   else if (cmd === 'dailies') res = dailies(project, arg, bin);
   else if (cmd === 'cut') res = cut(project, arg, bin, !!flags.draft);
   else if (cmd === 'list') res = store.planted(project) || { ok: true, productions: list(project) };
-  else { process.stderr.write('usage: premiere.js doctor | prep | init --input-file F | check <id> | prompts <id> | dailies <id> | cut <id> [--draft] | list\n'); return 2; }
+  else { process.stderr.write('usage: premiere.js doctor | prep | init --input-file F | check <id> | shots <id> | prompts <id> | dailies <id> | cut <id> [--draft] | list\n'); return 2; }
   process.stdout.write(JSON.stringify(res, null, 2) + '\n');
   return res.ok ? 0 : 1;
 }
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
-module.exports = { doctor, init, check, prompts, dailies, cut, list };
+module.exports = { doctor, init, check, shots, prompts, dailies, cut, list };

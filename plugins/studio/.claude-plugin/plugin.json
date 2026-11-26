@@ -1,8 +1,8 @@
 {
   "name": "studio",
   "displayName": "Studio",
-  "version": "2.0.0",
-  "description": "A film crew of AI agents in three formats: kinetic-typography explainers (vertical or wide, AI narration with emotion, trend desk), animated cartoon shorts from true stories with Hebrew RTL karaoke captions (formerly toon-shorts), and realistic short films from stills you generate (formerly Premiere). One plugin, one hash-locked venv, one voice model.",
+  "version": "2.1.0",
+  "description": "A film crew of AI agents in three formats: kinetic-typography explainers (vertical or wide, AI narration with emotion, trend desk), animated cartoon shorts from true stories with Hebrew RTL karaoke captions, and realistic short films from stills you generate. A director pass sets camera positions and shot-to-shot flow in every format. One plugin, one hash-locked venv, one voice model.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"

@@ -1,8 +1,8 @@
 {
   "name": "army",
   "displayName": "Army",
-  "version": "2.0.0",
-  "description": "A chief of staff that commands 18 specialist units as subagents, plus 8 drills you can run on their own: put a decision on trial, admit a bug, let critics taste the work, go/no-go a release, examine a skill, recall past records, write the release edition, and claim lanes for parallel sessions. 110+ on-demand playbooks, cost-aware model routing, safety gates and local memory.",
+  "version": "2.1.0",
+  "description": "A chief of staff that commands 18 specialist units as subagents, plus 8 drills you can run on their own: put a decision on trial, admit a bug, let critics taste the work, go/no-go a release, examine a skill, recall past records, write the release edition, and claim lanes for parallel sessions. Model profiles (eco, lean, full), a measured token ledger with a per-mission budget, 110+ playbooks, safety gates and local memory.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"

@@ -128,6 +128,7 @@ def _meta(m, errs) -> dict:
 
 def validate(data, base_dir: Path | str = ".") -> tuple[Storyboard | None, list, list]:
     """Returns (storyboard or None, errors, warnings)."""
+    from .flow import flow
     from .lint import lint
     base, errs = Path(base_dir), []
     if not isinstance(data, dict):
@@ -158,7 +159,7 @@ def validate(data, base_dir: Path | str = ".") -> tuple[Storyboard | None, list,
     for s in scenes:
         s.start, t = t, t + s.duration
     sb = Storyboard(title, scenes, (base / audio).resolve() if audio else None, _meta(data.get("meta"), errs), fmt)
-    return (None, errs, []) if errs else (sb, [], lint(sb))
+    return (None, errs, []) if errs else (sb, [], lint(sb) + [f"flow: {n}" for n in flow(sb)])
 
 
 def load(path: Path | str) -> tuple[Storyboard, list]:

@@ -91,6 +91,8 @@
 - Whole video: 20+ shots a minute. No single shot over about 4 seconds.
 - Good cuts: wide → close-up on the face as the key word lands (`punch_in` with `focus` on that character),
   close-up → `drift` to reveal the other person, or `push_in` onto a prop the line names.
+- `toon.py shots` prints the director's shot list (camera, size, focus and subject per shot) with `FLOW:` notes
+  on camera positions and shot-to-shot flow; `check` shows the same notes as `flow:`. See `references/director.md`.
 - `check` estimates pacing from word counts; `preview` and `render` print the real numbers (`PACE:` lines).
 
 ## Sound

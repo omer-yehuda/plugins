@@ -6,7 +6,7 @@ description: "Studio toon format (formerly toon-shorts). Makes an original anima
 # Studio: toon
 
 Turn one conversation into a finished animated short:
-**questions → 10 ideas → script → voice → storyboard → preview (you check it) → draft → MP4.**
+**questions → 10 ideas → script → voice → storyboard → director (camera and flow) → preview (you check it) → draft → MP4.**
 
 `<skill>` below means this skill's base directory (shown when the skill loads). Run every command as
 `python "<skill>/scripts/toon.py" <command> ...` and quote paths.
@@ -15,9 +15,10 @@ Turn one conversation into a finished animated short:
 |---|---|
 | `references/story-craft.md` | picking ideas and writing the script. **Read before Step 2.** |
 | `references/storyboard.md` | storyboard format, every allowed value, visual rules, pacing. **Read before Step 5.** |
+| `references/director.md` | camera positions and shot-to-shot flow. **Read before the director pass in Step 5.** |
 | `references/checklist.md` | the 11-point still check. **Use in Step 6.** |
 | `examples/onoda.json`, `examples/onoda_he.json` | complete storyboards (English, Hebrew) to copy from |
-| `scripts/toon.py` | the engine CLI: `setup`, `check`, `voices`, `samples`, `voice`, `preview`, `render` |
+| `scripts/toon.py` | the engine CLI: `setup`, `check`, `shots`, `voices`, `samples`, `voice`, `preview`, `render` |
 
 ## Step 0: Setup (once per machine, ask first)
 
@@ -91,6 +92,15 @@ frame already shows the payoff (props `at: 0`, no `enter`), and its line is 9 wo
 Then run `toon.py check` and fix every ERROR; fix NOTEs unless you have a reason. The pacing NOTEs are estimates
 from word counts; `preview` prints the real ones once there is a voice.
 
+**Director pass (every short, never skipped).** Read `references/director.md`, run
+`toon.py shots "<work>/storyboard.json"` and work from the shot table it prints (one line per shot: camera, size,
+focus, what it looks at). Fix every `FLOW:` note, then apply the craft sheet's "Camera positions" and "Flow"
+lists: each aimed camera has a subject at its focus, sizes go wide then close, characters keep their sides on
+the same set, the camera follows movement, and every cut has a reason. Change only camera, focus, cuts and where
+people stand, never the words. Re-run `shots` until it prints `flow OK`, then `check` again. In Claude Code the
+same pass is the `director` skill (`/studio:director <storyboard>`), which you can also run later on a
+finished storyboard.
+
 ## Step 6: Preview, review it yourself, then render
 
 1. `toon.py preview "<work>/storyboard.json" --audio "<work>/voice.wav" --out "<work>/preview.png"`
@@ -110,7 +120,7 @@ from word counts; `preview` prints the real ones once there is a voice.
 ## Step 7: Changes
 
 Ask: Perfect · Change a scene · Change the voice · Other. Edit the storyboard (re-make the voice if any `say` or
-`voice` text changed), re-preview, re-render.
+`voice` text changed), run `toon.py shots` again if a camera, a cut or a position changed, re-preview, re-render.
 
 ## Running on a free model (OpenCode)
 

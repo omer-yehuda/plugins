@@ -57,11 +57,13 @@ Show the user the beats in 5 lines or fewer: **Looks good** · **Stronger hook**
 
 Run `S check` on both until `OK`.
 
+**Director pass (both cuts, never skipped).** Read `${CLAUDE_PLUGIN_ROOT}/skills/produce/references/director.md`, run `S shots` on each storyboard and work from the scene table it prints. Fix every `FLOW:` note and apply the sheet: each `screen` scene starts on the whole page and ends on the proof, the pointer sits inside the zoom box and clicks before the scene ends, the same screenshot twice is entered with `cut`, and one scene gets the reveal. Run `S shots` until both print `flow OK`. This is the same pass as `/studio:director`.
+
 ## Step 5: Voice, preview, screening
 
 1. `S voice "<prod>/wide/storyboard.json"` and the same for `short/`. Lines are cached, so re-running after an edit only re-voices what changed.
 2. `S check` again (durations changed). A hook over 3.5 s: shorten the first `say`.
-3. `S preview` both and dispatch the `screener` agent (sonnet) on each contact sheet. Apply fixes, at most 2 loops.
+3. `S preview` both and dispatch the `screener` agent (sonnet) on each contact sheet. Apply fixes, at most 2 loops. If a fix changed a transition or a `screen` scene, run `S shots` again.
 
 ## Step 6: Render and check
 

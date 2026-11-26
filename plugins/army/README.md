@@ -31,9 +31,10 @@ On Claude Code versions earlier than 2.1.275, run `/plugin marketplace add omer-
 |---|---|
 | `raise the army <mission>` · `/army:raise <mission>` | HQ engages only the units the mission needs |
 | `raise the entire army <mission>` · `all units on board` · `/army:raise-all` | Turbo: every unit, after you confirm a dispatch preview |
-| `/army:mode lean` · `/army:mode full` | Model profile. Lean (default, Pro-friendly) never uses Opus; full puts critical units on Opus |
+| `/army:mode eco` · `/army:mode lean` · `/army:mode full` | Model profile. Eco uses the fewest tokens (Haiku wherever a mistake is cheap, smaller missions); lean (default, Pro-friendly) never uses Opus; full puts critical units on Opus |
+| `/army:budget 400k` · `/army:budget off` | Token budget per mission for the units. HQ is warned at 80% and told to stop dispatching at 100% |
 | `/army:gates on` · `/army:gates off` | Safety gates (default: on) |
-| `/army:status` | Mode, gates, active mission and phase, memory size |
+| `/army:status` | Mode, gates, budget, active mission and phase, tokens used per unit, memory size |
 | `/army:map` | Generate the command-center map locally (`.army/army-map.html`, works offline) |
 
 The settings commands run only when you type them. Claude cannot invoke them on its own, and their descriptions cost no context. You can also call one unit directly: "send the defense unit to audit the auth flow". A unit called directly runs on its lean model.
@@ -43,26 +44,26 @@ The settings commands run only when you type them. Claude cannot invoke them on 
 <!-- BEGIN ORDER OF BATTLE -->
 **18 units, 110 specialist playbooks.** Generated from `units.json`.
 
-| Unit | Callsign | Specialists | Tools | full | lean |
-|---|---|---|---|---|---|
-| `recon` | PATHFINDER | codebase map, cached until manifests or config change | scoped | haiku | haiku |
-| `ops` | OVERLORD | Mission planner, Architect, Risk analyst, Devil's advocate, Innovation officer, Product manager | scoped | opus | sonnet |
-| `inspector-general` | OVERWATCH | Consistency checker, Preflight checker | scoped | opus | sonnet |
-| `history` | ARCHIVE | Lessons keeper, Mission chronicler, Technical writer | scoped | sonnet | sonnet |
-| `rnd` | FORGE | Skill smith, Playbook author, Automation officer, Proving ground | scoped | opus | sonnet |
-| `special-ops` | GHOST | domains no unit covers; workarounds when stuck | scoped | opus | sonnet |
-| `intel` | SPECTRE | Competitor analyst, Market analyst, Audience listener, Tech scout, Strategist, Verifier, Case-study researcher, Watch officer, Due-diligence investigator, Keyword researcher, Grants & competitions scout, User-research planner, Wargame officer | scoped | sonnet | sonnet |
-| `data` | ORACLE | Data analyst, Experiments & statistics, Dashboard & report designer, Data collector | scoped | sonnet | sonnet |
-| `engineering` | IRONWORKS | Builder, Test strategist, Unit-test specialist, Optimizer, Clean-code reviewer, Dependency specialist, Bug hunter, QA explorer, Compatibility checker, AI engineer, Integrations engineer, Mobile developer | all | sonnet | sonnet |
-| `ux` | PRISM | UX reviewer, Accessibility specialist, Design-consistency specialist | scoped | sonnet | sonnet |
-| `logistics` | SUPPLY LINE | CI/CD engineer, Deployment engineer, Infrastructure & cost, Observability | all | sonnet | haiku |
-| `rescue` | MEDEVAC | Debugger, Incident commander | all | opus | sonnet |
-| `defense` | AEGIS | AppSec specialist, Secrets hunter, Supply-chain specialist, Threat modeler, Red team, Hardening officer, AI security officer, Personal-data mapper, Child-safety officer, Backup & recovery officer, Account security officer | scoped | opus | sonnet |
-| `legal` | TRIBUNAL | Licenses & copyright, Privacy counsel, Terms & policies, Accessibility law, Trademarks & naming, AI & platform compliance, Minors counsel, Consumer-protection counsel, Advertising counsel, Reputation & defamation counsel, Contract reviewer, Disputes counsel, Platform-terms officer | scoped | opus | sonnet |
-| `comms` | MEGAPHONE | UX copywriter, Marketing copywriter, Localization editor, Plain-language editor, Proofreader, Brand-voice keeper, Outreach writer, Review & complaint responder, Press-release writer, Video scriptwriter | scoped | sonnet | sonnet |
-| `growth` | WILDFIRE | SEO specialist, ASO specialist, Launch planner, Analytics specialist, Social media specialist, Email marketing specialist, Partnerships officer, Conversion specialist, Paid ads specialist, PR officer, Community manager, Reviews specialist | scoped | sonnet | haiku |
-| `treasury` | VAULT | Pricing & business model, Cost forecaster, Forecaster, Tax mapper, Procurement officer, Crowdfunding officer | scoped | sonnet | haiku |
-| `sales` | CLOSER | Offer & sales conversation, B2B & institutional sales, Negotiation officer, Customer support designer, Retention officer | scoped | sonnet | haiku |
+| Unit | Callsign | Specialists | Tools | full | lean | eco |
+|---|---|---|---|---|---|---|
+| `recon` | PATHFINDER | codebase map, cached until manifests or config change | scoped | haiku | haiku | haiku |
+| `ops` | OVERLORD | Mission planner, Architect, Risk analyst, Devil's advocate, Innovation officer, Product manager | scoped | opus | sonnet | sonnet |
+| `inspector-general` | OVERWATCH | Consistency checker, Preflight checker | scoped | opus | sonnet | sonnet |
+| `history` | ARCHIVE | Lessons keeper, Mission chronicler, Technical writer | scoped | sonnet | sonnet | haiku |
+| `rnd` | FORGE | Skill smith, Playbook author, Automation officer, Proving ground | scoped | opus | sonnet | haiku |
+| `special-ops` | GHOST | domains no unit covers; workarounds when stuck | scoped | opus | sonnet | haiku |
+| `intel` | SPECTRE | Competitor analyst, Market analyst, Audience listener, Tech scout, Strategist, Verifier, Case-study researcher, Watch officer, Due-diligence investigator, Keyword researcher, Grants & competitions scout, User-research planner, Wargame officer | scoped | sonnet | sonnet | haiku |
+| `data` | ORACLE | Data analyst, Experiments & statistics, Dashboard & report designer, Data collector | scoped | sonnet | sonnet | haiku |
+| `engineering` | IRONWORKS | Builder, Test strategist, Unit-test specialist, Optimizer, Clean-code reviewer, Dependency specialist, Bug hunter, QA explorer, Compatibility checker, AI engineer, Integrations engineer, Mobile developer | all | sonnet | sonnet | sonnet |
+| `ux` | PRISM | UX reviewer, Accessibility specialist, Design-consistency specialist | scoped | sonnet | sonnet | haiku |
+| `logistics` | SUPPLY LINE | CI/CD engineer, Deployment engineer, Infrastructure & cost, Observability | all | sonnet | haiku | haiku |
+| `rescue` | MEDEVAC | Debugger, Incident commander | all | opus | sonnet | sonnet |
+| `defense` | AEGIS | AppSec specialist, Secrets hunter, Supply-chain specialist, Threat modeler, Red team, Hardening officer, AI security officer, Personal-data mapper, Child-safety officer, Backup & recovery officer, Account security officer | scoped | opus | sonnet | sonnet |
+| `legal` | TRIBUNAL | Licenses & copyright, Privacy counsel, Terms & policies, Accessibility law, Trademarks & naming, AI & platform compliance, Minors counsel, Consumer-protection counsel, Advertising counsel, Reputation & defamation counsel, Contract reviewer, Disputes counsel, Platform-terms officer | scoped | opus | sonnet | sonnet |
+| `comms` | MEGAPHONE | UX copywriter, Marketing copywriter, Localization editor, Plain-language editor, Proofreader, Brand-voice keeper, Outreach writer, Review & complaint responder, Press-release writer, Video scriptwriter | scoped | sonnet | sonnet | haiku |
+| `growth` | WILDFIRE | SEO specialist, ASO specialist, Launch planner, Analytics specialist, Social media specialist, Email marketing specialist, Partnerships officer, Conversion specialist, Paid ads specialist, PR officer, Community manager, Reviews specialist | scoped | sonnet | haiku | haiku |
+| `treasury` | VAULT | Pricing & business model, Cost forecaster, Forecaster, Tax mapper, Procurement officer, Crowdfunding officer | scoped | sonnet | haiku | haiku |
+| `sales` | CLOSER | Offer & sales conversation, B2B & institutional sales, Negotiation officer, Customer support designer, Retention officer | scoped | sonnet | haiku | haiku |
 <!-- END ORDER OF BATTLE -->
 
 ## Drills
@@ -102,6 +103,14 @@ Examples: `put it on trial: should we move from REST to GraphQL?` · `admit this
 
 Every phase is recorded with `army.js phase`. If the context is compacted mid-mission, a `SessionStart` hook restores the mission, the phase and the operation order, so HQ doesn't skip inspection or leave the gate armed.
 
+## Token saving
+
+- **A measured ledger.** When a unit finishes, a hook sums the usage in that unit's own transcript into `<mission>/usage.jsonl`. `phase`, `status` and `end` print the total and the units from most to least expensive, and the final report carries it. "Spent" means new tokens (input, cache writes, output); cache reads are listed apart because they cost about a tenth. HQ's own tokens are not in the ledger. Units that ran in a git worktree are counted too.
+- **A budget** (`/army:budget 400k`). At 80% HQ is told to finish with the units already planned; at 100% to dispatch nothing new and to say what was left out. It is advice to HQ, not a hard stop, and HQ cannot change it during a mission without your approval.
+- **Eco mode** (`/army:mode eco`). Sonnet only for engineering, rescue, defense, legal, ops and the inspector-general, Haiku for the other twelve units, at most 4 units per mission, shorter SITREPs, no re-briefs and no Turbo.
+- **Lessons caps that hold.** `start` loads at most 100 lessons (blank lines do not count), 400 characters per line and 12 KB in total, whatever the file holds, and `end` refuses a file that is too large to load whole.
+- **Compact control output.** `army.js` prints single-line JSON; the indented form cost extra tokens on every phase change.
+
 ## Security model
 
 | Threat | Defense |
@@ -109,7 +118,7 @@ Every phase is recorded with `army.js phase`. If the context is compacted mid-mi
 | Mission reports leaking into commits, npm packages or images | `.army/.gitignore` contains `*`, and `.army/` is also added to `.git/info/exclude`. Tested: neither git nor `npm pack` includes it. **Docker** build contexts ignore nested `.gitignore` files, so add `.army` to your `.dockerignore`. |
 | A repository planting fake lessons in `.army/` | `start` refuses to run if `.army/` is tracked in git. Lessons are always presented as data, and units are told to report embedded instructions instead of following them. |
 | Prompt injection from web pages, files or other units' reports | A standing order in every unit says orders come only from the brief. Research units have no shell and no edit tools, so an injected instruction has little to act with. |
-| The army switching off its own gate | During a mission, the gate asks before `gates`, `mode` or `end --abort`, before ending ahead of after-action, and before any write to the army's session state or settings, whether by shell, Write/Edit or inline script. |
+| The army switching off its own gate | During a mission, the gate asks before `gates`, `mode`, `budget` or `end --abort`, before ending ahead of after-action, and before any write to the army's session state or settings, whether by shell, Write/Edit or inline script. |
 | One session's mission gating another session | State is per session (`.army/sessions/<id>.json`). It expires after 4 hours without activity, and the hook never walks above the git root or into your home directory. |
 
 **The gate is a speed bump, not a sandbox.** It tokenizes shell commands:
@@ -131,7 +140,7 @@ It asks before pushes, history rewrites, deletions, deploys, publishing, destruc
   missions/<id>/    opord.md, unit reports, lessons.before.md, state.final.json, log.md
 ```
 
-Your settings (mode, gates) are stored per user in the plugin's data directory.
+Your settings (mode, gates, budget) are stored per user in the plugin's data directory.
 
 ## Development
 
