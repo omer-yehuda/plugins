@@ -37,6 +37,7 @@ Run this in Claude Code (v2.1.275 or later):
 /plugin install archive --marketplace omer-yehuda/plugins
 /plugin install newsroom --marketplace omer-yehuda/plugins
 /plugin install premiere --marketplace omer-yehuda/plugins
+/plugin install video-creator --marketplace omer-yehuda/plugins
 ```
 
 Install only the ones you want.
@@ -48,7 +49,7 @@ Install only the ones you want.
 /plugin marketplace add omer-yehuda/plugins
 /plugin install army@omer-plugins
 /plugin install toon-shorts@omer-plugins
-/plugin install court@omer-plugins   # same pattern for customs, er, atc, studio, critics, skill-installer, mission-control, academy, archive, newsroom, premiere
+/plugin install court@omer-plugins   # same pattern for customs, er, atc, studio, critics, skill-installer, mission-control, academy, archive, newsroom, premiere, video-creator
 ```
 </details>
 
@@ -69,6 +70,7 @@ send this skill to the academy
 ask the archive why we chose REST
 newsroom, write the edition
 premiere, make a film about the last lighthouse keeper
+/video-creator:minecraft a village that rebuilds itself every morning
 ```
 
 To update later, run `/plugin marketplace update omer-plugins`.
@@ -91,6 +93,7 @@ To update later, run `/plugin marketplace update omer-plugins`.
 | [**archive**](plugins/archive/README.md) | The Archive. One read-only search over the records your other plugins keep (verdicts, bug charts, reviews, lessons, rulings, report cards). A librarian answers with the file behind every claim. | 1.0.0 |
 | [**newsroom**](plugins/newsroom/README.md) | The Newsroom. A reporter reads the commits, an editor drafts release notes, a changelog entry, social posts and video metadata, and a fact-checker cuts every claim with no commit behind it. Drafts only. | 1.0.0 |
 | [**premiere**](plugins/premiere/README.md) | Premiere. A film crew for realistic short films: director, cinematographer and continuity agents, stills from the image model you choose, and an ffmpeg cut with camera moves, one grade, a score and captions. | 1.0.0 |
+| [**video-creator**](plugins/video-creator/README.md) | Video Creator. One command per visual style: `/video-creator:minecraft`, `/video-creator:3d-realistic`, `/video-creator:anime` and 11 more, plus mix two styles, restyle a story and save your own. Style locked into every prompt, a free animatic before you spend credits, a frame checker, and an ffmpeg cut with per-style fps, grade, texture, transitions, music and captions. | 1.0.0 |
 
 ---
 
@@ -211,7 +214,7 @@ plugins/
     tests/                        pytest suite (coverage gate 85%)
     requirements*.txt             Pinned dependencies
     CHANGELOG.md
-  court/ customs/ er/ atc/ critics/ mission-control/ academy/ archive/ newsroom/ premiere/
+  court/ customs/ er/ atc/ critics/ mission-control/ academy/ archive/ newsroom/ premiere/ video-creator/
     skills/ · agents/ · scripts/ (zero-dependency Node) · tests/ (node:test)
   skill-installer/
     skills/                       install · browse
@@ -251,7 +254,7 @@ Plugin names must not start with `claude-` or `anthropic-`, because those prefix
 
 ```bash
 node --test plugins/army/tests/*.test.js               # gate + lifecycle tests
-for p in court customs er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js; done
+for p in court customs er atc critics skill-installer mission-control academy archive newsroom premiere video-creator; do node --test plugins/$p/tests/*.test.js; done
 (cd plugins/studio && python -m pytest)       # studio renderer tests (pip install -r requirements-dev.txt)
 node tools/sync-army.js                       # regenerate files from units.json and standing orders
 node evals/run.js                             # plugins vs. plain Claude (needs a signed-in claude CLI)

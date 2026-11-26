@@ -5,7 +5,7 @@
     "url": "https://github.com/omer-yehuda"
   },
   "metadata": {
-    "description": "A curated marketplace of tested Claude Code plugins by Omer Yehuda: Army (multi-agent orchestration), Toon Shorts (animated shorts), Code Court (decisions on trial), Customs (a first-filter scan of skills before you install), Bug ER (minimal-incision bug fixes), ATC (air traffic control for parallel sessions), Studio (AI film crew for explainer videos), The Critics' Table (3-star review), Skill Installer (install skills from GitHub), Mission Control (go or no-go before a release), The Academy (exams for skills), The Archive (one memory for every plugin), The Newsroom (release notes from commits) and Premiere (realistic short films)."
+    "description": "A curated marketplace of tested Claude Code plugins by Omer Yehuda: Army (multi-agent orchestration), Toon Shorts (animated shorts), Code Court (decisions on trial), Customs (a first-filter scan of skills before you install), Bug ER (minimal-incision bug fixes), ATC (air traffic control for parallel sessions), Studio (AI film crew for explainer videos), The Critics' Table (3-star review), Skill Installer (install skills from GitHub), Mission Control (go or no-go before a release), The Academy (exams for skills), The Archive (one memory for every plugin), The Newsroom (release notes from commits) Premiere (realistic short films) and Video Creator (one command per visual style)."
   },
   "plugins": [
     {
@@ -207,6 +207,22 @@
         "ffmpeg",
         "image-generation",
         "agents"
+      ]
+    },
+    {
+      "name": "video-creator",
+      "source": "./plugins/video-creator",
+      "description": "One command per visual style (/video-creator:minecraft, /video-creator:3d-realistic, /video-creator:anime and 11 more), plus mix two styles, restyle a story and save your own. Style locked into every prompt by code, a free animatic before you spend credits, a frame checker, and an ffmpeg cut with per-style fps, grade, texture, transitions, music bed and captions for Shorts, TikTok, Reels, YouTube or feed.",
+      "category": "creative",
+      "keywords": [
+        "video",
+        "styles",
+        "shorts",
+        "tiktok",
+        "reels",
+        "ai-video",
+        "animation",
+        "ffmpeg"
       ]
     }
   ]

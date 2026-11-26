@@ -20,6 +20,8 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
+      - name: Install ffmpeg (Premiere and Video Creator render tests)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
       - name: Install Claude Code CLI (pinned)
         run: npm install -g @anthropic-ai/claude-code@2.1.328
       - name: Validate marketplace
@@ -28,12 +30,14 @@ jobs:
         run: for p in plugins/*/; do claude plugin validate "$p"; done
       - name: Generated files in sync with units.json
         run: node tools/sync-army.js --check
+      - name: Video Creator style commands in sync with styles.json
+        run: node plugins/video-creator/scripts/gen-skills.js --check
       - name: Army tests (gate + lifecycle)
         run: node --test plugins/army/tests/*.test.js
       - name: Map builds
         run: node plugins/army/scripts/build-map.js --out /tmp/army-map.html
-      - name: Node plugin tests (court, customs, er, atc, critics, skill-installer, mission-control, academy, archive, newsroom, premiere)
-        run: for p in court customs er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js || exit 1; done
+      - name: Node plugin tests (court, customs, er, atc, critics, skill-installer, mission-control, academy, archive, newsroom, premiere, video-creator)
+        run: for p in court customs er atc critics skill-installer mission-control academy archive newsroom premiere video-creator; do node --test plugins/$p/tests/*.test.js || exit 1; done
 
   studio:
     runs-on: ubuntu-latest
