@@ -97,7 +97,7 @@ jobs:
       - name: Node plugin tests (all suites run, then the job fails if any failed)
         run: |
           failed=""
-          for p in army court customs er atc critics skill-installer mission-control academy archive newsroom premiere; do node --test plugins/$p/tests/*.test.js || failed="$failed $p"; done
+          for p in army court customs er atc critics skill-installer mission-control academy archive newsroom premiere video-creator; do node --test plugins/$p/tests/*.test.js || failed="$failed $p"; done
           if [ -n "$failed" ]; then echo "::error::failed:$failed"; exit 1; fi
       - name: Studio tests
         working-directory: plugins/studio
