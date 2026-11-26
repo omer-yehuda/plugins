@@ -20,80 +20,61 @@
 
 ## Quick start
 
-Run this in Claude Code (v2.1.275 or later):
+Run this in Claude Code (v2.1.275 or later), with the name of any plugin below:
 
 ```
-/plugin install army --marketplace omer-yehuda/plugins
-/plugin install toon-shorts --marketplace omer-yehuda/plugins
-/plugin install court --marketplace omer-yehuda/plugins
-/plugin install customs --marketplace omer-yehuda/plugins
-/plugin install er --marketplace omer-yehuda/plugins
-/plugin install atc --marketplace omer-yehuda/plugins
-/plugin install studio --marketplace omer-yehuda/plugins
-/plugin install critics --marketplace omer-yehuda/plugins
-/plugin install skill-installer --marketplace omer-yehuda/plugins
-/plugin install mission-control --marketplace omer-yehuda/plugins
-/plugin install academy --marketplace omer-yehuda/plugins
-/plugin install archive --marketplace omer-yehuda/plugins
-/plugin install newsroom --marketplace omer-yehuda/plugins
-/plugin install premiere --marketplace omer-yehuda/plugins
-/plugin install video-creator --marketplace omer-yehuda/plugins
+/plugin install <name> --marketplace omer-yehuda/plugins
 ```
 
-Install only the ones you want.
+For example `/plugin install video-creator --marketplace omer-yehuda/plugins`. Restart Claude Code (or run `/reload-plugins`) and type the line in the **Try it** column. Install only what you use: each installed plugin adds a little to every session (see [Token cost](#token-cost)).
 
 <details>
 <summary>Older Claude Code versions</summary>
 
 ```
 /plugin marketplace add omer-yehuda/plugins
-/plugin install army@omer-plugins
-/plugin install toon-shorts@omer-plugins
-/plugin install court@omer-plugins   # same pattern for customs, er, atc, studio, critics, skill-installer, mission-control, academy, archive, newsroom, premiere, video-creator
+/plugin install <name>@omer-plugins
 ```
 </details>
-
-Restart Claude Code (or run `/reload-plugins`), then type:
-
-```
-raise the army build a landing page for my habit-tracking app
-make me an animated short about the man who sold the Eiffel Tower
-put it on trial: should we move from REST to GraphQL?
-/customs:inspect https://github.com/<owner>/<repo>
-admit this bug: checkout total is off by one cent
-/atc:claim src/billing/** (invoice refactor)
-studio, make a video about what a Claude skill is
-let the critics taste it
-install the pdf skill from anthropics/skills
-mission control, are we go?
-send this skill to the academy
-ask the archive why we chose REST
-newsroom, write the edition
-premiere, make a film about the last lighthouse keeper
-/video-creator:minecraft a village that rebuilds itself every morning
-```
 
 To update later, run `/plugin marketplace update omer-plugins`.
 
 ## Plugin catalog
 
-| Plugin | What it does | Version |
-|---|---|---|
-| [**army**](plugins/army/README.md) | Multi-agent orchestration. A Chief of Staff commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, backed by 110 on-demand field manuals. Session-bound safety gates, least-privilege tool kits, cost-aware model routing and local lessons-learned memory. | 1.2.0 |
-| [**toon-shorts**](plugins/toon-shorts/README.md) | Animated short creator. Turns a true story into an original voiced, captioned 1080x1920 cartoon MP4 for Shorts, TikTok and Reels: 10 ideas, retention script, free AI voice or your own, toon characters on parallax sets, karaoke captions with Hebrew RTL, and a preview Claude reviews before rendering. | 1.1.0 |
-| [**court**](plugins/court/README.md) | Code Court. Puts a technical decision on trial: opposing counsel argue each option from shared evidence, one rebuttal round, and a judge who never saw your opinion rules, with a dissent and the conditions that would overturn the verdict. | 1.0.0 |
-| [**customs**](plugins/customs/README.md) | Border control for skills and plugins. Scans a local folder, GitHub repo or installed plugin before you trust it (remote code, obfuscation, hidden Unicode, prompt injection, credential access, exfiltration, wildcard hooks) and stamps a passport: CLEARED, SECONDARY INSPECTION or DENIED. A first filter, not a guarantee. | 1.0.0 |
-| [**er**](plugins/er/README.md) | Bug ER. A triage nurse, attending, surgeon and discharge check fix a bug with a regression test first and the smallest possible incision, under a hard budget (default 3 files, 40 lines). | 1.0.0 |
-| [**atc**](plugins/atc/README.md) | ATC: air traffic control for parallel Claude sessions. Sessions claim lanes (file globs), a hook asks before one session edits another's lane, and `/atc:clear` splits a big task across non-overlapping parallel pilots in worktrees. | 1.0.0 |
-| [**studio**](plugins/studio/README.md) | An AI film crew. Writer, director, test-screening critic and editor turn a topic into a vertical or wide kinetic-typography explainer MP4 with captions, optional free local AI narration and upload metadata. The trend desk films a trending tool from real screenshots and makes a wide video plus a Short. Rendered locally with Pillow and ffmpeg. | 1.2.0 |
-| [**critics**](plugins/critics/README.md) | The Critics' Table. Three independent critics (presentation, kitchen, recipe) taste your work, a head critic awards up to 3 stars with a short fix-before-serving list, and a re-taste shows the stars go up. | 1.0.0 |
-| [**skill-installer**](plugins/skill-installer/README.md) | Skill Installer. Browse a skills repo or a plugin marketplace and install a skill from GitHub into `~/.claude/skills` or the project: dry run, quick risk check, atomic copy, backup on update, "did you mean" for typos. Adapted from OpenAI's Apache-2.0 Codex skill-installer. | 1.0.0 |
-| [**mission-control**](plugins/mission-control/README.md) | Mission Control. Go or no-go before a release: a script collects the facts (versions that disagree, changes without a changelog entry, a dirty tree), four stations report, and an independent flight director rules GO, HOLD or NO-GO. It never tags, pushes or deploys. | 1.0.0 |
-| [**academy**](plugins/academy/README.md) | The Academy. An examiner writes missions from a skill's promise, each one runs with and without the skill in headless Claude Code, and the script grades it GRADUATED, RETAKE or EXPELLED with pass rate, tokens, cost and time. | 1.0.0 |
-| [**archive**](plugins/archive/README.md) | The Archive. One read-only search over the records your other plugins keep (verdicts, bug charts, reviews, lessons, rulings, report cards). A librarian answers with the file behind every claim. | 1.0.0 |
-| [**newsroom**](plugins/newsroom/README.md) | The Newsroom. A reporter reads the commits, an editor drafts release notes, a changelog entry, social posts and video metadata, and a fact-checker cuts every claim with no commit behind it. Drafts only. | 1.0.0 |
-| [**premiere**](plugins/premiere/README.md) | Premiere. A film crew for realistic short films: director, cinematographer and continuity agents, stills from the image model you choose, and an ffmpeg cut with camera moves, one grade, a score and captions. | 1.0.0 |
-| [**video-creator**](plugins/video-creator/README.md) | Video Creator. One command per visual style: `/video-creator:minecraft`, `/video-creator:3d-realistic`, `/video-creator:anime` and 11 more, plus mix two styles, restyle a story and save your own. Style locked into every prompt, a free animatic before you spend credits, a frame checker, and an ffmpeg cut with per-style fps, grade, texture, transitions, music and captions. | 1.1.0 |
+### Build and fix code
+
+| Plugin | What it does | Try it | Version |
+|---|---|---|---|
+| [**army**](plugins/army/README.md) | Multi-agent orchestration. A Chief of Staff commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, backed by 110 on-demand field manuals. Session-bound safety gates, least-privilege tool kits, cost-aware model routing and local lessons-learned memory. | `raise the army build a landing page for my habit-tracking app` | 1.2.0 |
+| [**er**](plugins/er/README.md) | Bug ER. A triage nurse, attending, surgeon and discharge check fix a bug with a regression test first and the smallest possible incision, under a hard budget (default 3 files, 40 lines). | `admit this bug: checkout total is off by one cent` | 1.0.0 |
+| [**critics**](plugins/critics/README.md) | The Critics' Table. Three independent critics (presentation, kitchen, recipe) taste your work, a head critic awards up to 3 stars with a short fix-before-serving list, and a re-taste shows the stars go up. | `let the critics taste it` | 1.0.0 |
+| [**court**](plugins/court/README.md) | Code Court. Puts a technical decision on trial: opposing counsel argue each option from shared evidence, one rebuttal round, and a judge who never saw your opinion rules, with a dissent and the conditions that would overturn the verdict. | `put it on trial: should we move from REST to GraphQL?` | 1.0.0 |
+
+### Safety and parallel work
+
+| Plugin | What it does | Try it | Version |
+|---|---|---|---|
+| [**customs**](plugins/customs/README.md) | Border control for skills and plugins. Scans a local folder, GitHub repo or installed plugin before you trust it (remote code, obfuscation, hidden Unicode, prompt injection, credential access, exfiltration, wildcard hooks) and stamps a passport: CLEARED, SECONDARY INSPECTION or DENIED. A first filter, not a guarantee. | `/customs:inspect https://github.com/<owner>/<repo>` | 1.0.0 |
+| [**atc**](plugins/atc/README.md) | ATC: air traffic control for parallel Claude sessions. Sessions claim lanes (file globs), a hook asks before one session edits another's lane, and `/atc:clear` splits a big task across non-overlapping parallel pilots in worktrees. | `/atc:claim src/billing/** (invoice refactor)` | 1.0.0 |
+| [**skill-installer**](plugins/skill-installer/README.md) | Skill Installer. Browse a skills repo or a plugin marketplace and install a skill from GitHub into `~/.claude/skills` or the project: dry run, quick risk check, atomic copy, backup on update, "did you mean" for typos. Adapted from OpenAI's Apache-2.0 Codex skill-installer. | `install the pdf skill from anthropics/skills` | 1.0.0 |
+
+### Ship and remember
+
+| Plugin | What it does | Try it | Version |
+|---|---|---|---|
+| [**mission-control**](plugins/mission-control/README.md) | Mission Control. Go or no-go before a release: a script collects the facts (versions that disagree, changes without a changelog entry, a dirty tree), four stations report, and an independent flight director rules GO, HOLD or NO-GO. It never tags, pushes or deploys. | `mission control, are we go?` | 1.0.0 |
+| [**newsroom**](plugins/newsroom/README.md) | The Newsroom. A reporter reads the commits, an editor drafts release notes, a changelog entry, social posts and video metadata, and a fact-checker cuts every claim with no commit behind it. Drafts only. | `newsroom, write the edition` | 1.0.0 |
+| [**academy**](plugins/academy/README.md) | The Academy. An examiner writes missions from a skill's promise, each one runs with and without the skill in headless Claude Code, and the script grades it GRADUATED, RETAKE or EXPELLED with pass rate, tokens, cost and time. | `send this skill to the academy` | 1.0.0 |
+| [**archive**](plugins/archive/README.md) | The Archive. One read-only search over the records your other plugins keep (verdicts, bug charts, reviews, lessons, rulings, report cards). A librarian answers with the file behind every claim. | `ask the archive why we chose REST` | 1.0.0 |
+
+### Make videos
+
+| Plugin | What it does | Try it | Version |
+|---|---|---|---|
+| [**video-creator**](plugins/video-creator/README.md) | Video Creator. One command per visual style: `/video-creator:minecraft`, `/video-creator:3d-realistic`, `/video-creator:anime` and 11 more, plus mix two styles, restyle a story and save your own. Style locked into every prompt, a free animatic before you spend credits, a frame checker, and an ffmpeg cut with per-style fps, grade, texture, transitions, music and captions. | `/video-creator:minecraft a village that rebuilds itself every morning` | 1.1.0 |
+| [**toon-shorts**](plugins/toon-shorts/README.md) | Animated short creator. Turns a true story into an original voiced, captioned 1080x1920 cartoon MP4 for Shorts, TikTok and Reels: 10 ideas, retention script, free AI voice or your own, toon characters on parallax sets, karaoke captions with Hebrew RTL, and a preview Claude reviews before rendering. | `make me an animated short about the man who sold the Eiffel Tower` | 1.1.0 |
+| [**studio**](plugins/studio/README.md) | An AI film crew. Writer, director, test-screening critic and editor turn a topic into a vertical or wide kinetic-typography explainer MP4 with captions, optional free local AI narration and upload metadata. The trend desk films a trending tool from real screenshots and makes a wide video plus a Short. Rendered locally with Pillow and ffmpeg. | `studio, make a video about what a Claude skill is` | 1.2.0 |
+| [**premiere**](plugins/premiere/README.md) | Premiere. A film crew for realistic short films: director, cinematographer and continuity agents, stills from the image model you choose, and an ffmpeg cut with camera moves, one grade, a score and captions. | `premiere, make a film about the last lighthouse keeper` | 1.0.0 |
 
 ---
 
@@ -186,6 +167,8 @@ See the full documentation in [plugins/toon-shorts/README.md](plugins/toon-short
 ## Featured: Video Creator
 
 > Pick a look, give an idea, get a styled video.
+
+[![The 14 Video Creator styles, each with its own palette, frame rate and transition](docs/images/video-creator-styles.png)](plugins/video-creator/README.md)
 
 Type **`/video-creator:minecraft a village that rebuilds itself every morning`** (or `3d-realistic`, `anime`, `claymation`, `pixel-art`, `cyberpunk` and 8 more). A screenwriter plans a hook-first shot list in that style, code locks the style into every image prompt, and a **free animatic** shows the real timing, moves, captions and music before you spend a single credit. You make the images or clips with the model you choose; a frame checker rejects bad frames, and ffmpeg cuts the finished video.
 

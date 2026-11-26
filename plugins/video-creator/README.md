@@ -31,6 +31,8 @@ On older Claude Code versions run `/plugin marketplace add omer-yehuda/plugins` 
 
 ## The styles
 
+![The 14 styles, each with its own palette, frame rate and transition](../../docs/images/video-creator-styles.png)
+
 | Command | Look | Edit |
 |---|---|---|
 | `/video-creator:minecraft` | Blocky voxel world, cube trees, pixel textures (a fan style; prompts never name the game) | pixelize transitions, chiptune |
