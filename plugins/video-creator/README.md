@@ -61,7 +61,9 @@ Your own styles work everywhere: `/video-creator:make <your-style> <idea>`, and 
 | `/video-creator:new-style <description>` | Design and save your own style pack | No |
 | `/video-creator:shoot <id>` | Get one image or clip per shot from your model, hero gate, frame check | Yes, on your model |
 | `/video-creator:render <id> [--draft] [--burn] [--animatic]` | The styled cut: `video.mp4`, `captions.srt`, `metadata.md` | No |
-| `/video-creator:styles` | List every style (runs only when you type it) | No |
+| `/video-creator:styles` | List every style | No |
+
+All of these are typed commands. You can also just ask: "video creator, make an anime video about ..." or "video creator, render 003-the-cube-village" goes through `make`, which picks the right step.
 
 Flags on any style command: `--shorts` (default), `--youtube`, `--square`, `--feed`, `--seconds 15|30|60`.
 
@@ -77,6 +79,8 @@ flowchart LR
     M --> F[Frame checker<br/>one labelled sheet<br/>KEEP or REDO]
     F --> R[Render: moves, fps, grade,<br/>texture, transitions, music, captions]
 ```
+
+Under the hood the helper (`scripts/vc.js`) does the work in a few calls: `init` opens the project, `build` checks it, writes `prompts.md` and renders the animatic, `sheet` makes the labelled contact sheet, and `render` cuts the video.
 
 Everything lands in `.video-creator/projects/<id>/` in your project: `project.json`, `style.json`, `prompts.md`, `media/`, `animatic.mp4`, `draft.mp4`, `video.mp4`, `captions.srt`, `metadata.md`.
 

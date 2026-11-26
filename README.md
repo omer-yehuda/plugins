@@ -80,12 +80,12 @@ To update later, run `/plugin marketplace update omer-plugins`.
 | Plugin | What it does | Version |
 |---|---|---|
 | [**army**](plugins/army/README.md) | Multi-agent orchestration. A Chief of Staff commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, backed by 110 on-demand field manuals. Session-bound safety gates, least-privilege tool kits, cost-aware model routing and local lessons-learned memory. | 1.2.0 |
-| [**toon-shorts**](plugins/toon-shorts/README.md) | Animated short creator. Turns a true story into an original voiced, captioned 1080x1920 cartoon MP4 for Shorts, TikTok and Reels: 10 ideas, retention script, free AI voice or your own, toon characters on parallax sets, karaoke captions with Hebrew RTL, and a preview Claude reviews before rendering. | 1.0.1 |
+| [**toon-shorts**](plugins/toon-shorts/README.md) | Animated short creator. Turns a true story into an original voiced, captioned 1080x1920 cartoon MP4 for Shorts, TikTok and Reels: 10 ideas, retention script, free AI voice or your own, toon characters on parallax sets, karaoke captions with Hebrew RTL, and a preview Claude reviews before rendering. | 1.1.0 |
 | [**court**](plugins/court/README.md) | Code Court. Puts a technical decision on trial: opposing counsel argue each option from shared evidence, one rebuttal round, and a judge who never saw your opinion rules, with a dissent and the conditions that would overturn the verdict. | 1.0.0 |
 | [**customs**](plugins/customs/README.md) | Border control for skills and plugins. Scans a local folder, GitHub repo or installed plugin before you trust it (remote code, obfuscation, hidden Unicode, prompt injection, credential access, exfiltration, wildcard hooks) and stamps a passport: CLEARED, SECONDARY INSPECTION or DENIED. A first filter, not a guarantee. | 1.0.0 |
 | [**er**](plugins/er/README.md) | Bug ER. A triage nurse, attending, surgeon and discharge check fix a bug with a regression test first and the smallest possible incision, under a hard budget (default 3 files, 40 lines). | 1.0.0 |
 | [**atc**](plugins/atc/README.md) | ATC: air traffic control for parallel Claude sessions. Sessions claim lanes (file globs), a hook asks before one session edits another's lane, and `/atc:clear` splits a big task across non-overlapping parallel pilots in worktrees. | 1.0.0 |
-| [**studio**](plugins/studio/README.md) | An AI film crew. Writer, director, test-screening critic and editor turn a topic into a vertical or wide kinetic-typography explainer MP4 with captions, optional free local AI narration and upload metadata. The trend desk films a trending tool from real screenshots and makes a wide video plus a Short. Rendered locally with Pillow and ffmpeg. | 1.1.0 |
+| [**studio**](plugins/studio/README.md) | An AI film crew. Writer, director, test-screening critic and editor turn a topic into a vertical or wide kinetic-typography explainer MP4 with captions, optional free local AI narration and upload metadata. The trend desk films a trending tool from real screenshots and makes a wide video plus a Short. Rendered locally with Pillow and ffmpeg. | 1.2.0 |
 | [**critics**](plugins/critics/README.md) | The Critics' Table. Three independent critics (presentation, kitchen, recipe) taste your work, a head critic awards up to 3 stars with a short fix-before-serving list, and a re-taste shows the stars go up. | 1.0.0 |
 | [**skill-installer**](plugins/skill-installer/README.md) | Skill Installer. Browse a skills repo or a plugin marketplace and install a skill from GitHub into `~/.claude/skills` or the project: dry run, quick risk check, atomic copy, backup on update, "did you mean" for typos. Adapted from OpenAI's Apache-2.0 Codex skill-installer. | 1.0.0 |
 | [**mission-control**](plugins/mission-control/README.md) | Mission Control. Go or no-go before a release: a script collects the facts (versions that disagree, changes without a changelog entry, a dirty tree), four stations report, and an independent flight director rules GO, HOLD or NO-GO. It never tags, pushes or deploys. | 1.0.0 |
@@ -183,12 +183,38 @@ See the full documentation in [plugins/toon-shorts/README.md](plugins/toon-short
 
 ---
 
+## Featured: Video Creator
+
+> Pick a look, give an idea, get a styled video.
+
+Type **`/video-creator:minecraft a village that rebuilds itself every morning`** (or `3d-realistic`, `anime`, `claymation`, `pixel-art`, `cyberpunk` and 8 more). A screenwriter plans a hook-first shot list in that style, code locks the style into every image prompt, and a **free animatic** shows the real timing, moves, captions and music before you spend a single credit. You make the images or clips with the model you choose; a frame checker rejects bad frames, and ffmpeg cuts the finished video.
+
+- **14 styles, each a full edit:** look, motion, frame rate (12 fps for claymation and pixel art), colour grade, texture, transitions and a royalty-free music bed.
+- **New looks without new code:** `/video-creator:mix noir+cyberpunk ...`, `/video-creator:restyle <id> anime`, or save your own with `/video-creator:new-style`.
+- **Every platform:** Shorts, TikTok and Reels 9:16, YouTube 16:9, square 1:1, feed 4:5, with burned-in or SRT captions.
+- **Cheap to keep installed:** about 230 tokens per session; its 20 typed commands cost nothing until you type them. Re-renders reuse every shot you did not change.
+
+See the full documentation in [plugins/video-creator/README.md](plugins/video-creator/README.md).
+
+---
+
+## Token cost
+
+Every installed plugin adds the descriptions of its skills and agents to every Claude Code session, whether you use it or not. Skills marked `disable-model-invocation: true` cost nothing until you type them. See what each plugin costs:
+
+```bash
+node tools/token-budget.js
+```
+
+All 15 plugins together cost about 4,000 tokens per session. CI fails if a plugin goes over 3,000 always-loaded characters, a description over 520, or a skill or agent body over 12,000. To keep sessions lean, install only the plugins you use.
+
 ## Privacy & safety
 
 - **No telemetry.** Plugins in this marketplace send nothing anywhere on their own.
 - **Local memory only.** Project memory lives in `.army/` inside your project, protected by its own `.gitignore` (`*`) and `.git/info/exclude`, so neither git nor `npm pack` includes it. Add `.army` to `.dockerignore` if you build images. Per-user settings live in Claude Code's plugin data directory.
 - **Human in the loop.** Irreversible actions require your approval by default.
 - **Toon Shorts installs nothing on its own.** Setup asks first, then installs into a private venv (`~/.cache/toon-shorts`) with pinned packages and a hash-verified voice model.
+- **Video Creator and Premiere make no network calls.** They bundle no image model and never upload; your images come from the model you choose.
 - **Defensive security only.** The red-team specialist is restricted to your own project in a local or test environment.
 - The legal unit produces an automated risk review, **not legal advice**.
 
@@ -214,8 +240,15 @@ plugins/
     tests/                        pytest suite (coverage gate 85%)
     requirements*.txt             Pinned dependencies
     CHANGELOG.md
-  court/ customs/ er/ atc/ critics/ mission-control/ academy/ archive/ newsroom/ premiere/ video-creator/
+  court/ customs/ er/ atc/ critics/ mission-control/ academy/ archive/ newsroom/ premiere/
     skills/ · agents/ · scripts/ (zero-dependency Node) · tests/ (node:test)
+  video-creator/
+    styles/styles.json            Single source of truth for the 14 style packs
+    skills/                       make (the one model-visible skill) · shoot · render · mix · restyle · new-style · styles
+                                  + one typed command per style, generated by scripts/gen-skills.js
+    agents/                       screenwriter · style-artist · frame-checker
+    scripts/vc.js                 Zero-dependency helper; ffmpeg renderer with parallel, cached shots
+    tests/                        node:test (render tests need ffmpeg)
   skill-installer/
     skills/                       install · browse
     scripts/si.js                 Zero-dependency installer (GitHub tree API + git fallback)
@@ -228,6 +261,7 @@ docs/                             Live site (GitHub Pages): interactive map + sc
 evals/                            Each plugin vs. plain Claude on fixed missions
 templates/plugin-template/        Scaffold for new plugins
 tools/sync-army.js                Generates agent frontmatter and tables, CI drift check
+tools/token-budget.js             Context cost per plugin, CI budget check
 .github/workflows/validate.yml    CI: manifest validation + tests
 ```
 
@@ -240,13 +274,15 @@ tools/sync-army.js                Generates agent frontmatter and tables, CI dri
    ```json
    { "name": "<name>", "source": "./plugins/<name>", "description": "..." }
    ```
-5. Validate it:
+5. Keep it cheap: a skill the user always types as a `/command` gets `disable-model-invocation: true`, so its description is not loaded into every session. Keep descriptions short and specific.
+6. Validate it:
    ```bash
    claude plugin validate .
    claude plugin validate plugins/<name>
+   node tools/token-budget.js --check
    ```
-6. Try it locally: `claude --plugin-dir plugins/<name>`
-7. Bump `version` in `plugin.json` for every release. Users stay on a pinned version until it changes.
+7. Try it locally: `claude --plugin-dir plugins/<name>`
+8. Bump `version` in `plugin.json` for every release. Users stay on a pinned version until it changes.
 
 Plugin names must not start with `claude-` or `anthropic-`, because those prefixes are reserved.
 
@@ -254,9 +290,11 @@ Plugin names must not start with `claude-` or `anthropic-`, because those prefix
 
 ```bash
 node --test plugins/army/tests/*.test.js               # gate + lifecycle tests
-for p in court customs er atc critics skill-installer mission-control academy archive newsroom premiere video-creator; do node --test plugins/$p/tests/*.test.js; done
+for p in court customs er atc critics skill-installer mission-control academy archive newsroom premiere video-creator; do node --test plugins/$p/tests/*.test.js; done   # render tests need ffmpeg
 (cd plugins/studio && python -m pytest)       # studio renderer tests (pip install -r requirements-dev.txt)
 node tools/sync-army.js                       # regenerate files from units.json and standing orders
+node plugins/video-creator/scripts/gen-skills.js   # regenerate the style commands after editing styles.json
+node tools/token-budget.js                    # context cost per plugin (--check enforces the budget)
 node evals/run.js                             # plugins vs. plain Claude (needs a signed-in claude CLI)
 (cd plugins/toon-shorts && python -m pytest)   # toon-shorts engine tests (pip install -r requirements-dev.txt)
 claude plugin validate .                      # validate the marketplace
