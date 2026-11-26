@@ -1,14 +1,21 @@
 {
   "name": "newsroom",
   "displayName": "The Newsroom",
-  "version": "1.0.0",
-  "description": "Every release deserves a headline. A reporter reads the commits, an editor writes release notes, a changelog draft, social posts and video metadata, and a fact-checker cuts every claim that has no commit behind it. Drafts only: it never posts.",
+  "version": "1.1.0",
+  "description": "Deprecated: The Newsroom is now a drill of the army plugin (/army:edition, /army:headline, /army:wire). This stub only points you there and will be removed in the next release.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
   },
   "repository": "https://github.com/omer-yehuda/plugins",
   "license": "MIT",
-  "keywords": ["release-notes", "changelog", "announcements", "social", "writing", "subagents"],
-  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/newsroom"
+  "keywords": [
+    "release-notes",
+    "changelog",
+    "announcements",
+    "social",
+    "writing",
+    "subagents"
+  ],
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/army"
 }

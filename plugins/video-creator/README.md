@@ -1,7 +1,7 @@
 # Video Creator: one command per style
 
 ```
-/video-creator:minecraft a village that rebuilds itself every morning
+/video-creator:voxel a village that rebuilds itself every morning
 /video-creator:3d-realistic the last train through a frozen forest
 /video-creator:anime a courier who races the sunrise
 /video-creator:mix noir+cyberpunk a detective who never sleeps
@@ -35,7 +35,7 @@ On older Claude Code versions run `/plugin marketplace add omer-yehuda/plugins` 
 
 | Command | Look | Edit |
 |---|---|---|
-| `/video-creator:minecraft` | Blocky voxel world, cube trees, pixel textures (a fan style; prompts never name the game) | pixelize transitions, chiptune |
+| `/video-creator:voxel` | Blocky voxel world, cube trees, pixel textures | pixelize transitions, chiptune |
 | `/video-creator:3d-realistic` | Photoreal CGI, ray-traced light, anamorphic lens | teal-amber grade, grain, cinematic bed |
 | `/video-creator:3d-cartoon` | Big-eyed family-feature 3D animation | warm grade, smooth slides, playful bed |
 | `/video-creator:anime` | Cel shading, painted skies, speed lines | 24 fps, white flashes, anthem |

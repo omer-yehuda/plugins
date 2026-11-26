@@ -21,5 +21,5 @@ STUDIO: an AI film crew
 
 Files: .studio/productions/<date>-<slug>/  (git-ignored)
 Needs: Python 3.11+, ffmpeg on PATH. First run asks before creating a private venv with pinned Pillow.
-Cartoon story with characters? Use /toon-shorts instead.
+Cartoon story with characters? Use /studio:toon. A realistic short film? Use /studio:pitch.
 ```

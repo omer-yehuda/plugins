@@ -1,6 +1,6 @@
 ---
 name: history
-description: "Army HISTORY unit: curates .army/lessons.md, writes mission logs and docs. Dispatched by army HQ, or when the user names this unit."
+description: "Army HISTORY unit: curates .army/lessons.md, writes mission logs and docs. Dispatched by army HQ."
 model: sonnet
 effort: medium
 maxTurns: 40

@@ -55,5 +55,16 @@
     { "id": "sales", "title": "Sales & Customers", "group": "Market", "mono": "SA", "callsign": "CLOSER", "use": "offers, B2B sales, negotiation, support, retention", "full": "sonnet", "lean": "haiku", "effort": "medium",
       "tools": ["Read", "Glob", "Grep", "Write", "WebSearch", "WebFetch"],
       "description": "Army SALES unit: offers, B2B sales, negotiation prep, support and retention." }
+  ],
+  "$comment_drills": "Drills: plugins that joined the army in 2.0.0. Each is a set of skills you can run on its own, without raising the army. Their agents are listed here so tools/sync-army.js accepts them; their frontmatter is hand-written.",
+  "drills": [
+    {"id": "trial", "from": "court", "unit": "ops", "skills": ["trial", "appeal", "docket"], "agents": ["clerk", "counsel", "judge"], "state": ".court", "use": "put a technical decision on trial: counsel argue each option, an independent judge rules"},
+    {"id": "admit", "from": "er", "unit": "rescue", "skills": ["admit", "chart"], "agents": ["triage-nurse", "attending", "surgeon", "discharge"], "state": ".er", "use": "fix one bug: regression test first, smallest incision under a hard budget"},
+    {"id": "taste", "from": "critics", "unit": "inspector-general", "skills": ["taste", "retaste", "menu"], "agents": ["presentation-critic", "kitchen-critic", "recipe-critic", "head-critic"], "state": ".critics", "use": "three independent critics review the work, a head critic awards up to 3 stars"},
+    {"id": "countdown", "from": "mission-control", "unit": "inspector-general", "skills": ["countdown", "scrub", "log"], "agents": ["station", "flight-director"], "state": ".mission-control", "use": "release go or no-go from collected facts and four stations"},
+    {"id": "exam", "from": "academy", "unit": "rnd", "skills": ["enroll", "exam", "transcript"], "agents": ["examiner", "dean"], "state": ".academy", "use": "test a skill with and without it in headless Claude Code; pass rate, tokens, cost"},
+    {"id": "recall", "from": "archive", "unit": "history", "skills": ["recall", "catalog", "shelf", "timeline"], "agents": ["librarian"], "state": "(reads the others)", "use": "search every record the army keeps, with the file behind every claim"},
+    {"id": "edition", "from": "newsroom", "unit": "comms", "skills": ["edition", "headline", "wire"], "agents": ["reporter", "editor", "fact-checker"], "state": ".newsroom", "use": "release notes, changelog, social posts and a video brief from the commits, fact-checked"},
+    {"id": "lanes", "from": "atc", "unit": "engineering", "skills": ["claim", "clear", "radar", "release"], "agents": ["pilot"], "state": ".atc", "use": "parallel sessions claim file lanes; a hook asks before one edits another's lane"}
   ]
 }

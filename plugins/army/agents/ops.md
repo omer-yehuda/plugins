@@ -1,6 +1,6 @@
 ---
 name: ops
-description: "Army OPS unit: mission plans, architecture, product scope, risk and devil's advocate. Dispatched by army HQ, or when the user names this unit."
+description: "Army OPS unit: mission plans, architecture, product scope, risk and devil's advocate. Dispatched by army HQ."
 model: sonnet
 effort: high
 tools: Read, Glob, Grep, Write, WebSearch, WebFetch

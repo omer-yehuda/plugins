@@ -1,8 +1,8 @@
 {
   "name": "studio",
   "displayName": "Studio",
-  "version": "1.2.0",
-  "description": "A film crew of AI agents that turns a topic into a finished explainer video, vertical (1080x1920) or wide (1920x1080): writer, director, test-screening critic and editor produce a kinetic-typography MP4 with captions, optional free local AI narration and upload metadata. The trend desk films a trending tool from real screenshots and makes a wide video plus a Short. Local rendering with Pillow and ffmpeg.",
+  "version": "2.0.0",
+  "description": "A film crew of AI agents in three formats: kinetic-typography explainers (vertical or wide, AI narration with emotion, trend desk), animated cartoon shorts from true stories with Hebrew RTL karaoke captions (formerly toon-shorts), and realistic short films from stills you generate (formerly Premiere). One plugin, one hash-locked venv, one voice model.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
@@ -11,13 +11,21 @@
   "license": "MIT",
   "keywords": [
     "agents",
+    "animation",
     "captions",
+    "cartoon",
+    "cinematography",
     "explainer",
+    "film",
+    "hebrew",
     "kinetic-typography",
     "motion-graphics",
     "narration",
+    "reels",
     "screen-recording",
     "shorts",
+    "storytelling",
+    "tiktok",
     "video",
     "youtube"
   ],

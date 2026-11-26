@@ -1,6 +1,6 @@
 ---
 name: growth
-description: "Army GROWTH unit: SEO, ASO, launch, social, email, PR, ads and analytics plans. Dispatched by army HQ, or when the user names this unit."
+description: "Army GROWTH unit: SEO, ASO, launch, social, email, PR, ads and analytics plans. Dispatched by army HQ."
 model: haiku
 effort: medium
 tools: Read, Glob, Grep, Write, WebSearch, WebFetch

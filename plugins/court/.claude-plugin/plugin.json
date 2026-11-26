@@ -1,14 +1,21 @@
 {
   "name": "court",
   "displayName": "Code Court",
-  "version": "1.0.0",
-  "description": "Put any technical decision on trial. Opposing counsel argue each option from shared evidence, a judge who never saw your opinion rules, and the verdict names the conditions that would overturn it.",
+  "version": "1.1.0",
+  "description": "Deprecated: Code Court is now a drill of the army plugin (/army:trial, /army:appeal, /army:docket). This stub only points you there and will be removed in the next release.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
   },
   "repository": "https://github.com/omer-yehuda/plugins",
   "license": "MIT",
-  "keywords": ["decisions", "architecture", "adr", "subagents", "debate", "trade-offs"],
-  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/court"
+  "keywords": [
+    "decisions",
+    "architecture",
+    "adr",
+    "subagents",
+    "debate",
+    "trade-offs"
+  ],
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/army"
 }

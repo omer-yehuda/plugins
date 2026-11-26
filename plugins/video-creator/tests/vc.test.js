@@ -27,7 +27,7 @@ const SHOTS = [
 ];
 function project(style, platform) {
   const p = tmp();
-  const r = vc.init(p, { title: 'Cube Village', style: style || 'minecraft', platform: platform || 'shorts' });
+  const r = vc.init(p, { title: 'Cube Village', style: style || 'voxel', platform: platform || 'shorts' });
   fs.writeFileSync(r.files.project, JSON.stringify({ title: 'Cube Village', style: r.style, platform: r.platform, character: 'a small builder with a red cap', world: 'a cube valley at dawn', shots: SHOTS }));
   return { p, r };
 }
@@ -43,7 +43,7 @@ test('every built-in style pack is valid and has its own generated command', () 
     const file = path.join(__dirname, '..', 'skills', id, 'SKILL.md');
     assert.strictEqual(fs.readFileSync(file, 'utf8'), gen.skill(id, s), `${id} skill is out of date`);
   }
-  assert.ok(BUILTIN.minecraft && BUILTIN['3d-realistic'] && BUILTIN.anime);
+  assert.ok(BUILTIN.voxel && BUILTIN['3d-realistic'] && BUILTIN.anime);
 });
 
 test('style prompts never carry franchise names', () => {
@@ -53,18 +53,18 @@ test('style prompts never carry franchise names', () => {
 });
 
 test('mixing two styles blends look and edit, and rejects unknown or doubled styles', () => {
-  const m = S.resolve('minecraft+anime', BUILTIN).style;
+  const m = S.resolve('voxel+anime', BUILTIN).style;
   assert.match(m.look, /voxel.*anime/);
-  assert.strictEqual(m.grade, BUILTIN.minecraft.grade);
+  assert.strictEqual(m.grade, BUILTIN.voxel.grade);
   assert.strictEqual(m.transition, BUILTIN.anime.transition);
   assert.ok(m.fx.length <= 4);
-  assert.strictEqual(S.resolve('minecraft+nope', BUILTIN).error, 'unknown-style');
+  assert.strictEqual(S.resolve('voxel+nope', BUILTIN).error, 'unknown-style');
   assert.strictEqual(S.resolve('anime+anime', BUILTIN).error, 'same-style');
   assert.strictEqual(S.resolve('a+b+c', BUILTIN).error, 'unknown-style');
 });
 
 test('image prompts lock style, character and world, and drop the character on cast:false shots', () => {
-  const st = BUILTIN.minecraft; const doc = { character: 'a small builder with a red cap', world: 'a cube valley at dawn' };
+  const st = BUILTIN.voxel; const doc = { character: 'a small builder with a red cap', world: 'a cube valley at dawn' };
   const a = S.imagePrompt(st, doc, SHOTS[0], '9:16'); const b = S.imagePrompt(st, doc, SHOTS[1], '9:16');
   assert.ok(a.startsWith(st.look) && b.startsWith(st.look));
   assert.ok(!a.includes('red cap') && b.includes('red cap'));

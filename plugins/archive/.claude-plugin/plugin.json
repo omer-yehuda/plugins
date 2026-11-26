@@ -1,14 +1,21 @@
 {
   "name": "archive",
   "displayName": "The Archive",
-  "version": "1.0.0",
-  "description": "One memory for every plugin. Searches the local records your other plugins already keep (court verdicts, bug charts, reviews, lessons, countdowns, exams) and answers with the file behind each claim. Read-only: it never moves or edits a record.",
+  "version": "1.1.0",
+  "description": "Deprecated: The Archive is now a drill of the army plugin (/army:recall, /army:catalog, /army:shelf, /army:timeline). This stub only points you there and will be removed in the next release.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
   },
   "repository": "https://github.com/omer-yehuda/plugins",
   "license": "MIT",
-  "keywords": ["memory", "search", "history", "knowledge", "citations", "subagents"],
-  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/archive"
+  "keywords": [
+    "memory",
+    "search",
+    "history",
+    "knowledge",
+    "citations",
+    "subagents"
+  ],
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/army"
 }

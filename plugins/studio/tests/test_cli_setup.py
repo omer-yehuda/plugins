@@ -114,7 +114,7 @@ def test_setup_refuses_without_consent(studio_home):
     with pytest.raises(setup_env.SetupError, match="nothing was installed"):
         setup_env.setup(False, log=logs.append, stdin=FakeTTY(False))
     assert not studio_home.exists()                                    # nothing created
-    assert "Pillow==12.3.0" in logs[0] and "system packages" in logs[0]
+    assert "pillow==13.0.0" in logs[0] and "system packages" in logs[0]
 
 
 def test_setup_with_consent_uses_private_venv(studio_home, monkeypatch):

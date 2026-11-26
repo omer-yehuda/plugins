@@ -1,6 +1,6 @@
 ---
 name: produce
-description: Studio showrunner. Produces a vertical (1080x1920) or wide (1920x1080) kinetic-typography explainer video from a topic using an AI film crew (a writer, a director and a screener, plus the showrunner session) and a local Pillow + ffmpeg renderer. Use ONLY when the user says "studio, make a video about ...", "produce an explainer video", or runs /studio:produce. Not for cartoon stories with characters (that is toon-shorts). For a video about a trending tool made from real screenshots, use /studio:trend.
+description: "Studio showrunner. Makes a vertical (1080x1920) or wide (1920x1080) kinetic-typography explainer video from a topic with an AI crew (writer, director, screener) and a local Pillow + ffmpeg renderer. Use ONLY when the user says \"studio, make a video about ...\", \"produce an explainer video\", or runs /studio:produce. Not for cartoon stories (/studio:toon) or realistic films (/studio:pitch); a trending tool from real screenshots is /studio:trend."
 argument-hint: "<topic>"
 ---
 
@@ -13,13 +13,13 @@ You run the crew. Agents do the specialist work and write files; you keep the co
 `S` below means `python "${CLAUDE_PLUGIN_ROOT}/skills/produce/scripts/studio.py"`. Quote paths.
 Storyboard format: `${CLAUDE_PLUGIN_ROOT}/skills/produce/references/storyboard.md`. Example: `${CLAUDE_PLUGIN_ROOT}/skills/produce/examples/what-is-a-skill.json`.
 
-If the topic is a true story to be told as a cartoon with characters, say so and suggest `/toon-shorts` instead (Studio does not draw characters). Only continue if the user still wants a typography explainer.
+If the topic is a true story to be told as a cartoon with characters, say so and suggest `/studio:toon` instead (or `/studio:pitch` for a realistic film; the explainer does not draw characters). Only continue if the user still wants a typography explainer.
 
 ## Step 0: Setup (once per machine, ask first)
 
 Run `S doctor`.
 - Exit 0: ready. Skip to Step 1.
-- Exit 3 (Pillow missing): ask with **AskUserQuestion**: "Set up Studio?" Options: **Yes, set up (Recommended)** (private venv in `~/.cache/studio-plugin`, pinned Pillow 12.3.0 from PyPI, nothing else) or **Cancel**. Only on Yes run `S setup --yes`.
+- Exit 3 (Pillow missing): ask with **AskUserQuestion**: "Set up Studio?" Options: **Yes, set up (Recommended)** (private venv in `~/.cache/studio-plugin`, hash-locked Pillow, NumPy and imageio-ffmpeg wheels from PyPI, shared with every Studio format) or **Cancel**. Only on Yes run `S setup --yes`.
 - Exit 4 (ffmpeg missing): Studio never installs system packages. Show the install command from the output and stop until the user has installed it.
 Never use `pip install`, `--break-system-packages` or any other install route.
 

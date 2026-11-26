@@ -1,6 +1,6 @@
 ---
 name: engineering
-description: "Army ENGINEERING corps: builds and tests code (React/TS, Node, Python and more). Dispatched by army HQ, or when the user names this unit."
+description: "Army ENGINEERING corps: builds and tests code (React/TS, Node, Python and more). Dispatched by army HQ."
 model: sonnet
 effort: medium
 ---

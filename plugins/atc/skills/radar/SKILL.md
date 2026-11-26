@@ -1,16 +1,15 @@
 ---
 name: radar
-description: Show the ATC radar, an ASCII board of live flights, their lanes, ages and lane conflicts. Use ONLY when the user runs /atc:radar or explicitly asks who is working on what, or which lanes are claimed.
-argument-hint: ""
-disable-model-invocation: true
+description: Moved. ATC is now a drill of the army plugin. Use ONLY when the user runs /atc:radar. Points to /army:radar.
 ---
 
-# Radar
+# ATC has moved
 
-```bash
-node "${CLAUDE_PLUGIN_ROOT}/scripts/atc.js" radar --session "${CLAUDE_SESSION_ID}"
-```
+ATC is now a **drill** of the army plugin: the same procedure, agents and records folder, runnable on its own without raising the army.
 
-Print the board exactly as the script returns it, inside a code block. `[YOU]` marks this session's flights, `[LIVE]` other sessions, `[EXPIRED]` flights with no activity for 2 hours (they no longer block anything). Below the board, add one line only if there is a CONFLICTS section: suggest the owners coordinate or that one session releases its lane.
+Tell the user, in two lines:
 
-If the script reports `not-a-git-repo` or an empty sky, say so plainly.
+1. This command moved to `/army:radar`.
+2. Install it with `/plugin install army@omer-plugins`, then uninstall this one with `/plugin uninstall atc@omer-plugins`.
+
+If army is already installed, offer to run `/army:radar` with the same request now. Do nothing else from this stub.

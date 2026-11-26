@@ -1,14 +1,23 @@
 {
   "name": "toon-shorts",
   "displayName": "Toon Shorts",
-  "version": "1.1.0",
-  "description": "Turn a true story into an original animated cartoon Short/Reel/TikTok (1080x1920 MP4): ideas, retention script, free AI voice or your own, toon characters on parallax sets, karaoke captions with Hebrew RTL, self-checked preview and render.",
+  "version": "1.2.0",
+  "description": "Deprecated: Toon Shorts moved into the studio plugin (/studio:toon), with one shared setup. This stub only points you there and will be removed in the next release.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
   },
   "repository": "https://github.com/omer-yehuda/plugins",
   "license": "MIT",
-  "keywords": ["video", "shorts", "animation", "tiktok", "reels", "storytelling", "tts", "hebrew"],
-  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/toon-shorts"
+  "keywords": [
+    "video",
+    "shorts",
+    "animation",
+    "tiktok",
+    "reels",
+    "storytelling",
+    "tts",
+    "hebrew"
+  ],
+  "homepage": "https://github.com/omer-yehuda/plugins/tree/main/plugins/studio"
 }

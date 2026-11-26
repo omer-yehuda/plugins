@@ -13,16 +13,17 @@ const UA = 'claude-skill-installer';
 const MAX_FILES = 300;
 const MAX_BYTES = 10 * 1024 * 1024;
 
-function headers(api) {
+function headers(api, accept) {
   const h = { 'User-Agent': UA };
+  if (accept) h.Accept = accept;
   const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
   if (token && api) h.Authorization = `Bearer ${token}`;
   return h;
 }
 
-async function get(url, api) {
+async function get(url, api, accept) {
   let res;
-  try { res = await fetch(url, { headers: headers(api), redirect: 'follow' }); } catch (e) {
+  try { res = await fetch(url, { headers: headers(api, accept), redirect: 'follow' }); } catch (e) {
     const err = new InstallError(`Network error for ${new URL(url).hostname}: ${e.cause ? e.cause.code || e.cause.message : e.message}`);
     err.network = true; throw err;
   }
@@ -31,6 +32,16 @@ async function get(url, api) {
 }
 
 const enc = (p) => p.split('/').map(encodeURIComponent).join('/');
+
+const SHA_RE = /^[0-9a-f]{40}$/;
+
+// Resolve the branch or tag to one commit, so the tree and every file come from the same snapshot.
+async function apiCommit(src) {
+  const url = `https://api.github.com/repos/${src.owner}/${src.repo}/commits/${encodeURIComponent(src.ref)}`;
+  const sha = (await get(url, true, 'application/vnd.github.sha')).toString('utf8').trim();
+  if (!SHA_RE.test(sha)) throw new InstallError('Unexpected commit response from GitHub.');
+  return sha;
+}
 
 async function apiTree(src) {
   const url = `https://api.github.com/repos/${src.owner}/${src.repo}/git/trees/${encodeURIComponent(src.ref)}?recursive=1`;
@@ -50,7 +61,8 @@ function gitTree(src, dir) {
   } catch (e) {
     throw new InstallError(`git clone failed: ${String(e.stderr || e.message).trim().split('\n').pop()}`);
   }
-  return localTree(repoDir);
+  const commit = git(['-C', repoDir, 'rev-parse', 'HEAD']).toString('utf8').trim();
+  return { tree: localTree(repoDir), commit: SHA_RE.test(commit) ? commit : null };
 }
 
 // A source with .local reads a folder on disk (tests and offline use).
@@ -70,18 +82,22 @@ function localTree(root) {
 }
 
 class Repo {
-  constructor(src, method = 'auto') { this.src = src; this.method = method; this.tree = null; this.tmp = null; this.via = null; }
+  constructor(src, method = 'auto') { this.src = src; this.method = method; this.tree = null; this.tmp = null; this.via = null; this.commit = null; }
 
   async load() {
     if (this.tree) return this.tree;
     if (this.src.local) { this.tree = localTree(this.src.local); this.via = 'local'; return this.tree; }
     if (this.method !== 'git') {
-      try { this.tree = await apiTree(this.src); this.via = 'api'; return this.tree; } catch (e) {
+      try {
+        const commit = await apiCommit(this.src);
+        this.tree = await apiTree({ ...this.src, ref: commit }); this.commit = commit; this.via = 'api'; return this.tree;
+      } catch (e) {
         if (this.method === 'api' || !(e.network || [401, 403, 404, 429].includes(e.status))) throw e;
       }
     }
     this.tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'skill-installer-git-'));
-    this.tree = gitTree(this.src, this.tmp); this.via = 'git';
+    const g = gitTree(this.src, this.tmp);
+    this.tree = g.tree; this.commit = g.commit; this.via = 'git';
     return this.tree;
   }
 
@@ -109,7 +125,7 @@ class Repo {
       out.push(...await Promise.all(items.slice(i, i + 8).map(async (t) => ({
         rel: t.path.slice(pre.length),
         buf: t.local ? fs.readFileSync(t.local)
-          : await get(`https://raw.githubusercontent.com/${this.src.owner}/${this.src.repo}/${enc(this.src.ref)}/${enc(t.path)}`, false),
+          : await get(`https://raw.githubusercontent.com/${this.src.owner}/${this.src.repo}/${enc(this.commit || this.src.ref)}/${enc(t.path)}`, false),
       }))));
     }
     return out;
@@ -120,7 +136,7 @@ class Repo {
     const t = tree.find((x) => x.path === p && x.type === 'blob');
     if (!t) throw new InstallError(`${p} not found in ${this.src.owner}/${this.src.repo}.`);
     if (t.local) return fs.readFileSync(t.local);
-    return get(`https://raw.githubusercontent.com/${this.src.owner}/${this.src.repo}/${enc(this.src.ref)}/${enc(p)}`, false);
+    return get(`https://raw.githubusercontent.com/${this.src.owner}/${this.src.repo}/${enc(this.commit || this.src.ref)}/${enc(p)}`, false);
   }
 
   close() { if (this.tmp) fs.rmSync(this.tmp, { recursive: true, force: true }); }

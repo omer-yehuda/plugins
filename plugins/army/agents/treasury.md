@@ -1,6 +1,6 @@
 ---
 name: treasury
-description: "Army TREASURY unit: pricing, cost and cash-flow forecasts, tax map, procurement. Dispatched by army HQ, or when the user names this unit."
+description: "Army TREASURY unit: pricing, cost and cash-flow forecasts, tax map, procurement. Dispatched by army HQ."
 model: haiku
 effort: medium
 tools: Read, Glob, Grep, Write, WebSearch, WebFetch

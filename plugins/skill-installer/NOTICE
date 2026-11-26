@@ -7,8 +7,7 @@ License, Version 2.0. A copy of that license is in LICENSE.
 
 Changes from the original:
 - Ported from Python to dependency-free Node.js and rewritten for Claude Code
-  (installs into ~/.claude/skills or <project>/.claude/skills, or
-  CLAUDE_CONFIG_DIR/skills).
+  (installs into the user's or the project's Claude skills folder).
 - Downloads one skill folder through the GitHub tree API and raw files instead
   of a whole-repo zip; hardened sparse git clone as the fallback (hooks off,
   symlinks off, no prompts).
@@ -17,5 +16,10 @@ Changes from the original:
   marketplace listing (default omer-yehuda/plugins).
 - Default skills listing points at anthropics/skills instead of openai/skills.
 - User text reaches the scripts only through a request file, never the shell.
+
+The customs scanner (scripts/scan.js and the modules it requires), the officer
+agent and the inspect/manifest skills were written by Omer Yehuda for the
+Customs plugin (first released under MIT) and are included here under
+Apache-2.0.
 
 Not affiliated with, sponsored or endorsed by OpenAI or Anthropic.

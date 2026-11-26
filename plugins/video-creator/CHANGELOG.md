@@ -15,7 +15,7 @@ Cheaper on tokens, faster to render.
 
 ## 1.0.0 (2026-11-26)
 
-- 14 style commands generated from one style-pack file: `minecraft` (blocky voxel fan style), `3d-realistic`, `3d-cartoon`, `anime`, `claymation`, `pixel-art`, `low-poly`, `comic`, `watercolor`, `cyberpunk`, `paper-cutout`, `documentary`, `noir`, `horror`.
+- 14 style commands generated from one style-pack file: `voxel` (blocky voxel world), `3d-realistic`, `3d-cartoon`, `anime`, `claymation`, `pixel-art`, `low-poly`, `comic`, `watercolor`, `cyberpunk`, `paper-cutout`, `documentary`, `noir`, `horror`.
 - `/video-creator:make <style> <idea>`: a screenwriter writes a hook-first, looping shot list; a style artist writes the character and world and translates every shot into the style's vocabulary. The style blocks are joined into each prompt by code, word for word.
 - `/video-creator:mix a+b`, `/video-creator:restyle <id> <style>`, `/video-creator:new-style <description>` (custom packs in `.video-creator/styles/`).
 - Free animatic: palette cards with the real timing, moves, transitions, captions and music bed, rendered in seconds with no model.

@@ -1,6 +1,6 @@
 ---
 name: legal
-description: "Army LEGAL unit: licenses, copyright, privacy, consumer and platform rules. Not legal advice. Dispatched by army HQ, or when the user names this unit."
+description: "Army LEGAL unit: licenses, copyright, privacy, consumer and platform rules. Not legal advice. Dispatched by army HQ."
 model: sonnet
 effort: high
 tools: Read, Glob, Grep, Write, WebSearch, WebFetch

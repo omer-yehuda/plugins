@@ -17,6 +17,9 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..', 'plugins');
 const BUDGET = { pluginAlways: 3000, description: 520, body: 12000 }; // characters; about 4 characters per token
+// Suites that replaced several plugins get a larger always-loaded budget (army: 9 former plugins, studio: 3).
+const SUITE = { army: 6500, studio: 3600 };
+const alwaysBudget = (plugin) => SUITE[plugin] || BUDGET.pluginAlways;
 const tok = (chars) => Math.round(chars / 4);
 
 function frontmatter(text) {
@@ -48,7 +51,7 @@ function main(argv) {
   const rows = fs.readdirSync(ROOT).filter((p) => fs.existsSync(path.join(ROOT, p, '.claude-plugin', 'plugin.json'))).sort().map(scan);
   const problems = [];
   for (const r of rows) {
-    if (r.always > BUDGET.pluginAlways) problems.push(`${r.plugin}: ${r.always} always-loaded characters (budget ${BUDGET.pluginAlways})`);
+    if (r.always > alwaysBudget(r.plugin)) problems.push(`${r.plugin}: ${r.always} always-loaded characters (budget ${alwaysBudget(r.plugin)})`);
     for (const i of r.items) {
       if (!i.hidden && i.description.length > BUDGET.description) problems.push(`${r.plugin}/${i.kind}s/${i.name}: description ${i.description.length} characters (budget ${BUDGET.description})`);
       if (i.body > BUDGET.body) problems.push(`${r.plugin}/${i.kind}s/${i.name}: body ${i.body} characters (budget ${BUDGET.body})`);
@@ -71,4 +74,4 @@ function main(argv) {
 }
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
-module.exports = { scan, frontmatter, BUDGET };
+module.exports = { scan, frontmatter, BUDGET, SUITE };

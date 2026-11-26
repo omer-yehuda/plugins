@@ -1,12 +1,15 @@
 ---
 name: timeline
-description: Show a dated list of the records other plugins saved in this project (rulings, charts, reviews, countdowns, exams), newest first.
-disable-model-invocation: true
-argument-hint: "[plugin name]"
+description: Moved. The Archive is now a drill of the army plugin. Use ONLY when the user runs /archive:timeline. Points to /army:timeline.
 ---
 
-Helper: `node "${CLAUDE_PLUGIN_ROOT}/scripts/archive.js"`.
+# The Archive has moved
 
-With no argument run `timeline`. With an argument, pass it only if it is exactly one of: army, court, er, critics, customs, studio, mission-control, academy, newsroom, premiere, as `timeline --plugin <name>`; otherwise say the name is unknown and list those.
+The Archive is now a **drill** of the army plugin: the same procedure, agents and records folder, runnable on its own without raising the army.
 
-Show a table with columns: date, plugin, record, outcome, path. Newest first, at most 30 rows, then say how many more there are. If nothing is recorded, say so. Add nothing else.
+Tell the user, in two lines:
+
+1. This command moved to `/army:timeline`.
+2. Install it with `/plugin install army@omer-plugins`, then uninstall this one with `/plugin uninstall archive@omer-plugins`.
+
+If army is already installed, offer to run `/army:timeline` with the same request now. Do nothing else from this stub.

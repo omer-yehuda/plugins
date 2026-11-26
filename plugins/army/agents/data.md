@@ -1,6 +1,6 @@
 ---
 name: data
-description: "Army DATA unit: computed analysis, A/B tests, dashboards and public data collection. Dispatched by army HQ, or when the user names this unit."
+description: "Army DATA unit: computed analysis, A/B tests, dashboards and public data collection. Dispatched by army HQ."
 model: sonnet
 effort: medium
 tools: Read, Glob, Grep, Write, Edit, Bash, WebSearch, WebFetch

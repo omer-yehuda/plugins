@@ -1,15 +1,15 @@
 ---
 name: release
-description: Free the file lanes this Claude session claimed. Use ONLY when the user runs /atc:release or explicitly asks to release, unlock or give up this session's lanes.
-argument-hint: ""
+description: Moved. ATC is now a drill of the army plugin. Use ONLY when the user runs /atc:release. Points to /army:release.
 ---
 
-# Release lanes
+# ATC has moved
 
-```bash
-node "${CLAUDE_PLUGIN_ROOT}/scripts/atc.js" release --session "${CLAUDE_SESSION_ID}"
-```
+ATC is now a **drill** of the army plugin: the same procedure, agents and records folder, runnable on its own without raising the army.
 
-The script prints JSON with `released`: the callsigns that were freed (this includes any flights this session registered through `/atc:clear`). Report them in one line, or say there was nothing to release.
+Tell the user, in two lines:
 
-Lanes are also released automatically when the session ends, and they expire after 2 hours without activity, so this is only needed to hand a path over early.
+1. This command moved to `/army:release`.
+2. Install it with `/plugin install army@omer-plugins`, then uninstall this one with `/plugin uninstall atc@omer-plugins`.
+
+If army is already installed, offer to run `/army:release` with the same request now. Do nothing else from this stub.

@@ -5,7 +5,7 @@ The helper creates the file; the crew fills it in. Keep every key below and add 
 ```json
 {
   "title": "The Cube Village",
-  "style": "minecraft",
+  "style": "voxel",
   "platform": "shorts",
   "logline": "One sentence: who wants what, and what stands in the way.",
   "character": "The main character in this style, the same words reused for every shot (style-artist).",
@@ -29,7 +29,7 @@ The helper creates the file; the crew fills it in. Keep every key below and add 
 
 Rules the helper checks (`V check`):
 
-- `style`: a built-in or custom style id, or two joined with `+` (`minecraft+anime`).
+- `style`: a built-in or custom style id, or two joined with `+` (`voxel+anime`).
 - `platform`: `shorts` (1080x1920), `youtube` (1920x1080), `square` (1080x1080), `feed` (1080x1350).
 - 2 to 16 shots, 1 to 12 seconds each, at most 180 seconds in total. Prefer the style's `shotSeconds` range.
 - `id`: lowercase letters, digits and dashes, unique. Start with the shot number: `01-...`, `02-...`.

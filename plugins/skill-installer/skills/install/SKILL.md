@@ -1,6 +1,6 @@
 ---
 name: install
-description: Install a Claude skill from GitHub into ~/.claude/skills (or this project's .claude/skills). Use when the user asks to install, add or update a skill from a GitHub repo, URL or owner/repo/path, or runs /skill-installer:install. Not for Claude Code plugins (use /plugin install for those).
+description: Install a Claude skill from GitHub into ~/.claude/skills (or this project's .claude/skills), scanned by customs and pinned to a commit. Use when the user asks to install, add or update a skill from a GitHub repo, URL or owner/repo/path, or runs /skill-installer:install. Not for Claude Code plugins (use /plugin install for those).
 argument-hint: "<owner/repo/path/to/skill | GitHub URL> [project]"
 ---
 
@@ -47,15 +47,26 @@ Replace `REQ` with the printed path (the script made it: no user text inside).
 
 - `"ok": false` with `choices`: the path had no `SKILL.md`. Show the choices (short list) and ask which one. Stop.
 - `"ok": false` with an error: say it plainly. "Already installed" means ask whether to **update** it (re-run with `"force": true`; the old copy is kept as a `.name.backup-...` folder).
-- Each entry in `installed` has `files`, `bytes`, `scripts` (the skill ships scripts) and `warnings`.
+- Each entry in `installed` has `files`, `bytes`, `scripts`, `commit` (the exact commit every file came from), `verdict`, `findings`, `action` and, for an update, `previousCommit` and `changes` (`added`, `removed`, `changed` file lists).
 
-## 3. Decide with the user
+Every skill has already been through the **customs scanner** (the same one as `/skill-installer:inspect`). Its `verdict` decides the `action`:
 
-- No warnings and no scripts: go straight to step 4.
-- `scripts: true` or any `warnings`: show them in one short list (file + reason) and ask once: install, inspect first, or cancel. If the **customs** plugin is installed, offer `/customs:inspect <same URL>` as the inspect option. These checks are a quick first look, not a security review.
+| verdict | action | what you do |
+|---|---|---|
+| `CLEARED` | `install` | go to step 4 |
+| `SECONDARY INSPECTION` | `needs-approval` | step 3 |
+| `DENIED` | `blocked` | show the top findings (severity, file:line, reason) and stop. It cannot be installed, not even with `accept`. Offer `/skill-installer:inspect <same URL>` for the full report. |
+
+For an update, show `changes` in one line (for example "2 files changed, 1 added: SKILL.md, scripts/run.py, ...") so the user sees what is new before it lands.
+
+## 3. Decide with the user (SECONDARY INSPECTION only)
+
+If `unscanned` lists files, say first that those files (vendored `node_modules`, binaries, files too large to read whole) would be installed without being scanned. Show the findings in one short list (severity, file:line, reason) and ask once with AskUserQuestion: **Inspect first (Recommended)** (runs `/skill-installer:inspect <same URL>`, which adds the officer's reading of intent), **Install anyway** or **Cancel**. Only on **Install anyway** add `"accept": true` in step 4. The scanner is a first filter, not a guarantee: say so in one line.
 
 ## 4. Install
 
-Write the same JSON again with `"dryRun": false` and run the same `run` command. Report in two or three lines: what was installed, where (`dest`), how long it took (`ms`), and: **"Restart Claude Code (or run /reload-plugins) to pick up the new skill."**
+Write the same JSON again with `"dryRun": false` (plus `"accept": true` only if the user chose it in step 3) and run the same `run` command. The skill is pinned: the installer records source, commit, file hashes and verdict in `skills.lock.json` next to the skills folder. Report in two or three lines: what was installed, where (`dest`), the short commit (first 7 characters), and: **"Restart Claude Code (or run /reload-plugins) to pick up the new skill."**
+
+If the result is `"ok": false` with `installed` entries, nothing was written for the entries whose `action` is not `install`: say which and why.
 
 Never edit files inside an installed skill, and never install into a folder other than the two scopes above unless the user gave a path and confirmed it.
