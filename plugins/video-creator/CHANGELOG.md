@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.0 (2026-11-26)
+
+Cheaper on tokens, faster to render.
+
+- **Always-loaded context cut by 86%** (6,364 to 909 characters, about 1,600 to 230 tokens in every session). The 14 style commands and `shoot`, `render`, `mix`, `restyle`, `new-style` are now typed-only (`disable-model-invocation: true`); they still work as slash commands. Spoken requests go through the one visible skill, `make`, which routes shoot, render, restyle and new-style requests.
+- **One writer instead of two** for a new video: the screenwriter writes the story in the style directly, following the shared `skills/make/style-writing.md`. The style artist is now used only by `restyle`.
+- **Agents read files, not pasted briefs**: `init`, `restyle` and `build` save `style.json` next to `project.json`.
+- **`V build <id>`**: check, `prompts.md`, style snapshot and animatic in one call (was three).
+- **Compact helper output**: one line of JSON per command (`--pretty` for humans); `styles` prints only id, name and tagline.
+- **Frame check from one labelled contact sheet**: each thumbnail carries its shot number and id; full-size images are opened only when a thumbnail is not enough (at most three), instead of every image.
+- **Faster renders**: shots are encoded in parallel, unchanged shots are reused on re-render (`shotsReused`), the per-shot pass is a fast near-lossless intermediate, and the final encode uses x264 `faster`. Six 4-second 1080x1920 shots: first render 132 s to 65 s, re-render after one edit 129 s to 38 s (4-core machine).
+- Style command bodies are one line; the style details come from `style.json` instead of being repeated in each command.
+
 ## 1.0.0 (2026-11-26)
 
 - 14 style commands generated from one style-pack file: `minecraft` (blocky voxel fan style), `3d-realistic`, `3d-cartoon`, `anime`, `claymation`, `pixel-art`, `low-poly`, `comic`, `watercolor`, `cyberpunk`, `paper-cutout`, `documentary`, `noir`, `horror`.

@@ -1,8 +1,8 @@
 {
   "name": "video-creator",
   "displayName": "Video Creator",
-  "version": "1.0.0",
-  "description": "One command per visual style: /video-creator:minecraft, /video-creator:3d-realistic, /video-creator:anime and 11 more, plus mix two styles, restyle a finished story and save your own. A screenwriter and a style artist plan the shots, code locks the style into every prompt, a free animatic shows the timing before you spend credits, a frame checker rejects bad frames, and ffmpeg cuts the styled video with moves, transitions, texture, a music bed and captions for Shorts, TikTok, Reels, YouTube or feed.",
+  "version": "1.1.0",
+  "description": "One command per visual style: /video-creator:minecraft, /video-creator:3d-realistic, /video-creator:anime and 11 more, plus mix two styles, restyle a finished story and save your own. A screenwriter plans the shots in the style, code locks the style into every prompt, a free animatic shows the timing before you spend credits, a frame checker rejects bad frames, and ffmpeg cuts the styled video with moves, transitions, texture, a music bed and captions for Shorts, TikTok, Reels, YouTube or feed.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"

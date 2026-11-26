@@ -1,6 +1,7 @@
 ---
 name: shoot
-description: Video Creator shoot. Use ONLY when the user runs /video-creator:shoot or says "video creator, make the images" after a plan exists. Gets one image or clip per shot into the project from the model the user chooses, hero shot first with the user's approval, then the frame checker reviews every shot. Never trigger on its own.
+description: Get one image or clip per shot into a Video Creator project from your model, hero shot first, then a frame check.
+disable-model-invocation: true
 argument-hint: "<project-id>"
 ---
 
@@ -8,7 +9,7 @@ argument-hint: "<project-id>"
 
 **Project:** $ARGUMENTS
 
-Helper: `node "${CLAUDE_PLUGIN_ROOT}/scripts/vc.js"` (`V`). The house rules in `/video-creator:make` apply.
+Helper: `node "${CLAUDE_PLUGIN_ROOT}/scripts/vc.js"` (`V`). The house rules in `${CLAUDE_PLUGIN_ROOT}/skills/make/SKILL.md` apply.
 
 Video Creator has no image or video model inside. The media comes from the model the user chooses. Your job is to get the right file into the right place and to stop bad frames.
 
@@ -33,13 +34,13 @@ Stills and clips can be mixed freely. A clip (`media/<id>.mp4`) beats a still wi
 
 ## Step 3: The hero gate
 
-When the first shot exists, look at it yourself (Read the image; for a clip, run `V sheet <id>` and read `sheet.jpg`). Ask: **This is the look, continue** · **Regenerate with changes** · **Change the style** (back to the style-artist, which rewrites the prompts; then `V prompts <id>`).
+When the first shot exists, look at it yourself (Read the image; for a clip, run `V sheet <id>` and read `sheet.jpg`). Ask: **This is the look, continue** · **Regenerate with changes** · **Change the style** (follow `${CLAUDE_PLUGIN_ROOT}/skills/restyle/SKILL.md`).
 
 Do not make the remaining shots until the user approves the hero. Then make them the same way, one file per shot, exact names.
 
 ## Step 4: The frame check
 
-Run `V sheet <id>`. Dispatch ONE `video-creator:frame-checker` with `model: "sonnet"`. Brief: the paths of `project.json`, `prompts.md`, `sheet.jpg` and the `media/` folder, the style JSON from `V style <style>`, and the output path `<dir>/frames.md`.
+Run `V sheet <id>` (one labelled contact sheet of every shot). Dispatch ONE `video-creator:frame-checker` with `model: "sonnet"`. Brief: the project folder path and the output path `<dir>/frames.md`; it reads `style.json`, `project.json` and `sheet.jpg` there.
 
 Read `frames.md` and show a table: shot, verdict (KEEP or REDO), reason. For each REDO give the corrected prompt it suggests. At most two redos per shot; after that the user keeps it or cuts the shot.
 

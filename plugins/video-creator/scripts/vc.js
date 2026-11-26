@@ -19,12 +19,19 @@ const stylesOf = (project) => S.loadAll(path.join(store.root(project), 'styles')
 
 function styles(project) {
   const { styles: all, problems } = stylesOf(project);
-  return { ok: true, styles: Object.values(all).map((s) => ({ id: s.id, name: s.name, tagline: s.tagline, custom: s.custom, fps: s.fps, transition: s.transition })), problems };
+  const rows = Object.values(all).map((s) => (s.custom ? { id: s.id, name: s.name, tagline: s.tagline, custom: true } : { id: s.id, name: s.name, tagline: s.tagline }));
+  return problems.length ? { ok: true, styles: rows, problems } : { ok: true, styles: rows };
 }
 
 function style(project, spec) {
   const r = S.resolve(spec, stylesOf(project).styles);
   return r.error ? fail(r.error, `unknown style "${spec}"`, { known: r.known }) : { ok: true, style: r.style };
+}
+
+// The resolved style, saved next to project.json so agents read a file instead of having it pasted into their brief.
+function snapshot(dir, style) {
+  const keep = ['id', 'name', 'look', 'character', 'finish', 'negative', 'motion', 'shotSeconds', 'moves', 'tips'];
+  fs.writeFileSync(path.join(dir, 'style.json'), JSON.stringify(Object.fromEntries(keep.map((k) => [k, style[k]])), null, 1) + '\n');
 }
 
 function init(project, inp) {
@@ -38,8 +45,9 @@ function init(project, inp) {
   fs.mkdirSync(path.join(c.dir, 'media'));
   const doc = { title: inp.title, style: r.style.id, platform, logline: '', character: '', world: '', shots: [] };
   fs.writeFileSync(path.join(c.dir, 'project.json'), JSON.stringify(doc, null, 2) + '\n');
+  snapshot(c.dir, r.style);
   return { ok: true, id: c.id, dir: c.dir, style: r.style.id, platform, size: P.PLATFORMS[platform].size,
-    files: { project: path.join(c.dir, 'project.json'), media: path.join(c.dir, 'media'), prompts: path.join(c.dir, 'prompts.md') } };
+    files: { project: path.join(c.dir, 'project.json'), style: path.join(c.dir, 'style.json'), media: path.join(c.dir, 'media') } };
 }
 
 function load(project, id) {
@@ -67,10 +75,21 @@ function prompts(project, id) {
   return { ok: true, id, prompts: out, media: path.join(l.dir, 'media'), missing: l.v.missing };
 }
 
-function render(project, id, bin, kind, flags) {
+async function render(project, id, bin, kind, flags) {
   const l = load(project, id); if (!l.ok) return l;
   if (!l.v.ok) return fail('bad-project', 'project.json has errors', { errors: l.v.errors });
-  return { id, ...R.render(bin, l.dir, l.doc, l.v, kind, { burn: !!flags.burn }) };
+  return { id, ...(await R.render(bin, l.dir, l.doc, l.v, kind, { burn: !!(flags && flags.burn) })) };
+}
+
+// check + prompts + animatic in one call: the usual step after the crew writes project.json.
+async function build(project, id, bin) {
+  const l = load(project, id); if (!l.ok) return l;
+  if (!l.v.ok) return fail('bad-project', 'project.json has errors', { errors: l.v.errors });
+  fs.writeFileSync(path.join(l.dir, 'prompts.md'), P.promptSheet(l.doc, l.v.style));
+  snapshot(l.dir, l.v.style);
+  const a = await R.render(bin, l.dir, l.doc, l.v, 'animatic', {});
+  return { ok: true, id, shots: l.v.shots, seconds: l.v.seconds, missing: l.v.missing, prompts: path.join(l.dir, 'prompts.md'),
+    animatic: a.ok ? a.video : null, ...(a.ok ? {} : { animaticError: a.message }) };
 }
 
 function sheet(project, id, bin) {
@@ -90,7 +109,8 @@ function restyle(project, id, spec) {
   const doc = { ...l.doc, style: r.style.id, character: '', world: '' };
   delete doc.voice; delete doc.music;
   fs.writeFileSync(path.join(c.dir, 'project.json'), JSON.stringify(doc, null, 2) + '\n');
-  return { ok: true, from: id, id: c.id, dir: c.dir, style: r.style.id, files: { project: path.join(c.dir, 'project.json'), media: path.join(c.dir, 'media') },
+  snapshot(c.dir, r.style);
+  return { ok: true, from: id, id: c.id, dir: c.dir, style: r.style.id, files: { project: path.join(c.dir, 'project.json'), style: path.join(c.dir, 'style.json'), media: path.join(c.dir, 'media') },
     note: 'character and world were cleared so the style-artist can redraw them in the new style' };
 }
 
@@ -130,9 +150,9 @@ function readInput(file) {
   return { ok: true, j };
 }
 
-const USAGE = 'usage: vc.js doctor | styles | style <id|a+b> | prep | init --input-file F | check <id> | prompts <id> | animatic <id> | sheet <id> | render <id> [--draft] [--burn] | restyle <id> --style S | add-style --input-file F | list\n';
+const USAGE = 'usage: vc.js doctor | styles | style <id|a+b> | prep | init --input-file F | check <id> | build <id> | prompts <id> | animatic <id> | sheet <id> | render <id> [--draft] [--burn] | restyle <id> --style S | add-style --input-file F | list\n';
 
-function main(argv) {
+async function main(argv) {
   const { _, flags } = parseArgs(argv, ['project', 'input-file', 'ffmpeg', 'style']);
   const project = path.resolve(flags.project || process.cwd());
   const bin = typeof flags.ffmpeg === 'string' ? flags.ffmpeg : 'ffmpeg';
@@ -146,6 +166,7 @@ function main(argv) {
     init: () => withInput((j) => init(project, { title: String(j.title || ''), style: String(j.style || ''), platform: String(j.platform || 'shorts') })),
     check: () => check(project, arg),
     prompts: () => prompts(project, arg),
+    build: () => build(project, arg, bin),
     animatic: () => render(project, arg, bin, 'animatic', flags),
     sheet: () => sheet(project, arg, bin),
     render: () => render(project, arg, bin, flags.draft ? 'draft' : 'final', flags),
@@ -154,10 +175,11 @@ function main(argv) {
     list: () => list(project),
   };
   if (!cmds[cmd]) { process.stderr.write(USAGE); return 2; }
-  const res = cmds[cmd]();
-  process.stdout.write(JSON.stringify(res, null, 2) + '\n');
+  const res = await cmds[cmd]();
+  // Compact JSON: every byte printed here is read back into the model's context.
+  process.stdout.write(JSON.stringify(res, flags.pretty ? null : undefined, flags.pretty ? 2 : undefined) + '\n');
   return res.ok ? 0 : 1;
 }
 
-if (require.main === module) process.exitCode = main(process.argv.slice(2));
-module.exports = { styles, style, init, check, prompts, render, sheet, restyle, addStyle, list, load, main };
+if (require.main === module) main(process.argv.slice(2)).then((c) => { process.exitCode = c; });
+module.exports = { styles, style, init, check, prompts, build, render, sheet, restyle, addStyle, list, load, main };

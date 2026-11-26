@@ -69,17 +69,26 @@ Flags on any style command: `--shorts` (default), `--youtube`, `--square`, `--fe
 
 ```mermaid
 flowchart LR
-    I[Idea + style] --> W[Screenwriter<br/>hook, turn, loop]
-    W --> A[Style artist<br/>character, world, shots in style vocabulary]
-    A --> C[Code joins style blocks<br/>into every prompt]
+    I[Idea + style] --> W[Screenwriter<br/>hook, turn, loop,<br/>written in the style]
+    W --> C[Code joins style blocks<br/>into every prompt]
     C --> N[Free animatic]
     N --> H{Hero shot<br/>you approve}
     H --> M[Remaining stills / clips]
-    M --> F[Frame checker<br/>KEEP or REDO]
+    M --> F[Frame checker<br/>one labelled sheet<br/>KEEP or REDO]
     F --> R[Render: moves, fps, grade,<br/>texture, transitions, music, captions]
 ```
 
-Everything lands in `.video-creator/projects/<id>/` in your project: `project.json`, `prompts.md`, `media/`, `animatic.mp4`, `draft.mp4`, `video.mp4`, `captions.srt`, `metadata.md`.
+Everything lands in `.video-creator/projects/<id>/` in your project: `project.json`, `style.json`, `prompts.md`, `media/`, `animatic.mp4`, `draft.mp4`, `video.mp4`, `captions.srt`, `metadata.md`.
+
+## Built to be cheap on tokens
+
+- **About 230 tokens per session** while installed: only one skill (`make`) and three agents describe themselves to the model. The 20 typed commands cost nothing until you type them.
+- **One writer agent** per new video, reading files instead of long pasted briefs.
+- **One helper call** (`build`) checks the plan, writes the prompts and renders the animatic; helper output is one line of JSON.
+- **One image** for the frame check: a labelled contact sheet, with full-size images opened only when needed.
+- **Re-renders reuse unchanged shots**, so fixing one shot does not re-encode the whole video.
+
+Run `node tools/token-budget.js` in this repository to see what every plugin costs.
 
 ## Be clear about what this is
 

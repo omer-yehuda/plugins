@@ -1,12 +1,12 @@
 ---
 name: styles
-description: List every Video Creator style (built-in and your own) with a one-line description and the command that uses it.
+description: List every Video Creator style, built-in and your own.
 disable-model-invocation: true
 ---
 
 # Video Creator: styles
 
-Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/vc.js" styles`. Show a table: command (`/video-creator:<id>`, or `/video-creator:make <id>` for custom styles), name, tagline, fps. Mention any `problems` (broken custom style files) under the table.
+Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/vc.js" styles`. Show a table: command (`/video-creator:<id>`, or `/video-creator:make <id>` for custom styles), name, tagline. Mention any `problems` (broken custom style files) under the table.
 
 Then add three lines:
 - Mix any two: `/video-creator:mix minecraft+anime <idea>`

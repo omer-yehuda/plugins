@@ -11,6 +11,7 @@ const S = require('../scripts/styles.js');
 const P = require('../scripts/project.js');
 const E = require('../scripts/edit.js');
 const gen = require('../scripts/gen-skills.js');
+const R = require('../scripts/render.js');
 
 const SCRIPT = path.join(__dirname, '..', 'scripts', 'vc.js');
 const tmp = () => fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'vc-')));
@@ -143,23 +144,23 @@ test('the CLI refuses free text on the command line and a planted state folder',
   assert.strictEqual(JSON.parse(cli(p, 'list').stdout).error, 'planted-state');
 });
 
-test('animatic renders with no media at all', render, () => {
+test('animatic renders with no media at all', render, async () => {
   const { p, r } = project('pixel-art', 'shorts');
-  const out = vc.render(p, r.id, 'ffmpeg', 'animatic', {});
+  const out = await vc.render(p, r.id, 'ffmpeg', 'animatic', {});
   assert.ok(out.ok, JSON.stringify(out));
   assert.ok(fs.statSync(out.video).size > 10000);
   assert.strictEqual(out.seconds, 5.5);
 });
 
-test('draft and final cuts render stills and a short clip, with captions and metadata', render, () => {
+test('draft and final cuts render stills and a short clip, with captions and metadata', render, async () => {
   const { p, r } = project('cyberpunk', 'youtube');
   media(r, '1280x720');
   fs.rmSync(path.join(r.files.media, '03-turn.png'));
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'lavfi', '-i', 'testsrc2=s=640x360:r=24', '-t', '0.7', path.join(r.files.media, '03-turn.mp4')]);
-  const d = vc.render(p, r.id, 'ffmpeg', 'draft', { burn: true });
+  const d = await vc.render(p, r.id, 'ffmpeg', 'draft', { burn: true });
   assert.ok(d.ok, JSON.stringify(d));
   assert.deepStrictEqual(d.size, [960, 540]);
-  const f = vc.render(p, r.id, 'ffmpeg', 'final', {});
+  const f = await vc.render(p, r.id, 'ffmpeg', 'final', {});
   assert.ok(f.ok, JSON.stringify(f));
   const dur = parseFloat(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f.video], { encoding: 'utf8' }));
   assert.ok(Math.abs(dur - 5.5) < 0.1, String(dur));
@@ -167,4 +168,38 @@ test('draft and final cuts render stills and a short clip, with captions and met
   assert.ok(vc.sheet(p, r.id, 'ffmpeg').ok);
   const rs = vc.restyle(p, r.id, 'claymation');
   assert.ok(rs.ok && rs.style === 'claymation' && vc.check(p, rs.id).missing.length === 3);
+});
+
+test('a re-render reuses unchanged shots and re-encodes only the edited one', render, async () => {
+  const { p, r } = project('anime', 'square');
+  media(r, '800x800');
+  const a = await vc.render(p, r.id, 'ffmpeg', 'draft', {});
+  assert.ok(a.ok && a.shotsReused === 0, JSON.stringify(a));
+  const b = await vc.render(p, r.id, 'ffmpeg', 'draft', {});
+  assert.strictEqual(b.shotsReused, 3);
+  const doc = JSON.parse(fs.readFileSync(r.files.project, 'utf8'));
+  doc.shots[1].move = 'pan-left';
+  fs.writeFileSync(r.files.project, JSON.stringify(doc));
+  const c = await vc.render(p, r.id, 'ffmpeg', 'draft', {});
+  assert.strictEqual(c.shotsReused, 2);
+});
+
+test('build writes prompts, the style snapshot and the animatic in one call; output is compact JSON', render, () => {
+  const { p, r } = project('noir', 'youtube');
+  const res = cli(p, 'build', r.id);
+  assert.strictEqual(res.status, 0, res.stdout + res.stderr);
+  assert.strictEqual(res.stdout.trim().split('\n').length, 1);
+  const out = JSON.parse(res.stdout);
+  assert.ok(out.ok && out.animatic && fs.existsSync(out.prompts) && out.missing.length === 3);
+  const snap = JSON.parse(fs.readFileSync(path.join(r.dir, 'style.json'), 'utf8'));
+  assert.strictEqual(snap.id, 'noir');
+  assert.ok(!('palette' in snap) && snap.look);
+});
+
+test('the pool stops at the first error and never runs more than n jobs at once', async () => {
+  let live = 0; let peak = 0;
+  const job = (e) => async () => { live++; peak = Math.max(peak, live); await new Promise((z) => setTimeout(z, 5)); live--; return e; };
+  assert.strictEqual(await R.pool([job(null), job(null), job(null), job(null)], 2), null);
+  assert.ok(peak <= 2);
+  assert.strictEqual(await R.pool([job(null), job('boom'), job(null)], 1), 'boom');
 });

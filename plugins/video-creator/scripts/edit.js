@@ -63,8 +63,8 @@ function segmentArgs({ input, kind, move, seconds, style, size, draft, out }) {
   for (const f of style.fx) { const x = fxFilter(f, w, h); if (x) chain.push(x); }
   chain.push('setsar=1', 'format=yuv420p');
   const args = ['-y', '-loglevel', 'error', '-i', input, '-vf', chain.join(','), '-an', '-frames:v', String(n),
-    '-c:v', 'libx264', '-preset', draft ? 'ultrafast' : 'medium', '-crf', draft ? '28' : '18', '-r', String(fps), out];
-  return args;
+    '-c:v', 'libx264', '-preset', draft ? 'ultrafast' : 'veryfast', '-crf', draft ? '24' : '14', '-r', String(fps), out];
+  return args; // shots are re-encoded once in the join, so this pass favours speed over size
 }
 
 // Overlap between shot i-1 and shot i, kept under half of either shot.
@@ -126,18 +126,19 @@ function joinArgs({ segs, shots, style, total, voice, music, burn, out, draft, s
   let v = x.graph; let vl = x.label;
   if (burn) { v += `;${vl}subtitles=captions.srt:force_style='${captionStyle(size)}'[vs]`; vl = '[vs]'; }
   args.push('-filter_complex', `${v};${a.join(';')}`, '-map', vl, '-map', '[a]', '-t', total.toFixed(3),
-    '-c:v', 'libx264', '-preset', draft ? 'ultrafast' : 'medium', '-crf', draft ? '28' : '19', '-pix_fmt', 'yuv420p', '-r', '30',
+    '-c:v', 'libx264', '-preset', draft ? 'ultrafast' : 'faster', '-crf', draft ? '28' : '19', '-pix_fmt', 'yuv420p', '-r', '30',
     '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out);
   return { args, ov };
 }
 
 // Contact sheet: the first frame of every shot in one grid.
-function sheetArgs(inputs, size, out) {
+// labels: one short text per shot (validated shot ids only); font: a relative font path, or null to skip labels.
+function sheetArgs(inputs, size, out, labels, font) {
   const cols = Math.min(4, inputs.length); const rows = Math.ceil(inputs.length / cols);
   const tw = 360; const th = Math.round((tw * size[1]) / size[0]);
   const args = ['-y', '-loglevel', 'error'];
   inputs.forEach((f) => args.push('-i', f));
-  const parts = inputs.map((_, i) => `[${i}:v]scale=${tw}:${th}:force_original_aspect_ratio=increase,crop=${tw}:${th},setsar=1,trim=end_frame=1,setpts=PTS-STARTPTS[s${i}]`);
+  const parts = inputs.map((_, i) => `[${i}:v]scale=${tw}:${th}:force_original_aspect_ratio=increase,crop=${tw}:${th},setsar=1,trim=end_frame=1,setpts=PTS-STARTPTS${font && labels ? `,drawtext=fontfile=${font}:text='${labels[i]}':fontsize=26:fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=6:x=8:y=8` : ''}[s${i}]`);
   args.push('-filter_complex', `${parts.join(';')};${inputs.map((_, i) => `[s${i}]`).join('')}concat=n=${inputs.length}:v=1:a=0,tile=${cols}x${rows}:padding=6:color=0x111111[o]`, '-map', '[o]', '-frames:v', '1', '-q:v', '3', out);
   return args;
 }

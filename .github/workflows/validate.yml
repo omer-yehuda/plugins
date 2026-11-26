@@ -30,6 +30,8 @@ jobs:
         run: for p in plugins/*/; do claude plugin validate "$p"; done
       - name: Generated files in sync with units.json
         run: node tools/sync-army.js --check
+      - name: Token budget (always-loaded descriptions per plugin)
+        run: node tools/token-budget.js --check
       - name: Video Creator style commands in sync with styles.json
         run: node plugins/video-creator/scripts/gen-skills.js --check
       - name: Army tests (gate + lifecycle)

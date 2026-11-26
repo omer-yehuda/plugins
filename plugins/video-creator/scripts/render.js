@@ -2,7 +2,9 @@
 /* Rendering: ffmpeg runs without a shell, inside the project folder, on relative paths this script chose. */
 const fs = require('fs');
 const path = require('path');
-const { spawnSync } = require('child_process');
+const crypto = require('crypto');
+const os = require('os');
+const { spawn, spawnSync } = require('child_process');
 const { isLink } = require('./state');
 const E = require('./edit');
 const P = require('./project');
@@ -13,6 +15,31 @@ function ff(bin, args, cwd) {
   const r = spawnSync(bin, args, { cwd, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024, timeout: 15 * 60 * 1000 });
   if (r.error) return r.error.code === 'ENOENT' ? 'ffmpeg not found' : String(r.error.message);
   return r.status === 0 ? null : (r.stderr || `ffmpeg exited ${r.status}`).trim().split('\n').slice(-6).join('\n');
+}
+
+function ffAsync(bin, args, cwd) {
+  return new Promise((resolve) => {
+    let err = '';
+    const c = spawn(bin, args, { cwd, stdio: ['ignore', 'ignore', 'pipe'] });
+    const kill = setTimeout(() => c.kill('SIGKILL'), 15 * 60 * 1000);
+    c.stderr.on('data', (b) => { err = (err + b).slice(-4000); });
+    c.on('error', (e) => { clearTimeout(kill); resolve(e.code === 'ENOENT' ? 'ffmpeg not found' : String(e.message)); });
+    c.on('close', (code) => { clearTimeout(kill); resolve(code === 0 ? null : (err || `ffmpeg exited ${code}`).trim().split('\n').slice(-6).join('\n')); });
+  });
+}
+
+// Runs async jobs with at most n at a time; resolves to the first error, or null.
+async function pool(jobs, n) {
+  let next = 0; let first = null;
+  const worker = async () => { while (next < jobs.length && !first) { const e = await jobs[next++](); if (e && !first) first = e; } };
+  await Promise.all(Array.from({ length: Math.max(1, Math.min(n, jobs.length)) }, worker));
+  return first;
+}
+
+// A shot is re-encoded only when its ffmpeg arguments or its input file change.
+function cacheKey(dir, args, input) {
+  const st = fs.statSync(path.join(dir, input));
+  return crypto.createHash('sha1').update(JSON.stringify([args, st.size, st.mtimeMs, 2])).digest('hex');
 }
 
 function doctor(bin) {
@@ -73,8 +100,32 @@ function metadata(doc, style, seconds, size, kind) {
     '## Lines', '', ...doc.shots.filter((s) => s.line).map((s) => `- ${s.line.trim()}`), ''].filter((x) => x !== '').join('\n') + '\n';
 }
 
+// Encodes the shots in parallel, reusing every shot whose inputs did not change since the last render.
+async function encodeShots(bin, dir, shots, media, look, size, kind, segLen) {
+  const segs = []; let reused = 0; let done = 0;
+  const jobs = shots.map((s, i) => {
+    const m = media[s.id]; const n = String(i + 1).padStart(2, '0');
+    const rel = `.work/seg-${n}.mp4`; const tmp = `.work/seg-${n}.tmp.mp4`;
+    segs.push(rel);
+    const args = E.segmentArgs({ input: m.rel, kind: m.kind, move: s.move, seconds: segLen[i], style: look, size, draft: kind !== 'final', out: tmp });
+    const key = cacheKey(dir, args, m.rel); const keyFile = path.join(dir, `.work/seg-${n}.key`);
+    return async () => {
+      let old = null; try { old = fs.readFileSync(keyFile, 'utf8'); } catch { /* first render */ }
+      if (old === key && fs.existsSync(path.join(dir, rel))) { reused++; return null; }
+      const err = await ffAsync(bin, args, dir);
+      if (err) return `shot ${s.id} (${m.rel}): ${err}`;
+      fs.renameSync(path.join(dir, tmp), path.join(dir, rel)); // a stopped render never leaves a short file under the final name
+      fs.writeFileSync(keyFile, key);
+      process.stderr.write(`shot ${++done} encoded\n`);
+      return null;
+    };
+  });
+  const err = await pool(jobs, Math.max(1, Math.min(4, os.cpus().length - 1)));
+  return { err, segs, reused };
+}
+
 // kind: final | draft | animatic
-function render(bin, dir, doc, v, kind, opts) {
+async function render(bin, dir, doc, v, kind, opts) {
   const d = doctor(bin); if (!d.ok) return d;
   const burn = !!(opts.burn || kind === 'animatic') && d.captionsBurn;
   const plat = P.PLATFORMS[P.platformOf(doc.platform)];
@@ -84,24 +135,20 @@ function render(bin, dir, doc, v, kind, opts) {
   else if (v.missing.length) return fail('missing-media', `${v.missing.length} shot(s) have no image or clip yet`, { missing: v.missing });
   const w = workDir(dir); if (!w) return fail('planted-state', '.work is a symlink; refusing it');
   const look = kind === 'animatic' ? { ...v.style, fx: [] } : v.style; // texture filters would smear the card text
-  const shots = doc.shots; const ov = E.overlaps(shots, v.style); const segLen = E.segSeconds(shots, ov); const segs = [];
-  for (let i = 0; i < shots.length; i++) {
-    const m = media[shots[i].id]; const rel = `.work/seg-${String(i + 1).padStart(2, '0')}.mp4`;
-    const err = ff(bin, E.segmentArgs({ input: m.rel, kind: m.kind, move: shots[i].move, seconds: segLen[i], style: look, size, draft: kind !== 'final', out: rel }), dir);
-    if (err) return fail('ffmpeg-failed', `shot ${shots[i].id} (${m.rel}): ${err}`);
-    segs.push(rel);
-    process.stderr.write(`shot ${i + 1}/${shots.length} done\n`);
-  }
+  const shots = doc.shots; const segLen = E.segSeconds(shots, E.overlaps(shots, v.style));
+  const enc = await encodeShots(bin, dir, shots, media, look, size, kind, segLen);
+  if (enc.err) return fail('ffmpeg-failed', enc.err);
+  const segs = enc.segs;
   const total = shots.reduce((n, s) => n + s.seconds, 0);
   fs.writeFileSync(path.join(dir, 'captions.srt'), P.srt(shots, E.starts(shots)));
   const name = { final: 'video.mp4', draft: 'draft.mp4', animatic: 'animatic.mp4' }[kind];
   const j = E.joinArgs({ segs, shots, style: v.style, total, voice: doc.voice || null, music: doc.music || null, burn, out: '.work/out.tmp.mp4', draft: kind !== 'final', size });
-  const err = ff(bin, j.args, dir);
+  const err = await ffAsync(bin, j.args, dir);
   if (err) return fail('ffmpeg-failed', `join: ${err}`);
   fs.renameSync(path.join(w, 'out.tmp.mp4'), path.join(dir, name)); // a stopped render never leaves a short file under the final name
   fs.writeFileSync(path.join(dir, 'metadata.md'), metadata(doc, v.style, total, size, kind));
   return { ok: true, video: path.join(dir, name), kind, seconds: Math.round(total * 10) / 10, size, style: v.style.id, captionsBurned: burn,
-    captions: path.join(dir, 'captions.srt'), metadata: path.join(dir, 'metadata.md') };
+    shotsReused: enc.reused, captions: path.join(dir, 'captions.srt'), metadata: path.join(dir, 'metadata.md') };
 }
 
 function sheet(bin, dir, doc, v) {
@@ -109,8 +156,11 @@ function sheet(bin, dir, doc, v) {
   const have = doc.shots.filter((s) => v.media[s.id]);
   if (!have.length) return fail('missing-media', 'no images or clips yet: make them and save them under the names in prompts.md');
   const size = P.PLATFORMS[P.platformOf(doc.platform)].size;
-  const err = ff(bin, E.sheetArgs(have.map((s) => v.media[s.id].rel), size, 'sheet.jpg'), dir);
+  const w = workDir(dir); if (!w) return fail('planted-state', '.work is a symlink; refusing it');
+  let font = null;
+  if (d.animaticText) { fs.copyFileSync(path.join(__dirname, '..', 'assets', 'fonts', 'Rubik.ttf'), path.join(w, 'font.ttf')); font = '.work/font.ttf'; }
+  const err = ff(bin, E.sheetArgs(have.map((s) => v.media[s.id].rel), size, 'sheet.jpg', have.map((s, i) => `${i + 1} ${s.id}`), font), dir);
   return err ? fail('ffmpeg-failed', err) : { ok: true, sheet: path.join(dir, 'sheet.jpg'), order: have.map((s) => s.id), missing: v.missing };
 }
 
-module.exports = { doctor, render, sheet, makeCards, metadata, wrap, ff };
+module.exports = { doctor, render, sheet, makeCards, metadata, wrap, ff, ffAsync, pool, cacheKey };
