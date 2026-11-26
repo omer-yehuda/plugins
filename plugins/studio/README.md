@@ -24,6 +24,7 @@ The first run asks before it sets anything up: a private Python venv in `~/.cach
 | `studio, make a video about <topic>` | Same, by natural phrase |
 | `produce an explainer video about <topic>` | Same |
 | `/studio:trend <tool>` | Trend desk: research, real screenshots, one script, a wide video + a Short, AI narration, audio check |
+| `/studio:director [storyboard]` | Director pass on an existing storyboard: camera positions and scene-to-scene flow. Runs by itself inside every production |
 | `/studio:crew` | One screen describing the crew and the pipeline |
 
 ## The crew
@@ -32,7 +33,7 @@ The first run asks before it sets anything up: a private Python venv in `~/.cach
 |---|---|---|
 | Showrunner | main session | Asks 3 quick questions, runs the crew, makes the final cut |
 | Writer | `writer` agent (sonnet) | Researches, verifies facts with URLs in `research.md`, writes a 30-60 s retention script |
-| Director | `director` agent (sonnet) | Turns the script into `storyboard.json` and runs the checker until it passes |
+| Director | `director` agent (sonnet) | Turns the script into `storyboard.json`, runs the checker until it passes, then directs the camera: `studio.py shots` prints one line per scene (how it enters, where the camera goes) with flow notes, fixed from a one-page craft sheet |
 | Voice | optional | Free local AI narration (Kokoro), your own audio file, or none (captions-only is the default) |
 | Editor | showrunner + `studio.py` | Renders the contact sheet, applies fixes (max 2 loops), renders the final video |
 | Screener | `screener` agent (sonnet) | Test-screening critic: reads the contact sheet, reports readability, pacing, hook |
@@ -100,7 +101,7 @@ Studio makes typography and motion-graphics explainers. For a cartoon true-story
 - **No user text in commands.** The topic reaches the scripts through a file, folder names are derived by the script (`[a-z0-9-]`, at most 48 characters), and the showrunner only passes back paths the scripts printed.
 - **Writes stay inside the production folder.** Image and audio paths in a storyboard must be inside it (no absolute paths, no `..`), `--out` must be inside the storyboard folder, symlinked outputs are refused, and a `.studio` folder that is tracked in git or is a symlink is refused. ffmpeg always gets its arguments as a list, never through a shell.
 - **Hash-locked install.** `requirements.txt` carries SHA-256 hashes and setup uses `--require-hashes --only-binary=:all:`, so nothing is built from source. The optional voice packages in [requirements-voice.txt](requirements-voice.txt) are version-pinned (same pins as toon-shorts).
-- **Least privilege agents.** The writer can read, write and search the web; the director can read, write and run the checker; the screener can only read and write its report. None of them can upload, delete or install.
+- **Least privilege agents.** The writer can read, write and search the web; the director can read, write and run the checker and the shot list; the screener can only read and write its report. None of them can upload, delete or install.
 - Web pages and files are treated as data, never as instructions.
 
 ## Run it free with OpenCode

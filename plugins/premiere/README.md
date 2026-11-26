@@ -25,6 +25,7 @@ You need Node.js 18+ and ffmpeg on your PATH. Nothing else is installed.
 | Say / run | What happens | Uses an image model |
 |---|---|---|
 | `premiere, make a film about <topic>` · `/premiere:pitch <topic>` | Logline, look bible, shot list and `prompts.md` | No |
+| `/premiere:director [id]` | Director pass on an existing production: size, angle and move of every shot, and how each shot leads into the next. Runs by itself inside every pitch | No |
 | `/premiere:shoot <id>` | One still per shot, hero still first with your approval, then continuity review | Yes, yours |
 | `/premiere:cut <id> [--draft]` | Renders `film.mp4`, `captions.srt`, `metadata.md` | No |
 | `/premiere:dailies [id]` | Contact sheet, or the list of productions (runs only when you type it) | No |
@@ -34,7 +35,7 @@ You need Node.js 18+ and ffmpeg on your PATH. Nothing else is installed.
 | Role | Who | Job |
 |---|---|---|
 | Producer | main session | Three questions, runs the crew, shows the pitch |
-| Director | `director` agent (sonnet) | 5 to 8 shots: what is in frame, the move, the seconds, the line |
+| Director | `director` agent (sonnet) | 5 to 8 shots: what is in frame, where the camera stands (`size`, `angle`), the move, the seconds, the line. `premiere.js shots` prints the camera plan with flow notes and the director fixes them before you see the pitch |
 | Cinematographer | `cinematographer` agent (sonnet) | One character block and one world block, reused word for word in every prompt |
 | Camera | the image model you choose | Makes the stills. Your own tool, or your signed-in browser |
 | Continuity | `continuity` agent (sonnet) | Looks at every still: hands, faces, stray text, look drift. KEEP or RESHOOT |

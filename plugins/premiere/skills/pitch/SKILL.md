@@ -40,15 +40,19 @@ then run `P init --input-file <the printed input path>`. It prints `id`, `dir`, 
 
 ## Step 3: The director
 
-Dispatch ONE `premiere:director` with `model: "sonnet"`. Brief: the topic, format, target length, whether there is a voice, the style doc path if any, the format file `${CLAUDE_PLUGIN_ROOT}/skills/pitch/shots-format.md`, and the output path `files.shots`. Tell it to leave every `prompt` as a one-line description of what is in frame; the cinematographer writes the real prompts.
+Dispatch ONE `premiere:director` with `model: "sonnet"`. Brief: the topic, format, target length, whether there is a voice, the style doc path if any, the format file `${CLAUDE_PLUGIN_ROOT}/skills/pitch/shots-format.md`, the camera craft sheet `${CLAUDE_PLUGIN_ROOT}/skills/pitch/director.md`, and the output path `files.shots`. Tell it to leave every `prompt` as a one-line description of what is in frame; the cinematographer writes the real prompts.
 
 ## Step 4: The cinematographer
 
 Dispatch ONE `premiere:cinematographer` with `model: "sonnet"`. Brief: the path of `shots.json`, the format file, the output path `files.look`, and "rewrite every prompt in shots.json; change nothing else".
 
-Run `P check <id>`. If it reports errors, send them to the agent that owns the field (prompts: cinematographer; everything else: director), once. Then run `P prompts <id>` to write `prompts.md`.
+Run `P check <id>`. If it reports errors, send them to the agent that owns the field (prompts: cinematographer; everything else: director), once.
 
-## Step 5: Show the pitch
+## Step 5: The director pass (every film, never skipped)
+
+Run `P shots <id>`. It prints the camera plan as a `table` (size, angle and move per shot) and the `flow` notes on how each shot leads into the next. If `flowOk` is false, follow steps 3 to 5 of the `premiere:director` skill (`${CLAUDE_PLUGIN_ROOT}/skills/director/SKILL.md`): send the notes to the director once or twice, then have the cinematographer refresh the framing words of any shot whose `size` or `angle` changed. Finish with `P check <id>` and `P prompts <id>` to write `prompts.md`.
+
+## Step 6: Show the pitch
 
 Show the user (no JSON):
 
@@ -57,9 +61,9 @@ PREMIERE: <title>   (<format>, <seconds>s, <n> shots)
 LOGLINE: <one sentence>
 LOOK: <character in one line> · <world in one line> · grade <grade>
 SHOTS:
- 1. <id> <seconds>s <move>: <what we see> / "<line>"
+ 1. <id> <seconds>s <size>, <angle>, <move>: <what we see> / "<line>"
  ...
 Production: <dir>
 ```
 
-Ask: **Looks good, on to the shoot** · **Change the story** · **Change the look** · Other. Re-dispatch the right agent with the change (at most 2 rounds), re-run `P check` and `P prompts`. Then tell the user the next step is `/premiere:shoot <id>`. Do not generate anything here.
+Ask: **Looks good, on to the shoot** · **Change the story** · **Change the look** · Other. Re-dispatch the right agent with the change (at most 2 rounds), re-run `P check`, `P shots` and `P prompts`. Then tell the user the next step is `/premiere:shoot <id>`. Do not generate anything here.

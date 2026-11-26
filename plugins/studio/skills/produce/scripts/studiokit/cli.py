@@ -1,10 +1,11 @@
-"""studio.py commands: init, doctor, setup, check, preview, render, voice, audiocheck."""
+"""studio.py commands: init, doctor, setup, check, shots, preview, render, voice, audiocheck."""
 import argparse
 import sys
 from datetime import date
 from pathlib import Path
 
 from .ffmpeg import FfmpegError
+from .flow import report
 from .inputfile import InputFileError, discard, prep, read_prep_file
 from .models import ModelError
 from .setup_env import SetupError
@@ -26,8 +27,7 @@ def check_state(root: Path) -> Path:
 def cmd_init(a) -> int:
     """Create a production folder. The name comes from a text file (never from the command line)."""
     root = Path(a.root).resolve()
-    text = a.slug or ""
-    src = None
+    text, src = a.slug or "", None
     if a.title_file:
         text, src = read_prep_file(a.title_file)
         text = text[:2000]
@@ -158,6 +158,7 @@ def parser() -> argparse.ArgumentParser:
     s = sub.add_parser("check", help="validate a storyboard (exit 1 if invalid)")
     s.add_argument("storyboard")
     s.add_argument("--strict", action="store_true", help="treat warnings as failures")
+    sub.add_parser("shots", help="director's scene list: transitions, camera, flow notes").add_argument("storyboard")
     s = sub.add_parser("preview", help="contact sheet PNG of one key frame per scene")
     s.add_argument("storyboard")
     s.add_argument("--out")
@@ -174,7 +175,8 @@ def parser() -> argparse.ArgumentParser:
 
 
 COMMANDS = {"prep": cmd_prep, "init": cmd_init, "doctor": cmd_doctor, "setup": cmd_setup, "check": cmd_check,
-            "preview": cmd_preview, "render": cmd_render, "voice": cmd_voice, "audiocheck": cmd_audiocheck}
+            "preview": cmd_preview, "render": cmd_render, "voice": cmd_voice, "audiocheck": cmd_audiocheck,
+            "shots": lambda a: print(report(load(a.storyboard)[0])) or 0}
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -11,7 +11,7 @@
     {
       "name": "army",
       "source": "./plugins/army",
-      "description": "A chief of staff that commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, with 110+ on-demand specialist playbooks, cost-aware model routing, safety gates and local lessons-learned memory.",
+      "description": "A chief of staff that commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, with 110+ on-demand specialist playbooks, cost-aware model routing (eco, lean, full), a measured token ledger with a per-mission budget, safety gates and local lessons-learned memory.",
       "category": "productivity",
       "keywords": [
         "orchestration",
@@ -26,7 +26,7 @@
     {
       "name": "toon-shorts",
       "source": "./plugins/toon-shorts",
-      "description": "Animated short creator: turns a true story into an original voiced, captioned 1080x1920 cartoon MP4 for Shorts/TikTok/Reels, with toon characters, parallax sets, karaoke captions (Hebrew RTL), and a self-reviewed preview.",
+      "description": "Animated short creator: turns a true story into an original voiced, captioned 1080x1920 cartoon MP4 for Shorts/TikTok/Reels, with toon characters, parallax sets, karaoke captions (Hebrew RTL), a director pass on camera positions and shot flow, and a self-reviewed preview.",
       "category": "creative",
       "keywords": [
         "video",
@@ -99,7 +99,7 @@
     {
       "name": "studio",
       "source": "./plugins/studio",
-      "description": "A film crew of AI agents that turns a topic into a finished explainer video, vertical (1080x1920) or wide (1920x1080): writer, director, test-screening critic and editor produce a kinetic-typography MP4 with captions, optional free local AI narration and upload metadata. The trend desk films a trending tool from real screenshots and makes a wide video plus a Short. Local rendering with Pillow and ffmpeg.",
+      "description": "A film crew of AI agents that turns a topic into a finished explainer video, vertical (1080x1920) or wide (1920x1080): writer, director, test-screening critic and editor produce a kinetic-typography MP4 with captions, optional free local AI narration and upload metadata. A director pass sets camera positions and scene-to-scene flow. The trend desk films a trending tool from real screenshots and makes a wide video plus a Short. Local rendering with Pillow and ffmpeg.",
       "category": "creative",
       "keywords": [
         "video",
@@ -197,7 +197,7 @@
     {
       "name": "premiere",
       "source": "./plugins/premiere",
-      "description": "A film crew of AI agents for realistic short films. A director writes the shot list, a cinematographer writes one prompt per shot with a consistent look, you generate the stills with the image model you choose, a continuity check rejects bad frames, and ffmpeg cuts a graded, scored film with camera moves, in wide or vertical.",
+      "description": "A film crew of AI agents for realistic short films. A director writes the shot list and sets each shot's size, angle and move so the shots flow, a cinematographer writes one prompt per shot with a consistent look, you generate the stills with the image model you choose, a continuity check rejects bad frames, and ffmpeg cuts a graded, scored film with camera moves, in wide or vertical.",
       "category": "creative",
       "keywords": [
         "video",

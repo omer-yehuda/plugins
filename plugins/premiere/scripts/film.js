@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLink } = require('./state');
+const direct = require('./direct');
 
 const NAME_RE = /^[a-z0-9][a-z0-9-]{0,39}$/;
 const STILL_RE = /^stills\/[a-z0-9][a-z0-9-]{0,39}\.(png|jpe?g|webp)$/;
@@ -47,9 +48,10 @@ function validate(doc, prodDir) {
     if (!MOVES.includes(s.move)) errors.push(`${at}: move must be one of ${MOVES.join(', ')}`);
     if (typeof s.prompt !== 'string' || s.prompt.trim().length < 20 || s.prompt.length > 1200) errors.push(`${at}: prompt must be 20 to 1200 characters`);
     if (s.line !== undefined && (typeof s.line !== 'string' || s.line.length > 200)) errors.push(`${at}: line must be text of at most 200 characters`);
+    errors.push(...direct.fieldErrors(s, at));
   });
   if (total > LIMITS.maxTotal) errors.push(`the film is ${total}s long (limit ${LIMITS.maxTotal}s)`);
-  return { ok: errors.length === 0, errors, missing, shots: shots.length, seconds: Math.round(total * 10) / 10 };
+  return { ok: errors.length === 0, errors, missing, shots: shots.length, seconds: Math.round(total * 10) / 10, flow: errors.length ? [] : direct.flow(shots) };
 }
 
 function zoompan(move, n) {

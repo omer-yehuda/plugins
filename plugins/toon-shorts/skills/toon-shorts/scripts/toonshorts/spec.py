@@ -128,6 +128,8 @@ def check(sb: dict) -> tuple[list[str], list[str]]:
     if errors:
         return errors, notes
     notes += pace_notes(sb)
+    from .director import flow
+    notes += [f"flow: {line}" for line in flow(sb)]
     cams = [s.get("camera", "push_in") for s in scenes]
     for i in range(2, len(cams)):
         if cams[i] == cams[i - 1] == cams[i - 2]:

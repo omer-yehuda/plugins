@@ -17,5 +17,8 @@ what you changed, then re-preview. Do not render until every tile passes or you 
 | 10 | **Mood matches the beat?** Shocked on the turn, angry when cheated, happy on the win. | Change `mood` |
 | 11 | **Loop lands?** The last tile goes back to the first tile's place so the replay feels seamless. | `same_set_as: 0` with a new camera |
 
+Camera positions and flow were settled in the director pass (`toon.py shots`, `references/director.md`). If a
+fix here moved a camera, a cut or a character, run `toon.py shots` again.
+
 Then read the `PACE:` lines that `preview` printed. Fix any "opening is slow" or "one shot runs" line with
 `cuts` before rendering.

@@ -40,7 +40,7 @@ Dispatch the `writer` agent with `model: "sonnet"` (lean; use `opus` only for a 
 
 ## Step 3: Director
 
-Dispatch the `director` agent with `model: "sonnet"`: "read `<prod>/script.md`, write `<prod>/storyboard.json`, run `S check` until it passes". Then run `S check "<prod>/storyboard.json"` yourself and confirm `OK`.
+Dispatch the `director` agent with `model: "sonnet"`: "read `<prod>/script.md`, write `<prod>/storyboard.json`, run `S check` until it passes, then direct camera positions and flow with `S shots` until it prints `flow OK`". Then run `S shots "<prod>/storyboard.json"` yourself: it prints one short line per scene plus any `FLOW:` notes, and it fails if the storyboard is invalid. Confirm `flow OK`; if notes are left, fix them yourself from `${CLAUDE_PLUGIN_ROOT}/skills/produce/references/director.md` (the same pass as `/studio:director`). The director pass runs on every production and is never skipped. If you edit transitions or a `screen` scene later (Step 5 fixes), run `S shots` again.
 
 If the user has images to show, put them in `<prod>` and tell the director their file names. Studio never downloads images.
 

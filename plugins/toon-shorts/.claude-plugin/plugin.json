@@ -1,8 +1,8 @@
 {
   "name": "toon-shorts",
   "displayName": "Toon Shorts",
-  "version": "1.1.0",
-  "description": "Turn a true story into an original animated cartoon Short/Reel/TikTok (1080x1920 MP4): ideas, retention script, free AI voice or your own, toon characters on parallax sets, karaoke captions with Hebrew RTL, self-checked preview and render.",
+  "version": "1.2.0",
+  "description": "Turn a true story into an original animated cartoon Short/Reel/TikTok (1080x1920 MP4): ideas, retention script, free AI voice or your own, toon characters on parallax sets, karaoke captions with Hebrew RTL, a director pass on camera positions and shot flow, self-checked preview and render.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"

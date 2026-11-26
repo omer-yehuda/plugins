@@ -57,18 +57,18 @@ for (const f of fs.readdirSync(agentDir)) {
 
 // 2. raise skill table
 const raiseFile = path.join(ROOT, 'skills', 'raise', 'SKILL.md');
-const raiseRows = ['| Unit (subagent) | Use for | full | lean |', '|---|---|---|---|',
-  ...units.map((u) => `| \`army:${u.id}\` | ${u.use} | ${u.full} | ${u.lean} |`)].join('\n');
+const raiseRows = ['| Unit (subagent) | Use for | full | lean | eco |', '|---|---|---|---|---|',
+  ...units.map((u) => `| \`army:${u.id}\` | ${u.use} | ${u.full} | ${u.lean} | ${u.eco || u.lean} |`)].join('\n');
 write(raiseFile, replaceBlock(fs.readFileSync(raiseFile, 'utf8'), 'ORDER OF BATTLE', raiseRows, 'skills/raise/SKILL.md'));
 
 // 3. README table
 const readmeFile = path.join(ROOT, 'README.md');
 const total = Object.values(bodies).reduce((n, b) => n + specialists(b).length, 0);
 const readmeRows = [`**${units.length} units, ${total} specialist playbooks.** Generated from \`units.json\`.`, '',
-  '| Unit | Callsign | Specialists | Tools | full | lean |', '|---|---|---|---|---|---|',
+  '| Unit | Callsign | Specialists | Tools | full | lean | eco |', '|---|---|---|---|---|---|---|',
   ...units.map((u) => {
     const s = specialists(bodies[u.id] || '');
-    return `| \`${u.id}\` | ${u.callsign} | ${s.length ? s.join(', ') : u.use} | ${u.tools ? 'scoped' : 'all'} | ${u.full} | ${u.lean} |`;
+    return `| \`${u.id}\` | ${u.callsign} | ${s.length ? s.join(', ') : u.use} | ${u.tools ? 'scoped' : 'all'} | ${u.full} | ${u.lean} | ${u.eco || u.lean} |`;
   })].join('\n');
 write(readmeFile, replaceBlock(fs.readFileSync(readmeFile, 'utf8'), 'ORDER OF BATTLE', readmeRows, 'README.md'));
 

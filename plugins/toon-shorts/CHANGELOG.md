@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.2.0 (2026-11-26)
+
+### Added
+- **Director pass** (camera positions and flow), run on every short between the storyboard and the preview. New craft sheet `references/director.md`.
+- `toon.py shots <storyboard>`: one line per shot (camera, size, focus, what the camera looks at, which set) and `FLOW:` notes. Needs no packages.
+- Flow notes, also shown by `check` as `flow:` notes: an aimed camera (`push_in`, `pull_out`, `punch_in`) whose focus has nothing near it; one uncut shot that goes to someone else while a single character speaks; two characters swapping sides between scenes on the same set; `pan_left` straight after `pan_right` (or the reverse) on one set; a sideways camera moving against a walking or running character; a cut that repeats the same camera and focus; three close shots in a row.
+- `/toon-shorts:director [storyboard]`: the same pass as a skill of its own, for an existing storyboard.
+
+### Changed
+- The skill works from the shot table instead of re-reading the storyboard JSON during the director pass (fewer tokens).
+- The bundled examples pass every flow note unchanged.
+
+### Tests
+- 6 new tests for the shot list, each flow note and the `shots` command.
+
 ## 1.1.0 (2026-11-21)
 
 ### Added

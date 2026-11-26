@@ -30,6 +30,24 @@ def cmd_check(a) -> int:
     return 1 if errors else 0
 
 
+def cmd_shots(a) -> int:
+    """The director's shot list: every shot's camera, size and subject, then the flow notes."""
+    from .director import flow, table
+    from .spec import check
+    sb = _load(a.storyboard)
+    errors, _ = check(sb)
+    for e in errors:
+        print("ERROR:", e)
+    if errors:
+        return 1
+    print("\n".join(table(sb)))
+    notes = flow(sb)
+    for n in notes:
+        print("FLOW: ", n)
+    print("flow OK" if not notes else f"{len(notes)} flow note(s)")
+    return 0
+
+
 def cmd_voices(a) -> int:
     from .voice import VOICES
     for vid, (lang, desc) in VOICES.items():
@@ -111,6 +129,7 @@ def parser() -> argparse.ArgumentParser:
     p = sub.add_parser("setup", help="create the private venv (pinned packages); --voice adds the AI voice")
     p.add_argument("--voice", action="store_true")
     sub.add_parser("check", help="validate a storyboard").add_argument("storyboard")
+    sub.add_parser("shots", help="director's shot list and camera flow notes").add_argument("storyboard")
     sub.add_parser("voices", help="list AI voices").add_argument("--lang")
     p = sub.add_parser("samples", help="render the hook in a few voices")
     p.add_argument("--text", required=True)
@@ -140,7 +159,7 @@ def parser() -> argparse.ArgumentParser:
     return ap
 
 
-COMMANDS = {"setup": cmd_setup, "check": cmd_check, "voices": cmd_voices, "samples": cmd_samples,
+COMMANDS = {"setup": cmd_setup, "check": cmd_check, "shots": cmd_shots, "voices": cmd_voices, "samples": cmd_samples,
             "voice": cmd_voice, "preview": cmd_preview, "render": cmd_render}
 
 

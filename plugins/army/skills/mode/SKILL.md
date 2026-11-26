@@ -1,7 +1,7 @@
 ---
 name: mode
-description: Show or switch the army model profile (lean or full).
-argument-hint: "[lean|full]"
+description: Show or switch the army model profile (eco, lean or full).
+argument-hint: "[eco|lean|full]"
 disable-model-invocation: true
 ---
 
@@ -12,6 +12,7 @@ node "${CLAUDE_PLUGIN_ROOT}/scripts/army.js" mode "$ARGUMENTS" --data "${CLAUDE_
 ```
 
 The output includes `models`, the resolved unit→model map. Reply with the mode and a compact summary of that map, grouped by model.
+- **eco** (fewest tokens): Sonnet only for engineering, rescue, defense, legal, ops and the inspector-general; every other unit runs on Haiku. HQ also runs smaller missions: fewer units, shorter SITREPs, no optional units.
 - **lean** (default, suited to the Pro plan): no unit runs on Opus.
 - **full** (suited to the Max plan): critical units run on Opus.
 

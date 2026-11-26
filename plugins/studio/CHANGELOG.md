@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.0 (2026-11-26)
+
+- **Director pass** (camera positions and flow) on every production, in `/studio:produce` and on both cuts in `/studio:trend`. The `director` agent runs it after the checker passes; the showrunner confirms `flow OK`. Craft sheet: `skills/produce/references/director.md`.
+- `studio.py shots <storyboard>`: one line per scene (type, how it enters, seconds, and on `screen` scenes where the camera zooms and where the pointer clicks) and `FLOW:` notes. No Pillow needed.
+- Flow notes, also listed by `check` as `flow:` warnings: a `screen` scene with no `zoom`; a zoom box covering more than 80% of the screenshot; a pointer outside the zoom box; a `click` after the scene ends; the same screenshot in two scenes running without a `cut` between them; more `zoom-punch` entries than the hook and one reveal per five scenes; one transition four or more times in a row.
+- `/studio:director [storyboard]`: the same pass as a skill of its own, for an existing storyboard.
+- The agents work from the scene table instead of re-reading the storyboard JSON during the pass (fewer tokens).
+- Tests: 4 new tests for the scene list, each flow note and the `shots` command. The bundled example passes with no flow notes.
+
 ## 1.2.0 (2026-11-22)
 
 - Emotion in the AI narration. Tag a word in `say` with `{feeling|words}` (warn, surprise, excite, wow, punch, ask, calm, sad) and only that word changes: pitch shape, length, loudness and a short beat before it. Every line also gets a little more melody (`voice --lively`, default 1.2; `--flat` for the old read). Same Kokoro voice: Studio makes a local copy of the verified model with three multiply inputs (sound length, pitch, energy); with them at 1.0 the audio is identical to the original. Needs the new pinned `onnx` package, which `setup --voice` installs; without it Studio says so and speaks without emotion.

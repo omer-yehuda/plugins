@@ -1,8 +1,8 @@
 {
   "name": "army",
   "displayName": "Army",
-  "version": "1.2.0",
-  "description": "A chief of staff that commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, with 110+ on-demand specialist playbooks, cost-aware model routing, safety gates and local lessons-learned memory.",
+  "version": "1.3.0",
+  "description": "A chief of staff that commands 18 specialist units (intel, engineering, defense, legal, comms, data, sales and more) as subagents, with 110+ on-demand specialist playbooks, cost-aware model routing (eco, lean, full), a measured token ledger with a per-mission budget, safety gates and local lessons-learned memory.",
   "author": {
     "name": "Omer Yehuda",
     "url": "https://github.com/omer-yehuda"
