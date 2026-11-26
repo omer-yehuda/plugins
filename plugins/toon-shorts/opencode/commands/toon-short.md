@@ -19,4 +19,5 @@ How this setup differs from Claude Code:
   if well-known videos already tell it the same way, pick another idea or another angle.
 - The director pass in Step 5 is part of the skill itself: read `references/director.md` and run
   `toon.py shots`. No separate skill is needed here.
+- Run `toon.py finalcheck` after the full render (Step 6) and fix a FAIL before you give the user the file.
 - Keep the PACE lines that `check`, `preview` and `render` print clean before the full render.

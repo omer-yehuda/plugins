@@ -60,6 +60,8 @@ If the user has images to show, put them in `<prod>` and tell the director their
 
 Run `S render "<prod>/storyboard.json"` (add `--audio-path-file "<prod>/audio-path.txt" --fit-audio` if the user gave audio). A 30 s video takes about 15 to 60 seconds. It writes `video.mp4`, `captions.srt` and `metadata.md` next to the storyboard.
 
+Then run `S finalcheck "<prod>/storyboard.json"` (add `--fit-audio` if you rendered with it). Studio redraws one settled frame of every scene from the storyboard and compares it with `video.mp4`, checks the length and the frame shape, and with narration runs the pause and click check on the file's sound. `PASS` means the file is this storyboard. `FAIL` (exit 1) names the scene: the storyboard changed after the render (a screening fix, a re-voiced line) or the render stopped early. Render again and re-check; never hand over a file that failed. This runs on every production.
+
 Finish with a short report: path of each file, length, the title options from `metadata.md`, and any open screening notes. Do not upload or publish anything; uploading is the user's decision.
 
 ## Rules

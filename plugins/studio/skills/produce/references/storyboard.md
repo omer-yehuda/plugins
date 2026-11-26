@@ -56,6 +56,10 @@ Top level: `title` (required), `scenes` (1 to 30, aim for 8 to 12), `format` (`s
 
 `studio.py shots storyboard.json` prints the director's scene list (how each scene enters, where the camera goes on `screen` scenes) and `FLOW:` notes: a `screen` scene with no zoom or a zoom that barely moves, a pointer outside the zoom box, a click after the scene ends, the same screenshot twice without a `cut`, too many `zoom-punch` entries, one transition four times in a row. `check` lists the same notes as `flow:` warnings. The craft sheet is `director.md` next to this file.
 
+## Final check
+
+`studio.py finalcheck storyboard.json` answers one question: is `video.mp4` this storyboard? It redraws one settled frame of every scene and compares it with the same frame of the file, checks the length against the scene durations and the frame against the format, and with narration (`voice.lines.json`) runs the pause and click check on the file. `--video <file>` checks another file; `--fit-audio` is for a video rendered with `--fit-audio`. Exit 1 names each scene that does not match.
+
 ## Emotion tags (in `say`)
 
 The voice reads every line with a little melody. For the words that carry a feeling, add a tag: `{feeling|words}`. Only those words change (pitch shape, length, loudness, a short beat before them). Captions show the words without the tag.

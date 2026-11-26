@@ -10,6 +10,7 @@
  *   premiere.js prompts <id>                            write prompts.md: one prompt and one file name per shot
  *   premiere.js dailies <id>                            write dailies.jpg, a contact sheet of the stills that exist
  *   premiere.js cut <id> [--draft]                      render film.mp4, captions.srt and metadata.md
+ *   premiere.js finalcheck <id> [--draft]               compare film.mp4 (or draft.mp4) with the shot list, shot by shot
  *   premiere.js list
  *
  * Premiere does not generate images. Stills come from an image model you choose and are saved into the
@@ -25,6 +26,7 @@ const inputfile = require('./inputfile');
 const { make, isLink, parseArgs } = require('./state');
 const film = require('./film');
 const direct = require('./direct');
+const finalCheck = require('./finalcheck');
 
 const store = make('.premiere', 'productions', 'planted-premiere');
 const fail = (error, message, extra) => ({ ok: false, error, message, ...extra });
@@ -135,6 +137,24 @@ function cut(project, id, bin, draft) {
   return { ok: true, id, film: out, seconds, shots: shots.length, size, draft: !!draft, captions: path.join(l.dir, 'captions.srt'), metadata: path.join(l.dir, 'metadata.md') };
 }
 
+function finalcheck(project, id, bin, draft) {
+  const l = load(project, id);
+  if (!l.ok) return l;
+  if (!l.v.ok) return fail('bad-shots', 'shots.json has errors', { errors: l.v.errors });
+  if (l.v.missing.length) return fail('missing-stills', `${l.v.missing.length} still(s) are missing`, { missing: l.v.missing });
+  const name = draft ? 'draft.mp4' : 'film.mp4';
+  const file = path.join(l.dir, name);
+  if (isLink(file) || !fs.existsSync(file)) return fail('no-film', `${name} is not in the production yet: run the cut first`);
+  const d = doctor(bin); if (!d.ok) return d;
+  const r = finalCheck.check(bin, l.dir, l.doc, l.size, file);
+  if (r.error) return fail('ffmpeg-failed', r.error);
+  const lines = l.doc.shots.filter((s) => s.line && s.line.trim()).length;
+  let cues = -1;
+  try { cues = (fs.readFileSync(path.join(l.dir, 'captions.srt'), 'utf8').match(/-->/g) || []).length; } catch { /* reported below */ }
+  if (cues !== lines) r.problems.push(cues < 0 ? 'captions.srt is missing: cut again' : `captions.srt has ${cues} caption(s) but the shot list has ${lines} line(s): cut again`);
+  return { ok: r.problems.length === 0, id, file, verdict: r.problems.length ? 'FAIL' : 'PASS', seconds: r.seconds, size: r.size, shotsChecked: r.shotsChecked, problems: r.problems, notes: r.notes };
+}
+
 function list(project) {
   return store.listIds(project).map((id) => {
     const dir = path.join(store.items(project), id);
@@ -169,11 +189,12 @@ function main(argv) {
   else if (cmd === 'prompts') res = prompts(project, arg);
   else if (cmd === 'dailies') res = dailies(project, arg, bin);
   else if (cmd === 'cut') res = cut(project, arg, bin, !!flags.draft);
+  else if (cmd === 'finalcheck') res = finalcheck(project, arg, bin, !!flags.draft);
   else if (cmd === 'list') res = store.planted(project) || { ok: true, productions: list(project) };
-  else { process.stderr.write('usage: premiere.js doctor | prep | init --input-file F | check <id> | shots <id> | prompts <id> | dailies <id> | cut <id> [--draft] | list\n'); return 2; }
+  else { process.stderr.write('usage: premiere.js doctor | prep | init --input-file F | check <id> | shots <id> | prompts <id> | dailies <id> | cut <id> [--draft] | finalcheck <id> [--draft] | list\n'); return 2; }
   process.stdout.write(JSON.stringify(res, null, 2) + '\n');
   return res.ok ? 0 : 1;
 }
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
-module.exports = { doctor, init, check, shots, prompts, dailies, cut, list };
+module.exports = { doctor, init, check, shots, prompts, dailies, cut, finalcheck, list };

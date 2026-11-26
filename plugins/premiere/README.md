@@ -27,7 +27,7 @@ You need Node.js 18+ and ffmpeg on your PATH. Nothing else is installed.
 | `premiere, make a film about <topic>` · `/premiere:pitch <topic>` | Logline, look bible, shot list and `prompts.md` | No |
 | `/premiere:director [id]` | Director pass on an existing production: size, angle and move of every shot, and how each shot leads into the next. Runs by itself inside every pitch | No |
 | `/premiere:shoot <id>` | One still per shot, hero still first with your approval, then continuity review | Yes, yours |
-| `/premiere:cut <id> [--draft]` | Renders `film.mp4`, `captions.srt`, `metadata.md` | No |
+| `/premiere:cut <id> [--draft]` | Renders `film.mp4`, `captions.srt`, `metadata.md`, then checks the file against the shot list: one frame of every shot is rendered again and compared, plus length, loudness and captions | No |
 | `/premiere:dailies [id]` | Contact sheet, or the list of productions (runs only when you type it) | No |
 
 ## The crew

@@ -7,7 +7,8 @@
 - `premiere.js shots <id>`: the camera plan as a table (size, angle, move, seconds) and flow notes. `check` returns the same notes in `flow`.
 - Flow notes: shots with no size; two shots running with the same size and angle (a jump cut on one subject); three shots of one size running; the same move three times running (the format always said this, now it is checked); a pan or tilt that reverses the one before; a pan or tilt on a close or detail shot; a push-in on a detail shot.
 - `/premiere:director [id]`: the same pass as a skill of its own, for an existing production. It refreshes the framing words of changed shots and lists stills that must be reshot.
-- Tests: 2 new tests for the fields, each flow note and the `shots` command.
+- `premiere.js finalcheck <id> [--draft]`: checks `film.mp4` (or `draft.mp4`) against the shot list, using the cut's own filter chain. For every shot it renders one frame again from the still (`film.shotFilter`: move, grade, grain, bars, fades) and compares it with that frame of the file, tile by tile. The frame is a quarter of the way into the shot, because at the middle a push-in and a pull-out look the same. It also checks the length against the frame counts the cut uses, the frame shape, that the loudness is within 4 LU of the cut's target (-14 LUFS with a voice, -18 without; now one constant shared with the sound step) and that `captions.srt` has one caption per line. On patterned test stills a matching shot differs by 6 or less with full grain, a reversed move by 15 or more and a swapped still by about 100; the limit is 11. A changed colour grade alone is not detected. `/premiere:cut` runs it after every cut.
+- Tests: 4 new tests: the fields, each flow note, the `shots` command, and the final check on a real draft cut (a pass, swapped stills, a reversed move, a longer shot list, missing captions).
 
 ## 1.0.0 (2026-11-22)
 

@@ -6,7 +6,8 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
-const { init, check, shots, prompts, dailies, cut, list } = require('../scripts/premiere.js');
+const { init, check, shots, prompts, dailies, cut, finalcheck, list } = require('../scripts/premiere.js');
+const fcheck = require('../scripts/finalcheck.js');
 const direct = require('../scripts/direct.js');
 const film = require('../scripts/film.js');
 
@@ -183,4 +184,42 @@ test('shots prints the director table and flow notes for a production', () => {
   assert.strictEqual(shots(p, prod.id).error, 'bad-shots');
   const c = cli(p, 'shots', 'nope');
   assert.strictEqual(c.status, 1);
+});
+
+test('finalcheck: tile difference and the shot layout the cut uses', () => {
+  const a = Buffer.alloc(256); const b = Buffer.alloc(256);
+  assert.strictEqual(fcheck.difference(a, b, 16, 16), 0);
+  for (let y = 8; y < 16; y++) for (let x = 8; x < 16; x++) b[y * 16 + x] = 200;
+  assert.strictEqual(fcheck.difference(a, b, 16, 16), 200); // one tile of four changed: not averaged down to 50
+  assert.deepStrictEqual(fcheck.layout([{ seconds: 1.5 }, { seconds: 2 }]), [{ start: 0, frames: 45, mid: 11 }, { start: 45, frames: 60, mid: 60 }]);
+  assert.match(fcheck.probe('ffmpeg-that-does-not-exist', 'x.mp4').error, /could not start ffmpeg|not a video/);
+});
+
+test('finalcheck passes the cut it was made from and fails when the shot list no longer matches', render, () => {
+  const { p, prod } = production();
+  assert.strictEqual(finalcheck(p, prod.id, 'ffmpeg', true).error, 'missing-stills');
+  // patterned stills, so a wrong still or a reversed move is visible
+  ['testsrc2', 'mandelbrot', 'smptebars'].forEach((src, i) => execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'lavfi', '-i', `${src}=s=1920x1080`, '-frames:v', '1', path.join(prod.dir, DOC.shots[i].still)]));
+  assert.strictEqual(finalcheck(p, prod.id, 'ffmpeg', true).error, 'no-film');
+  assert.strictEqual(cut(p, prod.id, 'ffmpeg', true).ok, true);
+  const ok = finalcheck(p, prod.id, 'ffmpeg', true);
+  assert.deepStrictEqual([ok.ok, ok.verdict, ok.problems, ok.shotsChecked], [true, 'PASS', [], 3]);
+  assert.deepStrictEqual(ok.size, [960, 540]);
+  assert.match(ok.notes[0], /loudness -1\d\.\d LUFS \(target -18\)/);
+
+  const edit = (fn) => { const d = JSON.parse(JSON.stringify(DOC)); fn(d); fs.writeFileSync(prod.files.shots, JSON.stringify(d)); return finalcheck(p, prod.id, 'ffmpeg', true); };
+  const swapped = edit((d) => { [d.shots[0].still, d.shots[1].still] = [d.shots[1].still, d.shots[0].still]; });
+  assert.strictEqual(swapped.ok, false);
+  assert.match(swapped.problems.join('\n'), /shot 1 \(01-open\): at 0\.\ds the file does not show this shot[\s\S]*shot 2 \(02-turn\)/);
+  assert.doesNotMatch(swapped.problems.join('\n'), /shot 3/);
+  const reversed = edit((d) => { d.shots[1].move = 'pan-left'; });
+  assert.match(reversed.problems.join('\n'), /^shot 2 \(02-turn\).*the still, the move or the order changed/);
+  const longer = edit((d) => { d.shots[2].seconds = 6; d.shots[1].line = 'A new line.'; });
+  assert.match(longer.problems.join('\n'), /the file is 4\.5s but the shot list adds up to 9\.0s[\s\S]*captions\.srt has 2 caption\(s\) but the shot list has 3 line\(s\)/);
+  const voiced = edit((d) => { d.voice = 'voice.wav'; });
+  assert.strictEqual(voiced.ok, false); // check refuses a voice file that is not there
+  fs.writeFileSync(prod.files.shots, JSON.stringify(DOC));
+  fs.rmSync(path.join(prod.dir, 'captions.srt'));
+  assert.match(finalcheck(p, prod.id, 'ffmpeg', true).problems.join('\n'), /captions\.srt is missing/);
+  assert.strictEqual(cli(p, 'finalcheck', prod.id, '--draft').status, 1);
 });

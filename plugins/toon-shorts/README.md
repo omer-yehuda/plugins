@@ -46,6 +46,7 @@ flowchart LR
 - **Karaoke captions:** 1-3 words at a time, with the spoken word lit up. **Hebrew is laid out right-to-left** correctly, including numbers and brackets.
 - **Audio:** free Kokoro-82M voices in English (US/UK), Spanish, French, Italian, Portuguese and Hindi; your own recording in any language; a sound for every on-screen action (pops, whooshes, a sting on a shock, a thud on anger, footsteps), and music ducked under the voice.
 - **A director pass on every short.** After the storyboard is written, `toon.py shots` prints one line per shot (camera, size, focus, what it looks at) and flow notes: a camera aimed at empty ground, an uncut shot that ignores the speaker, two characters swapping sides on the same set, a pan that swings back, a camera moving against a walk, a cut that changes nothing, three close shots in a row. Claude fixes them from a one-page craft sheet (`references/director.md`) before the preview. `/toon-shorts:director <storyboard>` runs the same pass on an existing storyboard.
+- **A final check against the storyboard.** `toon.py finalcheck` redraws one frame of every shot with the engine and compares it with the finished MP4, checks the length against the voice timing and confirms every spoken line is audible. It catches a render that stopped early and a file that no longer matches the storyboard after a late edit.
 - **A storyboard checker** that suggests the right value for every typo ("Did you mean 'push_in'?") and flags pacing problems: a slow opening (fewer than 4 shots in 10 seconds), shots over 4 seconds, a long hook, a payoff that appears late, a character whose look changes between scenes, repeated cameras and a runtime over 60 seconds.
 - **An 11-point still checklist** Claude goes through on every preview tile, and a quick `--draft` render (540x960, 15 fps) before the full one.
 
@@ -94,6 +95,7 @@ Claude drives this for you, but you can run it yourself:
 python skills/toon-shorts/scripts/toon.py setup --voice          # once; venv + pinned packages + verified model
 python skills/toon-shorts/scripts/toon.py check  story.json      # validate (stdlib only)
 python skills/toon-shorts/scripts/toon.py shots  story.json      # director's shot list and flow notes (stdlib only)
+python skills/toon-shorts/scripts/toon.py finalcheck story.json --audio voice.wav   # is short.mp4 this storyboard?
 python skills/toon-shorts/scripts/toon.py samples --text "Hook line." --out samples
 python skills/toon-shorts/scripts/toon.py voice   story.json --voice am_michael --out voice.wav
 python skills/toon-shorts/scripts/toon.py preview story.json --audio voice.wav --out preview.png

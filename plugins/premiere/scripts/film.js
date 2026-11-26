@@ -18,6 +18,7 @@ const GRADES = {
 };
 const FORMATS = { wide: [1920, 1080], vertical: [1080, 1920] };
 const FPS = 30;
+const LOUDNESS = { voice: -14, score: -18 }; // LUFS the sound step aims for, with and without a voice
 const LIMITS = { minShots: 3, maxShots: 12, minSeconds: 1.5, maxSeconds: 12, maxTotal: 120 };
 
 function validate(doc, prodDir) {
@@ -98,8 +99,8 @@ function soundArgs(silent, out, seconds, voice) {
   let graph = `[1:a]aformat=channel_layouts=stereo[d];[2:a]lowpass=f=500,aformat=channel_layouts=stereo[n];[d][n]amix=inputs=2:normalize=0,afade=t=in:d=1.5,afade=t=out:st=${Math.max(0, seconds - 2).toFixed(2)}:d=2[m];`;
   if (voice) {
     args.push('-i', voice);
-    graph += '[3:a]aformat=sample_rates=48000:channel_layouts=stereo,asplit[v1][v2];[m][v1]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[duck];[duck][v2]amix=inputs=2:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[a]';
-  } else graph += '[m]loudnorm=I=-18:TP=-1.5:LRA=11[a]';
+    graph += '[3:a]aformat=sample_rates=48000:channel_layouts=stereo,asplit[v1][v2];[m][v1]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[duck];[duck][v2]amix=inputs=2:normalize=0,loudnorm=I=' + LOUDNESS.voice + ':TP=-1.5:LRA=11[a]';
+  } else graph += `[m]loudnorm=I=${LOUDNESS.score}:TP=-1.5:LRA=11[a]`;
   args.push('-filter_complex', graph, '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-t', T, '-movflags', '+faststart', out);
   return args;
 }
@@ -138,4 +139,4 @@ function promptsDoc(doc, size) {
   return out.join('\n');
 }
 
-module.exports = { validate, shotFilter, shotArgs, soundArgs, dailiesArgs, srt, promptsDoc, zoompan, MOVES, GRADES, FORMATS, FPS, LIMITS };
+module.exports = { validate, shotFilter, shotArgs, soundArgs, dailiesArgs, srt, promptsDoc, zoompan, MOVES, GRADES, FORMATS, FPS, LIMITS, LOUDNESS };

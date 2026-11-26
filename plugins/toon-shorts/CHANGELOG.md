@@ -8,12 +8,14 @@
 - Flow notes, also shown by `check` as `flow:` notes: an aimed camera (`push_in`, `pull_out`, `punch_in`) whose focus has nothing near it; one uncut shot that goes to someone else while a single character speaks; two characters swapping sides between scenes on the same set; `pan_left` straight after `pan_right` (or the reverse) on one set; a sideways camera moving against a walking or running character; a cut that repeats the same camera and focus; three close shots in a row.
 - `/toon-shorts:director [storyboard]`: the same pass as a skill of its own, for an existing storyboard.
 
+- `toon.py finalcheck <storyboard> [--audio <voice>] [--video <file>]`: checks the finished MP4 against the storyboard it was made from, using the engine itself. It redraws the middle frame of every shot (the same `Movie.frame` the render uses, with the same voice timing) and compares it with that frame of the file, tile by tile. It also checks the length against the timing, the 9:16 shape, that there is a sound track, and, when a voice is given, that every spoken line is audible in the file. Exit 1 names the scene. On the bundled example a matching shot differs by under 3 (draft quality) and one changed expression by over 20; the limit is 10. The skill runs it on every short and after every late edit.
+
 ### Changed
 - The skill works from the shot table instead of re-reading the storyboard JSON during the director pass (fewer tokens).
 - The bundled examples pass every flow note unchanged.
 
 ### Tests
-- 6 new tests for the shot list, each flow note and the `shots` command.
+- 9 new tests: the shot list, each flow note, the `shots` command, and the final check on real renders (a pass, an expression edited after the render, a plan longer than the file, a muted line, a missing sound track).
 
 ## 1.1.0 (2026-11-21)
 

@@ -7,7 +7,9 @@
 - Flow notes, also listed by `check` as `flow:` warnings: a `screen` scene with no `zoom`; a zoom box covering more than 80% of the screenshot; a pointer outside the zoom box; a `click` after the scene ends; the same screenshot in two scenes running without a `cut` between them; more `zoom-punch` entries than the hook and one reveal per five scenes; one transition four or more times in a row.
 - `/studio:director [storyboard]`: the same pass as a skill of its own, for an existing storyboard.
 - The agents work from the scene table instead of re-reading the storyboard JSON during the pass (fewer tokens).
-- Tests: 4 new tests for the scene list, each flow note and the `shots` command. The bundled example passes with no flow notes.
+- `studio.py finalcheck <storyboard> [--video <file>] [--fit-audio]`: checks the finished video against its storyboard, using the renderer itself. It redraws one settled frame of every scene with `draw_scene` at the file's own size and compares it with that frame of the file, tile by tile. It also checks the length against the scene durations, the frame against the format, that a storyboard with audio produced a video with sound, and with `voice.lines.json` runs the existing pause and click check on the file. Exit 1 names the scene. On the bundled example a matching scene differs by under 2 and one changed word by 10 or more; the limit is 6. `/studio:produce` and `/studio:trend` run it on every video; in the trend desk it replaces the manual length check.
+- `shots` and `finalcheck` live in a new `cli_more.py`, which keeps `cli.py` at the 200-line cap.
+- Tests: 8 new tests: the scene list, each flow note, the `shots` command, and the final check on real renders (a pass, one word edited after the render, a plan longer than the file, the wrong format, narration, `--fit-audio`). The bundled example passes with no flow notes.
 
 ## 1.2.0 (2026-11-22)
 

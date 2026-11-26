@@ -27,6 +27,8 @@ The first run asks before it sets anything up: a private Python venv in `~/.cach
 | `/studio:director [storyboard]` | Director pass on an existing storyboard: camera positions and scene-to-scene flow. Runs by itself inside every production |
 | `/studio:crew` | One screen describing the crew and the pipeline |
 
+Every production ends with a final check (`studio.py finalcheck`): Studio redraws one frame of every scene from the storyboard and compares it with the finished file, so a render that stopped early or a file that no longer matches the storyboard after a late fix is caught before you get the video.
+
 ## The crew
 
 | Role | Who | Job |

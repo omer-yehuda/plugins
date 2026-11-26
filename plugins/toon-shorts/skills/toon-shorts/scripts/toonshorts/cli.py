@@ -70,7 +70,7 @@ def cmd_voice(a) -> int:
     return 0
 
 
-def _prepare(a):
+def _prepare(a, quiet: bool = False):
     from .audio import decode, find_ffmpeg
     from .spec import check
     from .timing import build
@@ -87,6 +87,8 @@ def _prepare(a):
     if lines and lines.exists():
         spans = json.loads(lines.read_text(encoding="utf-8-sig"))
     timing, total = build(sb["scenes"], voice, spans)
+    if quiet:
+        return sb, timing, total, ff, voice
     for i, (t0, t1, _) in enumerate(timing):
         print(f"scene {i:2d}  {t0:6.2f}-{t1:6.2f}s  {sb['scenes'][i].get('say', '')[:56]}")
     print(f"total {total:.1f}s" + ("  (over 60s: too long for Shorts!)" if total > 60 else ""))
@@ -123,6 +125,11 @@ def cmd_render(a) -> int:
     return 0
 
 
+def cmd_finalcheck(a) -> int:
+    from .finalcheck import command
+    return command(a, *_prepare(a, quiet=True))
+
+
 def parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="toon.py", description="toon-shorts: storyboard -> animated short")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -143,12 +150,17 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--out", default="voice.wav")
     p.add_argument("--speed", type=float, default=1.1)
     workers = max(1, min(4, (os.cpu_count() or 2) - 1))
-    for name, default in (("preview", "preview.png"), ("render", "short.mp4")):
-        p = sub.add_parser(name, help="contact sheet (one frame per scene)" if name == "preview" else "final MP4")
+    helps = {"preview": "contact sheet (one frame per scene)", "render": "final MP4",
+             "finalcheck": "compare the rendered MP4 with the storyboard and voice, shot by shot"}
+    for name, default in (("preview", "preview.png"), ("render", "short.mp4"), ("finalcheck", None)):
+        p = sub.add_parser(name, help=helps[name])
         p.add_argument("storyboard")
         p.add_argument("--audio", help="voiceover (AI voice.wav or the user's own recording)")
         p.add_argument("--lines", help="line timings json (auto-found next to the audio)")
-        p.add_argument("--out", default=default)
+        if name == "finalcheck":
+            p.add_argument("--video", help="the rendered file (default: short.mp4 next to the storyboard)")
+        else:
+            p.add_argument("--out", default=default)
         p.add_argument("--workers", type=int, default=workers)
         p.add_argument("--ffmpeg")
         if name == "render":
@@ -159,7 +171,7 @@ def parser() -> argparse.ArgumentParser:
     return ap
 
 
-COMMANDS = {"setup": cmd_setup, "check": cmd_check, "shots": cmd_shots, "voices": cmd_voices, "samples": cmd_samples,
+COMMANDS = {"setup": cmd_setup, "check": cmd_check, "shots": cmd_shots, "finalcheck": cmd_finalcheck, "voices": cmd_voices, "samples": cmd_samples,
             "voice": cmd_voice, "preview": cmd_preview, "render": cmd_render}
 
 

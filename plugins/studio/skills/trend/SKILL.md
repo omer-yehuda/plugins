@@ -69,7 +69,7 @@ Run `S check` on both until `OK`.
 
 1. `S render` both (no `--fit-audio`: the voice step already timed the scenes).
 2. `S audiocheck "<prod>/wide/video.mp4" --lines "<prod>/wide/voice.lines.json"` and the same for the Short. A FAIL is fixed before anything else.
-3. Check each video's length against the storyboard total and look at 3 frames from each (a cut-off render once played as a 45 s copy of a 2 min video).
+3. `S finalcheck "<prod>/wide/storyboard.json"` and the same for `short/`. It compares one frame of every scene with what the storyboard draws and checks the length (a cut-off render once played as a 45 s copy of a 2 min video; this is the check for it). A `FAIL` names the scene: render again and re-check.
 
 ## Step 7: Report
 

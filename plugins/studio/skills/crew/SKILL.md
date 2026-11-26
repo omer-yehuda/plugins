@@ -19,6 +19,7 @@ STUDIO: an AI film crew
     5. SCREENER  test-screening critic reads the sheet, reports readability, pacing, hook
                  -> showrunner applies fixes (at most 2 loops)
     6. RENDER    video.mp4 (1080x1920, 30 fps, H.264) + captions.srt + metadata.md
+    7. FINAL CHECK  redraws a frame of every scene and compares it with the file
 
 Files: .studio/productions/<date>-<slug>/  (git-ignored)
 Needs: Python 3.11+, ffmpeg on PATH. First run asks before creating a private venv with pinned Pillow.

@@ -18,7 +18,7 @@ Turn one conversation into a finished animated short:
 | `references/director.md` | camera positions and shot-to-shot flow. **Read before the director pass in Step 5.** |
 | `references/checklist.md` | the 11-point still check. **Use in Step 6.** |
 | `examples/onoda.json`, `examples/onoda_he.json` | complete storyboards (English, Hebrew) to copy from |
-| `scripts/toon.py` | the engine CLI: `setup`, `check`, `shots`, `voices`, `samples`, `voice`, `preview`, `render` |
+| `scripts/toon.py` | the engine CLI: `setup`, `check`, `shots`, `finalcheck`, `voices`, `samples`, `voice`, `preview`, `render` |
 
 ## Step 0: Setup (once per machine, ask first)
 
@@ -114,13 +114,21 @@ finished storyboard.
 4. **Full render:** `toon.py render "<work>/storyboard.json" --audio "<work>/voice.wav" --out "<work>/short.mp4"`
    (`--music <file>` adds a ducked music bed; if it is slow, `--workers 2` or `--fps 24`). Takes 1-4 minutes.
    Every on-screen action gets its own sound automatically (see "Sound" in `references/storyboard.md`).
-5. Give the MP4's absolute path, plus a ready-to-paste **title** (<60 chars), **description** (tease + source line)
+5. **Final check (every short, before you show it):**
+   `toon.py finalcheck "<work>/storyboard.json" --audio "<work>/voice.wav"` (leave out `--audio` for captions only;
+   `--video <file>` for a file other than `short.mp4` next to the storyboard, such as the draft). The engine redraws
+   one frame of every shot from the storyboard and the voice timing and compares it with the file, then checks the
+   length and that every spoken line is audible. `PASS` means the file is this storyboard. `FAIL` (exit 1) names the
+   scene: the storyboard or the voice changed after the render, or the render stopped early. Render again and
+   re-check; never hand over a file that failed.
+6. Give the MP4's absolute path, plus a ready-to-paste **title** (<60 chars), **description** (tease + source line)
    and **3 hashtags**, in the video's language.
 
 ## Step 7: Changes
 
 Ask: Perfect · Change a scene · Change the voice · Other. Edit the storyboard (re-make the voice if any `say` or
-`voice` text changed), run `toon.py shots` again if a camera, a cut or a position changed, re-preview, re-render.
+`voice` text changed), run `toon.py shots` again if a camera, a cut or a position changed, re-preview, re-render, and run `toon.py finalcheck`
+again: it catches a file that was not re-rendered after the last edit.
 
 ## Running on a free model (OpenCode)
 
