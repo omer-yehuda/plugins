@@ -1,15 +1,15 @@
 ---
 name: headline
-description: The Newsroom, one plugin or package only. Use ONLY when the user runs /newsroom:headline <unit> or says "newsroom, a headline for <unit>". Writes a title, one paragraph and one post for what changed in that unit since the last tag, fact-checked against the commits.
-argument-hint: "<plugin or package name>"
+description: Moved. The Newsroom is now a drill of the army plugin. Use ONLY when the user runs /newsroom:headline. Points to /army:headline.
 ---
 
-# The Newsroom: one headline
+# The Newsroom has moved
 
-**Unit:** $ARGUMENTS
+The Newsroom is now a **drill** of the army plugin: the same procedure, agents and records folder, runnable on its own without raising the army.
 
-Follow `/newsroom:edition` with these differences:
+Tell the user, in two lines:
 
-- In Phase 1 write `"unit": "<the name the user gave>"` in the input file and leave `since` empty. `no-such-unit` means nothing changed there in this range: say so and stop.
-- In Phase 3 brief the editor to write ONLY `release-notes.md` (a headline, one paragraph, then the cited changes), `posts.md` (one X post and one LinkedIn post) and `sources.md`.
-- Phases 4 and 5 are unchanged. The house rules apply in full.
+1. This command moved to `/army:headline`.
+2. Install it with `/plugin install army@omer-plugins`, then uninstall this one with `/plugin uninstall newsroom@omer-plugins`.
+
+If army is already installed, offer to run `/army:headline` with the same request now. Do nothing else from this stub.

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2026-11-23)
+
+- Deprecated. ATC is now a drill of **army 2.0.0** (/army:claim, /army:clear, /army:radar, /army:release) with the same agents and records folder. The commands here only point there. This plugin will be removed in the next release.
+
 ## 1.0.0 (2026-11-19)
 
 - First release.

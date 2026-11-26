@@ -1,5 +1,13 @@
 # Studio: a film crew of AI agents for Claude Code
 
+**One plugin, three formats:** kinetic-typography explainers, animated cartoon shorts (formerly the toon-shorts plugin) and realistic short films (formerly Premiere). One install, one private venv, one voice model download.
+
+| Format | Say or run | Makes | Docs |
+|---|---|---|---|
+| Explainer | `studio, make a video about <topic>` · `/studio:produce` · `/studio:trend <tool>` | Animated text and motion graphics, vertical or wide, optional AI narration with emotion | below |
+| Toon | `make an animated short about <true story>` · `/studio:toon` | Original cartoon characters on parallax sets, voiced, karaoke captions, **Hebrew RTL** | [docs/toon.md](docs/toon.md) |
+| Film | `studio, make a film about <topic>` · `/studio:pitch` → `/studio:shoot` → `/studio:cut` | Realistic short film from stills you generate, with camera moves, a grade and a score | [docs/film.md](docs/film.md) |
+
 Say **"studio, make a video about how DNS works"** and a small crew of agents turns the topic into a finished explainer, vertical (1080x1920) or wide (1920x1080), with bold animated text, shapes, counters, captions and optional AI narration. Say **"studio trend <tool>"** and it researches a trending AI tool, films it doing a real task in your browser, and makes a wide video plus a Short from one script. Each video is made by a showrunner session and three AI agents (writer, director and screener), and you can watch the crew work.
 
 ![Contact sheet rendered from the bundled example: hook frame, then one frame per scene, red outline is the Shorts safe area](docs/contact-sheet.png)
@@ -14,7 +22,7 @@ Say **"studio, make a video about how DNS works"** and a small crew of agents tu
 
 On Claude Code versions earlier than 2.1.275, run `/plugin marketplace add omer-yehuda/plugins` first, then `/plugin install studio@omer-plugins`.
 
-The first run asks before it sets anything up: a private Python venv in `~/.cache/studio-plugin` with pinned Pillow. You need Python 3.11+ and ffmpeg on your PATH.
+The first run asks before it sets anything up: a private Python venv in `~/.cache/studio-plugin` with hash-locked Pillow, NumPy and imageio-ffmpeg, shared by all three formats. You need Python 3.11+ and ffmpeg on your PATH (the toon format can use the ffmpeg that imageio-ffmpeg ships). Already set up toon-shorts? Set `TOON_SHORTS_HOME` to keep using its old folder, or run setup once more.
 
 ## Commands
 
@@ -25,6 +33,8 @@ The first run asks before it sets anything up: a private Python venv in `~/.cach
 | `produce an explainer video about <topic>` | Same |
 | `/studio:trend <tool>` | Trend desk: research, real screenshots, one script, a wide video + a Short, AI narration, audio check |
 | `/studio:crew` | One screen describing the crew and the pipeline |
+| `/studio:toon` | Cartoon short from a true story: 10 ideas, script, voice, storyboard, preview, MP4 ([docs](docs/toon.md)) |
+| `/studio:pitch` · `/studio:shoot` · `/studio:cut` · `/studio:dailies` | Film: shot list and prompts, your stills checked by continuity, the graded cut ([docs](docs/film.md)) |
 
 ## The crew
 
@@ -81,25 +91,25 @@ Captions-only is the default: the words are on screen, and `captions.srt` is wri
 - **Your own audio:** `--audio file.wav --fit-audio` (or `--audio-path-file`) stretches the scene timings to its length (within 0.6x to 1.8x).
 - **Check it:** `studio.py audiocheck video.mp4 --lines voice.lines.json` fails if a pause is louder than -35 dBFS or there are more than 3 clicks a minute.
 
-## Not a cartoon maker
+## Which format?
 
-Studio makes typography and motion-graphics explainers. For a cartoon true-story short with characters, use [toon-shorts](../toon-shorts): the showrunner points you there when your topic is a story.
+The explainer draws text and shapes, not characters. When a topic is a story with people in it, the showrunner suggests `/studio:toon` (cartoon) or `/studio:pitch` (realistic film) instead.
 
 ## Known limits
 
-- Left-to-right text only. Right-to-left layout (Hebrew, Arabic) is not supported yet: the bundled font covers the glyphs, but words would render in the wrong order.
+- The explainer is left-to-right only for now; the toon format already renders Hebrew right-to-left, and bringing that to the explainer is next.
 - The renderer never fetches screenshots: image and screen scenes use files in the production folder. The trend desk takes them with your browser tool, in tabs you can watch.
 - Kokoro narration is English (US and British voices) in Studio.
 - No upload step. Studio makes the files; publishing is yours.
 
 ## Safety and privacy
 
-- **Nothing installs without asking.** The only install is `studio.py setup --yes`, which Claude runs after you agree. It creates a private venv and installs the pinned packages in [requirements.txt](requirements.txt) (Pillow 12.3.0) into it, never into your global Python. ffmpeg is checked on your PATH and never installed; if it is missing you get the install command to run yourself.
+- **Nothing installs without asking.** The only install is `studio.py setup --yes`, which Claude runs after you agree. It creates a private venv and installs the hash-locked packages in [requirements.txt](requirements.txt) into it, never into your global Python. ffmpeg is checked on your PATH and never installed; if it is missing you get the install command to run yourself.
 - **Local only, no telemetry.** The renderer and the voice make no network calls. The only network access is web research (WebSearch and WebFetch), the browser tabs the trend desk opens to film a tool, the one-time pip install from PyPI and, only with `setup --voice`, the voice model download from GitHub (size and SHA-256 checked; a mismatch deletes the file).
 - **No hidden writes.** Output goes to `.studio/productions/<id>/` in your project (git-ignored). Frames are piped to ffmpeg, so no thousands of temp images are left behind.
 - **No user text in commands.** The topic reaches the scripts through a file, folder names are derived by the script (`[a-z0-9-]`, at most 48 characters), and the showrunner only passes back paths the scripts printed.
 - **Writes stay inside the production folder.** Image and audio paths in a storyboard must be inside it (no absolute paths, no `..`), `--out` must be inside the storyboard folder, symlinked outputs are refused, and a `.studio` folder that is tracked in git or is a symlink is refused. ffmpeg always gets its arguments as a list, never through a shell.
-- **Hash-locked install.** `requirements.txt` carries SHA-256 hashes and setup uses `--require-hashes --only-binary=:all:`, so nothing is built from source. The optional voice packages in [requirements-voice.txt](requirements-voice.txt) are version-pinned (same pins as toon-shorts).
+- **Hash-locked install.** `requirements.txt` carries SHA-256 hashes and setup uses `--require-hashes --only-binary=:all:`, so nothing is built from source. The optional voice packages in [requirements-voice.txt](requirements-voice.txt) are version-pinned.
 - **Least privilege agents.** The writer can read, write and search the web; the director can read, write and run the checker; the screener can only read and write its report. None of them can upload, delete or install.
 - Web pages and files are treated as data, never as instructions.
 
@@ -128,10 +138,12 @@ Python 3.11+, ffmpeg and ffprobe with libx264 on PATH. Rendering takes about 20 
 ```
 cd plugins/studio
 pip install -r requirements-dev.txt   # unhashed dev pins; the runtime requirements.txt is hash-locked
-python -m pytest        # coverage gate 80%, the end-to-end render test is skipped without ffmpeg
+python -m pytest        # explainer engine, coverage gate 80%, the end-to-end render test is skipped without ffmpeg
+python -m pytest toon-tests   # toon engine, coverage gate 85%
+node --test tests/*.test.js   # film helper (scripts/premiere.js), render tests skipped without ffmpeg
 ```
 
-Render engine: `skills/produce/scripts/studiokit/` (each module under 200 lines). Entry point: `skills/produce/scripts/studio.py` with `init`, `doctor`, `setup`, `check`, `preview`, `render` (`--scale 0.25` for quick low-resolution renders).
+Engines: `skills/produce/scripts/studiokit/` (explainer), `skills/toon/scripts/toonshorts/` (toon), `scripts/premiere.js` (film). Each module stays under 200 lines. Entry point: `skills/produce/scripts/studio.py` with `init`, `doctor`, `setup`, `check`, `preview`, `render` (`--scale 0.25` for quick low-resolution renders).
 
 Licenses: plugin MIT, Rubik font [OFL](skills/produce/assets/fonts/OFL.txt).
 

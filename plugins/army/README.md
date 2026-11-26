@@ -1,5 +1,7 @@
 # Army: a chief of staff and specialist units for Claude Code
 
+**18 units and 8 drills in one plugin.** Raise the whole army for a mission, or run a single drill: put a decision on trial, admit a bug, let the critics taste your work, go/no-go a release, examine a skill, recall what was decided, write the release edition, or claim lanes for parallel sessions. See [Drills](#drills).
+
 Say **"raise the army"** and Claude becomes a Chief of Staff (HQ). It asks you its briefing questions once, writes an operation order, and dispatches specialist units as subagents, each on the cheapest model that can do the job. An Inspector General who never saw the work checks the result before you get it.
 
 **[Open the command center →](https://omer-yehuda.github.io/plugins/)** Watch a mission play out, browse every unit, and read all 110 field manuals.
@@ -62,6 +64,25 @@ The settings commands run only when you type them. Claude cannot invoke them on 
 | `treasury` | VAULT | Pricing & business model, Cost forecaster, Forecaster, Tax mapper, Procurement officer, Crowdfunding officer | scoped | sonnet | haiku |
 | `sales` | CLOSER | Offer & sales conversation, B2B & institutional sales, Negotiation officer, Customer support designer, Retention officer | scoped | sonnet | haiku |
 <!-- END ORDER OF BATTLE -->
+
+## Drills
+
+Eight plugins joined the army in 2.0.0. Each is a **drill**: a complete procedure with its own independent agents that you can run on its own, without raising the army. HQ also runs a drill when a step of its plan matches one. Their old docs are in [docs/drills/](docs/drills/).
+
+<!-- BEGIN DRILLS -->
+| Drill | Run | Unit it extends | Use for | Formerly |
+|---|---|---|---|---|
+| trial | `/army:trial` `/army:appeal` `/army:docket` | ops | put a technical decision on trial: counsel argue each option, an independent judge rules | court |
+| admit | `/army:admit` `/army:chart` | rescue | fix one bug: regression test first, smallest incision under a hard budget | er |
+| taste | `/army:taste` `/army:retaste` `/army:menu` | inspector-general | three independent critics review the work, a head critic awards up to 3 stars | critics |
+| countdown | `/army:countdown` `/army:scrub` `/army:log` | inspector-general | release go or no-go from collected facts and four stations | mission-control |
+| exam | `/army:enroll` `/army:exam` `/army:transcript` | rnd | test a skill with and without it in headless Claude Code; pass rate, tokens, cost | academy |
+| recall | `/army:recall` `/army:catalog` `/army:shelf` `/army:timeline` | history | search every record the army keeps, with the file behind every claim | archive |
+| edition | `/army:edition` `/army:headline` `/army:wire` | comms | release notes, changelog, social posts and a video brief from the commits, fact-checked | newsroom |
+| lanes | `/army:claim` `/army:clear` `/army:radar` `/army:release` | engineering | parallel sessions claim file lanes; a hook asks before one edits another's lane | atc |
+<!-- END DRILLS -->
+
+Examples: `put it on trial: should we move from REST to GraphQL?` · `admit this bug: checkout total is off by one cent` · `let the critics taste it` · `mission control, are we go?` · `send this skill to the academy` · `ask the archive why we chose REST` · `newsroom, write the edition` · `/army:claim src/billing/** (invoice refactor)`. The old phrases still work.
 
 **Why this structure:** each unit is one subagent, and its specialists are field manuals (`doctrine/`) that the unit reads only when its brief needs them. Claude Code can nest subagents, but every subagent starts with a fresh context, so one subagent per unit keeps both the cost and the HQ's reading load low. Adding a specialist costs nothing until it is used. **Kits are least-privilege:** research and planning units can read, search the web and write their report, but cannot edit code or run a shell. Recon has no shell. Defense and the Inspector General can't edit. Only engineering, rescue and logistics carry the full kit.
 

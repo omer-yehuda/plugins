@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2026-11-23)
+
+- Deprecated. The Academy is now a drill of **army 2.0.0** (/army:enroll, /army:exam, /army:transcript) with the same agents and records folder. The commands here only point there. This plugin will be removed in the next release.
+
 ## 1.0.0 (2026-11-22)
 
 - `/academy:enroll <path>`: enrols a plugin skill and has an examiner draft 3 to 5 missions (task, trigger, no-trigger, safety) with fixtures and checks. Runs nothing.

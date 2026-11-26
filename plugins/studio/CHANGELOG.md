@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.0 (2026-11-23)
+
+- **Three formats in one plugin.** The toon-shorts plugin is now `/studio:toon` (cartoon shorts, Hebrew RTL), and Premiere is now `/studio:pitch`, `/studio:shoot`, `/studio:cut` and `/studio:dailies` (realistic films). Their engines moved in unchanged: `skills/toon/scripts/toonshorts/` and `scripts/premiere.js`. Docs: [docs/toon.md](docs/toon.md), [docs/film.md](docs/film.md).
+- **One venv, one voice model.** Every format uses `~/.cache/studio-plugin` (override with `STUDIO_HOME`; `TOON_SHORTS_HOME` still works). The Kokoro model is downloaded once.
+- **Hash-locked for every format.** `requirements.txt` now pins Pillow 13.0.0, NumPy 2.5.4 and imageio-ffmpeg 0.8.1 with SHA-256 hashes, and the toon setup now installs with `--require-hashes --only-binary=:all:` too (toon-shorts used plain version pins).
+- Premiere's `director` agent is now `film-director` (Studio already had a `director`); `cinematographer` and `continuity` keep their names. Productions still live in `.premiere/`.
+- The explainer, the crew screen and the showrunner point story topics to `/studio:toon` or `/studio:pitch`.
+- OpenCode: `opencode/commands/studio-toon.md`.
+- Breaking: install `studio` instead of `toon-shorts` or `premiere`. Both old plugins remain for one release as stubs that point here.
+
+
 ## 1.2.0 (2026-11-22)
 
 - Emotion in the AI narration. Tag a word in `say` with `{feeling|words}` (warn, surprise, excite, wow, punch, ask, calm, sad) and only that word changes: pitch shape, length, loudness and a short beat before it. Every line also gets a little more melody (`voice --lively`, default 1.2; `--flat` for the old read). Same Kokoro voice: Studio makes a local copy of the verified model with three multiply inputs (sound length, pitch, energy); with them at 1.0 the audio is identical to the original. Needs the new pinned `onnx` package, which `setup --voice` installs; without it Studio says so and speaks without emotion.

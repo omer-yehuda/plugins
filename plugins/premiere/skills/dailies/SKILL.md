@@ -1,10 +1,15 @@
 ---
 name: dailies
-description: Show the contact sheet of a Premiere production's stills, or list productions.
-disable-model-invocation: true
-argument-hint: "[production-id]"
+description: Moved. Premiere is now part of the studio plugin. Use ONLY when the user runs /premiere:dailies. Points to /studio:dailies.
 ---
 
-Helper: `node "${CLAUDE_PLUGIN_ROOT}/scripts/premiere.js"`.
+# Premiere has moved
 
-With no argument, run it with `list` and show a table: id, status (new, pitched or rendered), folder. With an argument, match it against the ids that `list` prints, run `dailies <id>`, and show the path of `dailies.jpg`, the shot order, and any stills that are still missing. If ffmpeg is not installed, say so. Add nothing else.
+Premiere now ships inside the **studio** plugin, with the same engine and crew, sharing one setup with Studio's other formats.
+
+Tell the user, in two lines:
+
+1. This command moved to `/studio:dailies`.
+2. Install it with `/plugin install studio@omer-plugins`, then uninstall this one with `/plugin uninstall premiere@omer-plugins`.
+
+If studio is already installed, offer to run `/studio:dailies` with the same request now. Do nothing else from this stub.

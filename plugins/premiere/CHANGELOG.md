@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2026-11-23)
+
+- Deprecated. Premiere moved into **studio 2.0.0** (/studio:pitch, /studio:shoot, /studio:cut and /studio:dailies) with the same engine and crew. The commands here only point there. This plugin will be removed in the next release.
+
 ## 1.0.0 (2026-11-22)
 
 - `/premiere:pitch <topic>`: a director writes a 5 to 8 shot list and a cinematographer writes the look bible and one prompt per shot. Generates nothing.
